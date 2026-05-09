@@ -25,7 +25,7 @@ Das Projekt entsteht im Rahmen des Bachelorstudiums Informatik an der FFHS, im K
 
 Für die Arbeit an diesem Repository rechnen wir mit einem agentischen Coding-Agenten (z. B. [Cursor](https://cursor.com) oder [Claude Code](https://www.anthropic.com/claude-code)) sowie der [GitHub CLI](https://cli.github.com) (`gh`) für Issues, Branches und den Umgang mit GitHub.
 
-**Build:** Node.js **20 oder neuer** (siehe `engines` in `package.json`). Auf einem frischen Clone: `npm ci`, danach `npm run build` erzeugt `main.js` im Repository-Root. Für schnelle Iteration: `npm run dev` startet esbuild im Watch-Modus (ohne paralleles `tsc --noEmit`; vollständiges Typechecking erfolgt über `npm run build` bzw. `npm run typecheck`).
+**Build:** Node.js **20 oder neuer** (siehe `engines` in `package.json`). Auf einem frischen Clone: `npm ci`, danach `npm run build` erzeugt `main.js` im Repository-Root. `npm run dev` startet parallel `tsc --noEmit --watch` und esbuild im Watch-Modus. Einmaliges Typecheck ohne Bundle: `npm run typecheck`.
 
 Weitere Voraussetzungen (Obsidian, Ollama, Installation im Vault) ergänzen wir hier nach und nach, sobald die zugehörigen Arbeitspakete umgesetzt sind.
 
