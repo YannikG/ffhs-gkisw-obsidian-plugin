@@ -1,113 +1,79 @@
 ---
 name: review-and-fix
-description: >
-  Runs a strict review-and-remediation loop for SRP, code quality, maintainability,
-  clean architecture, code cleanliness, documentation, security, and safety. Use
-  when user asks to review and fix code, run maintainability cleanup, perform
-  architecture quality review, or resolve findings until no actionable issues remain.
+description: >-
+  Review + fix loop (not review-only): SRP, maintainability, clean arch, security,
+  types, tests, docs. Classify severity, fix critical/high/medium actionable, run
+  lint/type/test/build, re-review until done or true blocker. Triggers: review and
+  fix, SRP review, maintainability/architecture/quality cleanup, doc pass.
 ---
 
-# Review And Fix
+# Review and fix
 
-Perform review plus remediation, not review-only. Continue until all actionable findings are fixed or a true blocker is reported.
+**Goal:** find concrete issues → fix them → validate → repeat until **done** or **blocker**. No review-only unless user says review-only (then skip fix loop).
 
-## Trigger Phrases
+## Triggers
 
-Apply this skill when user asks for:
+`review and fix`, SRP review, maintainability cleanup, clean architecture review, code quality cleanup, documentation quality pass.
 
-- "review and fix"
-- SRP review
-- maintainability cleanup
-- clean architecture review
-- code quality cleanup
-- documentation quality pass
+## Scan dimensions (touched scope)
 
-## Quality Checklist
+- **SRP:** one job per fn/class/component/service.
+- **Maintainability:** dup, complexity, coupling, names, brittle branches, untestable logic.
+- **Clean arch:** dependency direction, layer boundaries, no feature bleed.
+- **Security / safety:** validation, auth, secrets, deserialization, injection, dangerous side effects, data loss paths.
+- **Cleanliness:** dead code, stale TODOs, pattern drift, weak types/APIs, error handling gaps.
+- **Types:** concrete types; no `any`; no long-lived `unknown` — narrow at boundaries.
+- **Docs:** public/reused APIs documented where needed; comments for non-obvious constraints; docs match behavior.
+- **Tests:** behavior changes covered; lint/type/test expectations met.
 
-Check each touched area for:
+## Loop (mandatory)
 
-- **Single Responsibility Principle (SRP):** functions/classes/components/services do one clear job.
-- **Maintainability:** duplication, high complexity, hidden coupling, poor naming, brittle branching, hard-to-test logic.
-- **Clean Architecture:** dependency direction is correct, boundaries are respected, no feature leakage across layers.
-- **Security and safety:** input validation, auth checks, secrets handling, unsafe deserialization, injection risks, dangerous side effects, data-loss scenarios.
-- **Code Cleanliness:** dead code, stale TODOs, inconsistent patterns, unsafe type usage, unclear APIs, weak error handling.
-- **Type safety:** use concrete types everywhere possible; avoid `any`; avoid long-lived `unknown`; narrow unsafe boundaries immediately.
-- **Documentation:** public/reused APIs have concise docs where needed, comments explain non-obvious constraints, docs stay aligned with behavior.
-- **Testing and safety:** changed behavior has adequate tests, regressions are prevented, lint/type/test expectations are met.
+Repeat until done criteria:
 
-## Review-Fix Loop (Mandatory)
+1. **Scan** — changed files + impacted call paths. Findings = concrete (no vague style nits).
 
-Repeat this loop until done criteria passes:
+2. **Classify** — severity:
+   - `critical`: broken behavior, data loss/security, arch break.
+   - `high`: likely bug/regression or big maintainability risk.
+   - `medium`: real debt, cheap fix now.
+   - `low`: polish optional.
+   Each: `actionable-now` vs `blocked`.
 
-1. **Scan**
-   - Inspect relevant changed files and impacted call paths.
-   - Collect concrete findings only (no vague style opinions).
+3. **Fix** — all `critical` / `high` / `medium` that are `actionable-now`. Smallest safe refactor, root cause. Behavior stable unless user asked behavior change.
 
-2. **Classify**
-   - Assign severity:
-     - `critical`: broken behavior, data loss/security risk, architecture break.
-     - `high`: likely bug/regression or major maintainability risk.
-     - `medium`: meaningful quality debt that is straightforward to fix now.
-     - `low`: optional polish.
-   - Mark each item as `actionable-now` or `blocked`.
+4. **Validate** — lint / type / test / build for changed scope (what exists). Failures = new findings → fix in same loop.
 
-3. **Fix**
-   - Fix all `critical`, `high`, and `medium` findings that are `actionable-now`.
-   - Prefer smallest safe refactor that removes root cause.
-   - Keep behavior stable unless user requested behavior change.
+5. **Re-review** — touched code + neighbors for second-order damage (coupling, complexity, doc drift).
 
-4. **Validate**
-   - Run relevant checks for modified scope (lint/type/test/build as available).
-   - If checks fail, treat failures as new findings and fix them in same loop.
+6. **Repeat** — until done.
 
-5. **Re-Review**
-   - Re-check touched code and nearby affected areas for second-order issues.
-   - Ensure fixes did not introduce coupling, complexity, or documentation drift.
+## Done (all true)
 
-6. **Repeat**
-   - Continue loop until done criteria is satisfied.
+- No open `critical` or `high`.
+- No `medium` left that is safe + feasible now.
+- Validation passes for changed scope (or pre-existing failures **explicitly** noted).
+- Anything left = real `blocked` + clear next input.
 
-## Done Criteria
-
-Only declare completion when all are true:
-
-- No remaining `critical` or `high` findings.
-- No `medium` findings that are safe and feasible to fix now.
-- Validation checks for changed scope pass (or unavoidable pre-existing failures are explicitly documented).
-- Remaining items, if any, are true blockers with clear reason and next required decision/input.
-
-## Finding Format
-
-Use concise actionable entries:
+## Finding format
 
 `<severity> | <location> | <problem> | <fix>`
 
-Example:
+Example: `high | src/orders/order.service.ts | validation+persistence+mapping one method (SRP) | extract validators+mappers, service orchestrates only`
 
-`high | src/app/orders/order.service.ts | Service handles validation + persistence + mapping in one method (SRP breach) | Extract validation and mapping collaborators, keep service orchestration only`
+## Blocker → stop auto-fix, report
 
-## Blocker Rules
+- ambiguous requirement → needs product call.
+- destructive / irreversible change.
+- needs creds / system / user step agent lacks.
+- constraint conflict → no safe fix in scope.
 
-Stop auto-fixing and report blocker when:
-
-- requirement is ambiguous and fix needs product decision,
-- proposed change is destructive/irreversible,
-- fix requires credentials/systems/user action unavailable to agent,
-- constraint conflict makes safe fix impossible in current scope.
-
-When blocked, report:
-
-- current status,
-- findings already fixed,
-- exact blocker,
-- minimal next action needed from user.
+Report: status, what fixed, exact blocker, minimal next step for user.
 
 ## Boundaries
 
-- Do not stop after first review pass if actionable findings remain.
-- Do not leave known `critical/high` issues unfixed.
-- Do not invent requirements or rewrite unrelated architecture.
-- Do not skip validation silently.
-- Do not require database data normalization unless user explicitly asks for normalization.
-- Use explicit types across code paths; avoid `unknown` and `any` unless unavoidable at boundary, then narrow immediately.
-- If user explicitly requests review-only mode, follow user request and disable fix loop for that task.
+- Actionable findings remain → keep looping; no stop after first pass.
+- No leave `critical`/`high` unfixed on purpose.
+- No invent requirements; no unrelated arch rewrite.
+- No silent skip validation.
+- No DB normalization crusade unless user asks.
+- Explicit types; `any`/`unknown` only at boundary + narrow fast.

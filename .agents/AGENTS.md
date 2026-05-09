@@ -1,22 +1,23 @@
 # Agent-Anweisungen (Repository-weit)
 
-Diese Datei liegt absichtlich unter **`.agents/`**, damit **verschiedene KI- und Agenten-Tools** (nicht nur Cursor) dieselben Projektregeln finden können. Inhalt ist die kanonische Fassung; bei Cursor ergänzt optional `.cursor/rules/docs-kontext-zuerst.mdc` einen Verweis hierher.
+`.agents/` = Einstieg für KI-Tools. **`gh` / Branches:** `docs/agents-docs/github-cli.md`. **Team-Regeln zu Issues, Board, Spez:** `docs/zusammenarbeit/README.md`. Cursor optional: `.cursor/rules/docs-kontext-zuerst.mdc`.
 
----
+## `docs/` zuerst
 
-## Dokumentation zuerst (`docs/`)
+Vor Codeänderung, projektbezogener Shell oder inhaltlicher Bewertung: **`docs/`** lesen. Nur-Lesen für diese Regel vor andern Werkzeugaktionen.
 
-Bevor du Code änderst, projektbezogene Shell-Befehle ausführst oder inhaltlich bewertest (Roadmap, Anforderungen, Architektur, Produktverhalten), verschaff dir zuerst Projektbezug, indem du den Ordner **`docs/`** am Repository-Root **liest** (siehe Mindestumfang). Reine Datei-Lesevorgänge zum Erfüllen dieser Regel haben Vorrang vor anderen Werkzeugaktionen.
+**Mindestumfang**
 
-### Mindestumfang
+1. `docs/roadmap/overview.md` vollständig.
+2. Weitere passende `docs/`-Dateien (betroffenes Phase-`README`, bei KI-Arbeit `docs/roadmap/methodik-gkisw-prompt-patterns.md`).
+3. Phasenplan / Issue-Ketten / Agenten-Workflow: `docs/agents-docs/README.md`. Team-Prozess (Issues, Permalinks, Board): `docs/zusammenarbeit/README.md`.
 
-1. **`docs/roadmap/overview.md`** vollständig lesen (aktueller Phasenstand, Verweise auf Phasen-READMEs, Querverweise).
-2. Danach alle **weiteren Dateien unter `docs/`**, die zur Nutzeranfrage passen (insbesondere das **README** der betroffenen Roadmap-Phase, z. B. `docs/roadmap/phase-3/README.md` bei UI-/UX-Themen, sowie `docs/roadmap/methodik-gkisw-prompt-patterns.md`, wenn es um Arbeitsweise mit KI geht).
+**Arbeit an einem Issue:** Zuerst immer das **GitHub-Issue** lesen (`gh issue view <nr>` oder Issue-URL). Enthält der Body einen Permalink auf `docs/roadmap/…/issues/*.md`, diese **Repo-`.md`** lesen. **Ohne** solchen Link: Spezifikation aus **Titel und Body** des GitHub-Issues (z. B. Bugs). Implementierung und Bewertung nur gegen diesen Rahmen, nicht «frei schwebend».
 
-### Spezifikation im Repository-Root
+**PR und Review:** PR **gegen dieselbe Issue-Nummer** führen (z. B. `Fixes #n` / `Closes #n` in Beschreibung oder von `gh issue develop` erzeugter Branch mit zugehörigem PR). Review: Akzeptanz und Findings **gegen Issue und ggf. verlinkte `.md`** formulieren, nicht ohne Bezug.
 
-Implementierungsnahe Details stehen in **`SPEC.md`** im Repository-Root (verlinkt aus der Roadmap-Übersicht). Wenn die Aufgabe Spezifikation oder Verhalten des Plugins betrifft, **`SPEC.md`** einbeziehen, sobald der Kontext aus `docs/` klar ist.
+**`SPEC.md`** (Root): bei Plugin-Spezifikation oder Verhalten, sobald `docs/`-Kontext klar.
 
-### Pragmatik
+**Nur `docs/` oder Metadaten:** gezielt lesen; `overview.md` kurz prüfen wenn Phasenstand relevant.
 
-Wenn die Nutzeranfrage **ausschliesslich** `docs/` oder reine Metadaten betrifft, reicht gezieltes Lesen der betroffenen `docs/`-Dateien; `overview.md` trotzdem kurz prüfen, falls der Stand der Phasen für die Antwort relevant sein könnte.
+**`docs/roadmap/**/issues/*.md`:** Nur Fakten (Ziel, `./`-Links auf Vorgänger-`.md`, Akzeptanzkriterien, Scope, dev-Schritte). **Nicht** in File: `gh`-/GitHub-/Permalink-Meta (→ `github-cli.md`). **Issue-Body:** Permalink + kurz auf die Repo-`.md` (SSOT: `docs/zusammenarbeit/README.md`). **Neues GitHub-Issue aus Vorlage:** `.agents/skills/github-issue-anlegen/SKILL.md` und Pfad zur `issues/*.md`. **Vorlagen nicht editieren** ohne explizite Planänderung durch Nutzer. **Implementierung nach Issue:** `.agents/skills/implement-plan-workflow/SKILL.md` (immer mit **GitHub-Issue**-URL oder -Nummer).
