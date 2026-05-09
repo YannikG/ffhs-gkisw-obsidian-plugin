@@ -1,0 +1,8 @@
+---
+description: Verweis auf kanonische Agent-Anweisungen unter .agents/
+alwaysApply: true
+---
+
+# Agent-Anweisungen
+
+Zu Beginn inhaltlicher Arbeit in diesem Repository **`.agents/AGENTS.md`** lesen und befolgen (insbesondere Abschnitt «Dokumentation zuerst»). Dort steht die kanonische Fassung für alle Agenten-Tools; diese Regel dient als Cursor-Hinweis derselben Vorgabe.
