@@ -4,7 +4,7 @@ description: >-
   Starts implementation of an agreed plan: verifies GitHub issue exists or
   creates one; if an existing issue is used, asks whether to refresh the issue
   body with the plan before branching. Checks out an issue-linked branch from
-  develop via gh, enforces caveman communication during coding, then runs
+  master (repo default) via gh, enforces caveman communication during coding, then runs
   review-and-fix until no actionable findings remain including low. Use when
   the user says start implementing the plan, execute the plan, begin
   implementation after planning, or invokes /implement-plan.
@@ -23,7 +23,7 @@ Use this skill when implementation should begin after a plan exists in chat or d
 ## Preconditions
 
 - Working tree must be clean before branch or issue work. If dirty, stop and ask the user how to proceed (stash, commit, or discard). Do not create issues or branches on top of unrelated local changes.
-- `gh` must be authenticated and available. If `gh issue develop` is missing or fails, stop and ask the user.
+- `gh` must be authenticated and available. If issue-linked branch checkout via `gh` is unavailable or fails, stop and ask the user (then branch manually from `master` once resolved).
 
 ## Step 1: GitHub issue
 
@@ -33,12 +33,14 @@ Use this skill when implementation should begin after a plan exists in chat or d
 4. **If one clear match:** Ask the user explicitly whether this issue should be updated with the current plan content (title and/or body). Wait for an answer before continuing. If they want an update, apply it with `gh issue edit` (use a body file or heredoc when the plan is long). If they decline, leave the issue unchanged. Then use that issue number for the branch.
 5. **If multiple plausible issues or unclear fit:** Ask the user which issue to use or whether to open a new one. Do not guess. After the user picks a specific existing issue, ask the same update question as in step 4 before branching.
 
-## Step 2: Branch from develop only
+## Step 2: Branch from `master` only
 
-1. Ensure local `develop` exists and is up to date (`git fetch`, checkout `develop`, `git pull` as needed).
-2. Prefer: `gh issue develop <issue-number> --checkout` so the branch is issue-linked.
-3. If that command is unavailable or would not base on `develop`, create and checkout a branch manually **from `develop`**: `git checkout develop && git pull && git checkout -b <issue-linked-name>`.
-4. Confirm current branch is not `main`, `master`, or `develop`, and that it relates to the chosen issue (name or `gh issue develop` provenance).
+Long-lived integration work uses **`master`** as the default branch. Feature branches must be created from up-to-date `master`.
+
+1. Ensure local `master` exists and is up to date (`git fetch`, `git checkout master`, `git pull` as needed).
+2. Prefer checking out a branch linked to the issue via authenticated `gh`, using the issue-branch workflow documented for your installed version (`gh issue help`). The new branch must be based on the repository default branch (`master`).
+3. If that workflow is unavailable or fails, create and checkout a branch manually **from `master`**: `git checkout master && git pull && git checkout -b <issue-linked-name>`.
+4. Confirm the current branch is not `master` and that it relates to the chosen issue (branch naming convention or metadata from `gh`).
 
 ## Step 3: Implement
 
