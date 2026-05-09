@@ -1,0 +1,1 @@
+# ffhs-gkisw-obsidian-plugin
