@@ -1,4 +1,4 @@
 /**
- * Build-Stub (P4-I01). Plugin-Klasse und Manifest folgen in späteren Arbeitspaketen.
+ * Build stub (P4-I01). The Obsidian Plugin subclass and manifest.json arrive in later issues.
  */
 export {};

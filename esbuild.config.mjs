@@ -10,11 +10,15 @@ const ctx = await esbuild.context({
   format: 'cjs',
   sourcemap: true,
   logLevel: 'info',
+  external: ['obsidian'],
 });
 
 if (watch) {
   await ctx.watch();
 } else {
-  await ctx.rebuild();
-  await ctx.dispose();
+  try {
+    await ctx.rebuild();
+  } finally {
+    await ctx.dispose();
+  }
 }
