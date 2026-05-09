@@ -21,6 +21,12 @@ Das Plugin erstellt und speichert die Datei; das Modell liefert nur den Inhalt d
 
 Das Projekt entsteht im Rahmen des Bachelorstudiums Informatik an der FFHS, im Kurs «Generative KI für Softwareentwickler» (GKISW), als Projektarbeit. Architektur, Anforderungen und Schnittstellen sind in der [SPEC.md](SPEC.md) dokumentiert.
 
+## Abhängigkeiten
+
+Für die Arbeit an diesem Repository rechnen wir mit einem agentischen Coding-Agenten (z. B. [Cursor](https://cursor.com) oder [Claude Code](https://www.anthropic.com/claude-code)) sowie der [GitHub CLI](https://cli.github.com) (`gh`) für Issues, Branches und den Umgang mit GitHub.
+
+Weitere Voraussetzungen (z. B. Node, Obsidian, Ollama, Build- und Installationshinweise) ergänzen wir hier, sobald die Implementierung konkret startet.
+
 ## Roadmap
 
 [Phasenplan und Status](docs/roadmap/overview.md) (inkl. Links zu den Phasen-READMEs).
