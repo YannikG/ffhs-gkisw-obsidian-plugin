@@ -1,13 +1,21 @@
-# Phase 6: Deployment & Dokumentation
+# Phase 6: Einbau RAG
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
 **Status:** Geplant
 
-## Ziel laut Roadmap
+RAG-Pipeline, Vektordatenbank auf SQLite. Pipeline beim Obsidian-Start ausführen, Obsidian-Event-Bus abonnieren, Datenbank aus Events pflegen.
 
-Erstellung der **Benutzerdokumentation**, Finalisierung des **README** und **Veröffentlichung** des Plugins.
+Architektur: [SPEC.md](../../../SPEC.md). LLM-Anbindung vorher: [Phase 5](../phase-5/README.md).
 
-## Detailplanung
+## Arbeitsinhalt
 
-Folgt in Phase 6.
+- Indexing, Embeddings, Speicher in SQLite.
+- Lifecycle: Plugin-Start, Event-Handler, inkrementelle Updates.
+
+## Verweise
+
+- [Roadmap-Übersicht](../overview.md)
+- [SPEC.md](../../../SPEC.md)
+- [Phase 5](../phase-5/README.md)
+- [Phase 7 — Verknüpfung RAG mit LLM](../phase-7/README.md)

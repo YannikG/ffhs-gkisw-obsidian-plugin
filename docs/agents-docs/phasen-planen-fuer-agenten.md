@@ -1,6 +1,6 @@
 # Phasen planen (Agenten)
 
-**Lesen:** `docs/roadmap/overview.md` (Phasen-Titel massgebend) → `docs/roadmap/phase-N/README.md` → bei Plugin-Verhalten `SPEC.md` (Root).
+**Lesen:** `docs/roadmap/overview.md` (Tabelle der **12 Schritte** massgebend) → bei Bedarf `docs/roadmap/phase-N/README.md` (ergänzende Doku) → bei Plugin-Verhalten `SPEC.md` (Root).
 
 **Ziel:** Endzustand Phase klar in einem Satz. **DoD:** Checkliste, jedes Kriterium prüfbar (Befehl, PR-Link, oder fixer manueller Schritt).
 
@@ -8,4 +8,4 @@
 
 **Team (Issues, Board, SSOT):** [zusammenarbeit/README.md](../zusammenarbeit/README.md). **`gh`:** [github-cli.md](./github-cli.md).
 
-**Phase zu:** Phase-README DoD/Status; `overview.md` anpassen wenn Phasenfokus wechselt.
+**Abschluss:** Schritt-/Planstand im Team pflegen; `overview.md` anpassen, wenn sich die zwölf Schritte ändern; Phase-READMEs bei Bedarf nachziehen.

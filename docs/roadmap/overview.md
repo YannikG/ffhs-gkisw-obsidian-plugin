@@ -1,37 +1,18 @@
 # Roadmap Übersicht
 
-Diese Datei bildet die **gesamte Projekt-Roadmap** ab (sechs Phasen). Zu **jeder** Phase gibt es einen Ordner `phase-N` mit einem **README**: abgeschlossene Phasen bleiben dort **bewusst minimal** (nur Status **Erledigt**), damit nichts «übersprungen» wirkt. Die aktuelle Arbeitsphase enthält die ausführlichere Planung.
+Die Roadmap besteht aus den **zwölf Schritten** in der folgenden Tabelle (Schritt, Bezeichnung, Beschreibung, Phase-README). Das ist die massgebende Reihenfolge der Arbeit.
 
-**Aktueller Stand laut Team:** Phase **1** und **2** sind abgeschlossen; es wird in **Phase 3** weitergearbeitet. Phasen **4** bis **6** sind in der Dokumentation angelegt und folgen der Reihenfolge der Roadmap.
-
-| Phase | Titel | Inhalt (Kurz) | Status | README |
-|-------|--------|----------------|--------|--------|
-| 1 | Konzeption & Setup | Anforderungsanalyse, Architektur-Design, Techstack, Projektinitialisierung | Erledigt | [phase-1](./phase-1/README.md) |
-| 2 | MVP-Entwicklung (Core Features) | Markdown-Parsing, Ollama-Integration, einfache Zusammenfassungen | Erledigt | [phase-2](./phase-2/README.md) |
-| 3 | UI & UX Optimierung | Obsidian-Oberfläche, Kontextmenü, Einstellungen, Fortschritt | In Arbeit | [phase-3](./phase-3/README.md) |
-| 4 | Erweiterte Funktionen (RAG & Vektor-DB) | In Phase-4-Issues (P4-I01–P4-I09): **nur** Codebasis, CI und Qualität; **kein** RAG-, Embedding- oder Vektor-DB-Kern | Geplant | [phase-4](./phase-4/README.md) |
-| 5 | Testing & Qualitätssicherung | Unit- und Integrationstests, Performance, Bugfixing für stabile Version | Geplant | [phase-5](./phase-5/README.md) |
-| 6 | Deployment & Dokumentation | Benutzerdokumentation, README, Veröffentlichung des Plugins | Geplant | [phase-6](./phase-6/README.md) |
-
-## Phase 4 (Boilerplate) im Detail
-
-- [Phase-4 README](./phase-4/README.md) (Einordnung, DoD, Abhängigkeitsgraph, Issuetabelle, Verweise)
-- [Issue-Vorlagen `docs/roadmap/phase-4/issues/`](./phase-4/issues/) (Verzeichnis)
-
-## Spezifikation und Arbeitsweise
-
-- [SPEC.md](../../SPEC.md) (Repository-Root, Implementierungsreferenz)
-- [GKISW Prompt-Patterns](./methodik-gkisw-prompt-patterns.md)
-
-## Zusammenarbeit und Agenten
-
-- [Zusammenarbeit im Repository](../zusammenarbeit/README.md) (Verantwortung, Roadmap, SSOT, Issues, Board)
-- [Shell `gh`](../agents-docs/github-cli.md)
-- [Agenten-Themenindex](../agents-docs/README.md)
-- [Phasen planen (Agenten)](../agents-docs/phasen-planen-fuer-agenten.md)
-- [Issue-Markdown-Vorlage](../agents-docs/issue-vorlage/VORLAGE.md)
-
-## Nächste Schritte (Meta)
-
-- In **Phase 3** die konkreten UI-/UX-Arbeitspakete und Definition of Done festhalten.
-- **Phase 4:** Issue-Vorlagen für **Boilerplate und CI** unter `docs/roadmap/phase-4/issues/` (siehe Phase-4-README); **kein** RAG-/Vektor-DB-Kern in diesen Paketen. **Phase 5–6:** READMEs bei Start mit Zielen und Issues befüllen.
+| Schritt | Bezeichnung | Beschreibung | Phase-README |
+|---------|-------------|--------------|--------------|
+| 1 | Projektsetup | Erstellen des Git-Repos inklusive Berechtigungen des Projektteams. | [Phase 1](./phase-1/README.md) |
+| 2 | Agent Setup | Erarbeiten passender Skills und Anweisungen für die Agenten (Cursor). | [Phase 2](./phase-2/README.md) |
+| 3 | Planung | Gemäss dem Anforderungskatalog wird ein Projektplan zusammen mit dem Agenten erstellt, welcher dann von mehreren Agenten erarbeitet werden kann. | [Phase 3](./phase-3/README.md) |
+| 4 | Minimale Implementation | Es wird einen Agenten beauftragt, die erste Implementation vorzunehmen; dies beinhaltet das Setup des Plugins inklusive Boilerplate-Code für das weitere Vorgehen. | [Phase 4](./phase-4/README.md) |
+| 5 | Kommunikation mit dem LLM | Lokal wird Ollama installiert und die Modelle heruntergeladen. Ein Agent implementiert anschliessend die Kommunikation mit Ollama (JS) und ermöglicht das Generieren von Files. Im Hintergrund wird ein System-Prompt dem LLM mitgegeben, damit eine konsistente Qualität der Zusammenfassungen gewährleistet wird. Das System-Prompt wird vorab nicht genau spezifiziert und auf Try-and-Error-Basis bei der Implementation erarbeitet. | [Phase 5](./phase-5/README.md) |
+| 6 | Einbau RAG | Ein Agent wird beauftragt, die RAG-Pipeline zu erarbeiten und in eine Vektordatenbank basierend auf SQLite einzupflegen. Die Pipeline wird automatisch beim Starten von Obsidian ausgeführt, hört auf den Event-Bus von Obsidian und pflegt die Datenbank basierend auf den Events. | [Phase 6](./phase-6/README.md) |
+| 7 | Verknüpfung RAG mit LLM | Sobald die RAG-Pipeline steht, wird ein Agent beauftragt, die beiden Komponenten zu verbinden. | [Phase 7](./phase-7/README.md) |
+| 8 | Finalisierung | In diesem Schritt werden die Optionen in den Einstellungen erstellt, mit denen Benutzer:innen gewisse Einstellungen vornehmen können. | [Phase 8](./phase-8/README.md) |
+| 9 | Review | Agenten können Fehler machen; deshalb ist unter anderem ein automatisches Review mittels Agenten-Skill sowie ein manuelles Review des Codes und des MVP vorgesehen. Dabei wird der Code angeschaut und das Produkt per Klick getestet. | [Phase 9](./phase-9/README.md) |
+| 10 | Dokumentation | Ein Agent wird beauftragt, die aktuelle Systemarchitektur und Implementation zu dokumentieren. So wird sichergestellt, dass zukünftige Erweiterungen durch Agenten mit dem richtigen Kontext erstellt werden. Ein Review der Dokumentation durch das Projektteam ist hier ebenfalls vorgesehen. | [Phase 10](./phase-10/README.md) |
+| 11 | Testen | Gemäss den Kriterien aus der Evaluationsstrategie (Kapitel 5) werden die Tests durchgeführt und dokumentiert. | [Phase 11](./phase-11/README.md) |
+| 12 | Freigabe | Nach erfolgreichen Tests ist der MVP freigegeben. | [Phase 12](./phase-12/README.md) |

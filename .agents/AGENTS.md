@@ -18,6 +18,6 @@ Vor Codeänderung, projektbezogener Shell oder inhaltlicher Bewertung: **`docs/`
 
 **`SPEC.md`** (Root): bei Plugin-Spezifikation oder Verhalten, sobald `docs/`-Kontext klar.
 
-**Nur `docs/` oder Metadaten:** gezielt lesen; `overview.md` kurz prüfen wenn Phasenstand relevant.
+**Nur `docs/` oder Metadaten:** gezielt lesen; `overview.md` kurz prüfen, wenn der Schrittstand in der Roadmap relevant ist.
 
 **`docs/roadmap/**/issues/*.md`:** Nur Fakten (Ziel, `./`-Links auf Vorgänger-`.md`, Akzeptanzkriterien, Scope, dev-Schritte). **Nicht** in File: `gh`-/GitHub-/Permalink-Meta (→ `github-cli.md`). **Issue-Body:** Permalink + kurz auf die Repo-`.md` (SSOT: `docs/zusammenarbeit/README.md`). **Neues GitHub-Issue aus Vorlage:** `.agents/skills/github-issue-anlegen/SKILL.md` und Pfad zur `issues/*.md`. **Vorlagen nicht editieren** ohne explizite Planänderung durch Nutzer. **Implementierung nach Issue:** `.agents/skills/implement-plan-workflow/SKILL.md` (immer mit **GitHub-Issue**-URL oder -Nummer).
