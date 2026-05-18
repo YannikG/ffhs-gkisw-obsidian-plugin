@@ -6,10 +6,11 @@ import {
   Setting,
   type TextComponent,
 } from 'obsidian';
+import { promptRestoreSetting } from './settings-restore-modal.js';
 import {
   DEFAULT_SETTINGS,
   normalizeOllamaBaseUrl,
-  validateOllamaBaseUrl,
+  validateRequiredSetting,
   type PluginSettings,
 } from './settings.js';
 
@@ -19,8 +20,18 @@ export interface ObsidianSummarizerSettingsHost {
   saveSettings(): Promise<void>;
 }
 
+type RequiredTextFieldOptions = {
+  label: string;
+  desc: string;
+  placeholder: string;
+  getSavedValue: () => string;
+  setSavedValue: (value: string) => void;
+  normalize?: (value: string) => string;
+};
+
 export class ObsidianSummarizerSettingTab extends PluginSettingTab {
   plugin: ObsidianSummarizerSettingsHost;
+  private readonly restorePromptInFlight = new Set<string>();
 
   constructor(app: App, plugin: ObsidianSummarizerSettingsHost & Plugin) {
     super(app, plugin);
@@ -31,64 +42,120 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
-    this.addTextField(containerEl, {
-      name: 'Ollama Base URL',
+    this.addRequiredTextField(containerEl, {
+      label: 'Ollama Base URL',
       desc: 'REST-Basis-URL der lokalen Ollama-Instanz.',
       placeholder: DEFAULT_SETTINGS.ollamaBaseUrl,
-      getValue: () => this.plugin.settings.ollamaBaseUrl,
-      onChange: async (value, text) => {
-        const error = validateOllamaBaseUrl(value);
-        if (error) {
-          new Notice(error);
-          text.setValue(this.plugin.settings.ollamaBaseUrl);
-          return;
-        }
-        this.plugin.settings.ollamaBaseUrl = normalizeOllamaBaseUrl(value);
-        await this.plugin.saveSettings();
+      getSavedValue: () => this.plugin.settings.ollamaBaseUrl,
+      setSavedValue: (value) => {
+        this.plugin.settings.ollamaBaseUrl = value;
       },
+      normalize: normalizeOllamaBaseUrl,
     });
 
-    this.addTextField(containerEl, {
-      name: 'Generierungsmodell',
+    this.addRequiredTextField(containerEl, {
+      label: 'Generierungsmodell',
       desc: 'Ollama-Modell-Tag für Zusammenfassungen (z. B. gemma4:e2b).',
       placeholder: DEFAULT_SETTINGS.generationModel,
-      getValue: () => this.plugin.settings.generationModel,
-      onChange: async (value) => {
+      getSavedValue: () => this.plugin.settings.generationModel,
+      setSavedValue: (value) => {
         this.plugin.settings.generationModel = value;
-        await this.plugin.saveSettings();
       },
     });
 
-    this.addTextField(containerEl, {
-      name: 'Embedding-Modell',
+    this.addRequiredTextField(containerEl, {
+      label: 'Embedding-Modell',
       desc: 'Ollama-Modell-Tag für RAG-Embeddings.',
       placeholder: DEFAULT_SETTINGS.embeddingModel,
-      getValue: () => this.plugin.settings.embeddingModel,
-      onChange: async (value) => {
+      getSavedValue: () => this.plugin.settings.embeddingModel,
+      setSavedValue: (value) => {
         this.plugin.settings.embeddingModel = value;
-        await this.plugin.saveSettings();
       },
     });
   }
 
-  private addTextField(
+  private addRequiredTextField(
     containerEl: HTMLElement,
-    options: {
-      name: string;
-      desc: string;
-      placeholder: string;
-      getValue: () => string;
-      onChange: (value: string, text: TextComponent) => Promise<void>;
-    },
+    options: RequiredTextFieldOptions,
   ): void {
     new Setting(containerEl)
-      .setName(options.name)
+      .setName(options.label)
       .setDesc(options.desc)
       .addText((text) => {
         text
           .setPlaceholder(options.placeholder)
-          .setValue(options.getValue())
-          .onChange((value) => options.onChange(value, text));
+          .setValue(options.getSavedValue())
+          .onChange((value) => this.handleRequiredChange(value, options))
+          .inputEl.addEventListener('blur', () => {
+            void this.handleRequiredBlur(text, options);
+          });
       });
+  }
+
+  private async handleRequiredChange(
+    value: string,
+    options: RequiredTextFieldOptions,
+  ): Promise<void> {
+    await this.commitRequiredValue(value, options);
+  }
+
+  private normalizeRequiredValue(
+    value: string,
+    options: RequiredTextFieldOptions,
+  ): string {
+    return options.normalize?.(value) ?? value.trim();
+  }
+
+  private async commitRequiredValue(
+    value: string,
+    options: RequiredTextFieldOptions,
+  ): Promise<boolean> {
+    if (validateRequiredSetting(value, options.label)) {
+      return false;
+    }
+    const normalized = this.normalizeRequiredValue(value, options);
+    if (normalized === options.getSavedValue()) {
+      return true;
+    }
+    options.setSavedValue(normalized);
+    await this.plugin.saveSettings();
+    return true;
+  }
+
+  private async handleRequiredBlur(
+    text: TextComponent,
+    options: RequiredTextFieldOptions,
+  ): Promise<void> {
+    const { label } = options;
+    if (this.restorePromptInFlight.has(label)) {
+      return;
+    }
+
+    const value = text.getValue();
+    const error = validateRequiredSetting(value, label);
+    if (!error) {
+      await this.commitRequiredValue(value, options);
+      const normalized = this.normalizeRequiredValue(value, options);
+      if (text.getValue() !== normalized) {
+        text.setValue(normalized);
+      }
+      return;
+    }
+
+    const previousValue = options.getSavedValue();
+    new Notice(error);
+
+    this.restorePromptInFlight.add(label);
+    try {
+      const restore = await promptRestoreSetting(this.app, {
+        fieldLabel: label,
+        previousValue,
+      });
+      if (restore) {
+        text.setValue(previousValue);
+      }
+    } finally {
+      this.restorePromptInFlight.delete(label);
+    }
   }
 }

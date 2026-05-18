@@ -46,7 +46,7 @@ function partialFromStored(stored: Record<string, unknown>): Partial<PluginSetti
   const partial: Partial<PluginSettings> = {};
   for (const key of PLUGIN_SETTINGS_KEYS) {
     const value = stored[key];
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && value.trim().length > 0) {
       partial[key] = value;
     }
   }
@@ -65,14 +65,37 @@ export function resolvePluginSettings(stored: unknown): PluginSettings {
 }
 
 /**
+ * Validates that a required setting field is non-empty.
+ * @returns Error message, or `null` when valid.
+ */
+export function validateRequiredSetting(
+  value: string,
+  fieldLabel: string,
+): string | null {
+  if (value.trim().length === 0) {
+    return `${fieldLabel} darf nicht leer sein.`;
+  }
+  return null;
+}
+
+/**
  * Validates Ollama base URL before persistence.
  * @returns Error message, or `null` when valid.
  */
 export function validateOllamaBaseUrl(url: string): string | null {
-  if (url.trim().length === 0) {
-    return 'Ollama Base URL darf nicht leer sein.';
-  }
-  return null;
+  return validateRequiredSetting(url, 'Ollama Base URL');
+}
+
+/** Body text for the restore-value confirmation dialog. */
+export function buildRestoreSettingDialogContent(
+  fieldLabel: string,
+  previousValue: string,
+): string {
+  return (
+    `${fieldLabel} darf nicht leer bleiben.\n\n` +
+    `Gespeicherter Wert:\n${previousValue}\n\n` +
+    `Vorherigen Wert wiederherstellen?`
+  );
 }
 
 /** Normalizes a validated Ollama base URL for persistence. */
