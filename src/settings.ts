@@ -68,10 +68,7 @@ export function resolvePluginSettings(stored: unknown): PluginSettings {
  * Validates that a required setting field is non-empty.
  * @returns Error message, or `null` when valid.
  */
-export function validateRequiredSetting(
-  value: string,
-  fieldLabel: string,
-): string | null {
+export function validateRequiredSetting(value: string, fieldLabel: string): string | null {
   if (value.trim().length === 0) {
     return `${fieldLabel} darf nicht leer sein.`;
   }

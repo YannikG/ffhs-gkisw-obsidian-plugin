@@ -10,8 +10,7 @@ const INVALID_FILENAME_CHARS = /[\\/:*?"<>|]/g;
 const WHITESPACE_RUNS = /\s+/g;
 const UNDERSCORE_RUNS = /_+/g;
 
-const SUMMARY_OUTPUT_FILENAME_PATTERN =
-  /^.+_summary(?:_\d+)?\.md$/i;
+const SUMMARY_OUTPUT_FILENAME_PATTERN = /^.+_summary(?:_\d+)?\.md$/i;
 
 function lastPathSegment(raw: string): string {
   const trimmed = raw.trim();
@@ -39,16 +38,9 @@ export function sanitizeFolderBasename(raw: string): string {
  * @param folderBasename Last path segment or label of the target folder (sanitized internally).
  * @param version Omit or `1` for `{name}_summary.md`; `2+` for `{name}_summary_{n}.md`.
  */
-export function buildSummaryOutputFilename(
-  folderBasename: string,
-  version?: number,
-): string {
+export function buildSummaryOutputFilename(folderBasename: string, version?: number): string {
   const base = sanitizeFolderBasename(folderBasename);
-  if (
-    version === undefined ||
-    !Number.isInteger(version) ||
-    version <= 1
-  ) {
+  if (version === undefined || !Number.isInteger(version) || version <= 1) {
     return `${base}${SUMMARY_OUTPUT_INFIX}.md`;
   }
   return `${base}${SUMMARY_OUTPUT_INFIX}_${version}.md`;

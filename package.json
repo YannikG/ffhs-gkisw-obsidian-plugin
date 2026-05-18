@@ -6,17 +6,26 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest run",
     "build": "npm run typecheck && node esbuild.config.mjs",
     "deploy": "node scripts/deploy-to-vault.mjs",
     "dev": "concurrently -c blue,magenta -n tsc,esbuild \"tsc --noEmit --watch\" \"node esbuild.config.mjs --watch\""
   },
   "devDependencies": {
+    "@eslint/js": "^9.28.0",
     "@types/node": "^22.0.0",
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.0",
+    "eslint": "^9.28.0",
+    "globals": "^16.2.0",
+    "eslint-config-prettier": "^10.1.5",
     "obsidian": "^1.7.2",
+    "prettier": "^3.5.3",
     "typescript": "~5.8.0",
+    "typescript-eslint": "^8.33.0",
     "vitest": "^3.2.4"
   }
 }

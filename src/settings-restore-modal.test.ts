@@ -2,10 +2,7 @@ import type { App } from 'obsidian';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { buildRestoreSettingDialogContent } from './settings.js';
 import { promptRestoreSetting } from './settings-restore-modal.js';
-import {
-  resetTestModalState,
-  testModalState,
-} from './test-utils/obsidian-stub.js';
+import { resetTestModalState, testModalState } from './test-utils/obsidian-stub.js';
 
 const app = {} as App;
 

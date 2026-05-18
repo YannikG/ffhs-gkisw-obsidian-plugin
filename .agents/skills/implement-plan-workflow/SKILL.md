@@ -14,10 +14,10 @@ disable-model-invocation: true
 
 **Spez zwei Wege**
 
-| Fall | Wann | Spez |
-|------|------|------|
-| Roadmap | Body hat URL mit `…/docs/roadmap/…/issues/….md` (blob/raw) | Pfad im Checkout **Read** komplett. **Kein** Patch auf `docs/roadmap/**/issues/**/*.md` im Impl-PR, ausser User will explizit Planänderung dort. Code/Tests/Config ja. Plan-Edits nur sachlich, kein gh-Blabla in MD (`.agents/AGENTS.md`). |
-| Nur Issue | kein solcher Link | Titel + Body; nötig `gh issue view <n> --comments`. Keine fake Roadmap-`.md`. |
+| Fall      | Wann                                                       | Spez                                                                                                                                                                                                                                        |
+| --------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Roadmap   | Body hat URL mit `…/docs/roadmap/…/issues/….md` (blob/raw) | Pfad im Checkout **Read** komplett. **Kein** Patch auf `docs/roadmap/**/issues/**/*.md` im Impl-PR, ausser User will explizit Planänderung dort. Code/Tests/Config ja. Plan-Edits nur sachlich, kein gh-Blabla in MD (`.agents/AGENTS.md`). |
+| Nur Issue | kein solcher Link                                          | Titel + Body; nötig `gh issue view <n> --comments`. Keine fake Roadmap-`.md`.                                                                                                                                                               |
 
 Repo: `.agents/AGENTS.md`, `docs/agents-docs/README.md`, `docs/zusammenarbeit/README.md`.
 

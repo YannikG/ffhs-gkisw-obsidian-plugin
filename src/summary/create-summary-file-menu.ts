@@ -1,17 +1,11 @@
 import { Menu, Notice, Plugin, TAbstractFile, TFolder } from 'obsidian';
-import {
-  CREATE_SUMMARY_MENU_LABEL,
-  CREATE_SUMMARY_STUB_NOTICE,
-} from './create-summary-stub.js';
+import { CREATE_SUMMARY_MENU_LABEL, CREATE_SUMMARY_STUB_NOTICE } from './create-summary-stub.js';
 
 export function shouldOfferCreateSummaryMenu(file: TAbstractFile): boolean {
   return file instanceof TFolder;
 }
 
-export function handleCreateSummaryFileMenu(
-  menu: Menu,
-  file: TAbstractFile,
-): void {
+export function handleCreateSummaryFileMenu(menu: Menu, file: TAbstractFile): void {
   if (!shouldOfferCreateSummaryMenu(file)) {
     return;
   }
@@ -28,9 +22,6 @@ export function handleCreateSummaryFileMenu(
  * @returns Cleanup that removes the `file-menu` handler (call from `onunload`).
  */
 export function registerCreateSummaryFileMenu(plugin: Plugin): () => void {
-  const ref = plugin.app.workspace.on(
-    'file-menu',
-    handleCreateSummaryFileMenu,
-  );
+  const ref = plugin.app.workspace.on('file-menu', handleCreateSummaryFileMenu);
   return () => plugin.app.workspace.offref(ref);
 }

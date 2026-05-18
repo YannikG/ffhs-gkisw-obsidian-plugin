@@ -1,11 +1,4 @@
-import {
-  App,
-  Notice,
-  Plugin,
-  PluginSettingTab,
-  Setting,
-  type TextComponent,
-} from 'obsidian';
+import { App, Notice, Plugin, PluginSettingTab, Setting, type TextComponent } from 'obsidian';
 import { promptRestoreSetting } from './settings-restore-modal.js';
 import {
   DEFAULT_SETTINGS,
@@ -74,10 +67,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     });
   }
 
-  private addRequiredTextField(
-    containerEl: HTMLElement,
-    options: RequiredTextFieldOptions,
-  ): void {
+  private addRequiredTextField(containerEl: HTMLElement, options: RequiredTextFieldOptions): void {
     new Setting(containerEl)
       .setName(options.label)
       .setDesc(options.desc)
@@ -99,10 +89,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     await this.commitRequiredValue(value, options);
   }
 
-  private normalizeRequiredValue(
-    value: string,
-    options: RequiredTextFieldOptions,
-  ): string {
+  private normalizeRequiredValue(value: string, options: RequiredTextFieldOptions): string {
     return options.normalize?.(value) ?? value.trim();
   }
 

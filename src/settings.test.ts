@@ -100,9 +100,7 @@ describe('resolvePluginSettings', () => {
 
 describe('validateRequiredSetting', () => {
   it('returns error message for empty value', () => {
-    expect(validateRequiredSetting('', 'Generierungsmodell')).toMatch(
-      /Generierungsmodell/,
-    );
+    expect(validateRequiredSetting('', 'Generierungsmodell')).toMatch(/Generierungsmodell/);
   });
 
   it('returns null for non-empty value', () => {
@@ -112,10 +110,7 @@ describe('validateRequiredSetting', () => {
 
 describe('buildRestoreSettingDialogContent', () => {
   it('includes field label, previous value, and restore question', () => {
-    const content = buildRestoreSettingDialogContent(
-      'Ollama Base URL',
-      'http://127.0.0.1:11434',
-    );
+    const content = buildRestoreSettingDialogContent('Ollama Base URL', 'http://127.0.0.1:11434');
     expect(content).toContain('Ollama Base URL');
     expect(content).toContain('http://127.0.0.1:11434');
     expect(content).toMatch(/wiederherstellen/i);
@@ -138,8 +133,6 @@ describe('validateOllamaBaseUrl', () => {
 
 describe('normalizeOllamaBaseUrl', () => {
   it('trims surrounding whitespace', () => {
-    expect(normalizeOllamaBaseUrl('  http://127.0.0.1:11434  ')).toBe(
-      'http://127.0.0.1:11434',
-    );
+    expect(normalizeOllamaBaseUrl('  http://127.0.0.1:11434  ')).toBe('http://127.0.0.1:11434');
   });
 });
