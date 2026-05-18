@@ -1,5 +1,8 @@
 export const PLUGIN_ID = 'ffhs-gkisw-obsidian-plugin' as const;
 
+/** Display name in Obsidian plugin list and settings tab. */
+export const PLUGIN_DISPLAY_NAME = 'Obsidian Summarizer' as const;
+
 export type PluginManifest = {
   id: string;
   name: string;

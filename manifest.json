@@ -1,9 +1,9 @@
 {
   "id": "ffhs-gkisw-obsidian-plugin",
-  "name": "FFHS GKI für Softwareentwicklung",
+  "name": "Obsidian Summarizer",
   "version": "0.1.0",
   "minAppVersion": "1.0.0",
-  "description": "Erstellt Zusammenfassungen aus Markdown-Ordnern im Vault (FFHS GKI SW).",
+  "description": "Obsidian Summarizer: erstellt Zusammenfassungen aus Markdown-Ordnern im Vault.",
   "author": "Gian Luca Tehrani, Kaan Kaplan, Yannik Gartmann",
   "isDesktopOnly": true
 }
