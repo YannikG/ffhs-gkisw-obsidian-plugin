@@ -1,5 +1,7 @@
 # `src/` module map
 
+Onboarding (Clone, Build, Vault, CI, Obsidian-Kurztest): [README.md](../README.md#entwicklung).
+
 Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](../SPEC.md#4-architektur) (Komponenten und Datenfluss).
 
 ## Modules
@@ -29,20 +31,11 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 
 - **No import cycles** between feature modules. Dependency direction: `main.ts` → feature modules; feature modules must not import `main.ts`.
 - **Pure modules** (`settings`, `summary/*`, future helpers) must **not** import `obsidian`. Obsidian APIs stay in `main.ts` and thin adapters added in later issues.
-- **Do not** wire `ollama/`, `rag/`, or `summary/` from `main.ts` until the matching issue; keep `onload` minimal for smoke tests.
+- **Wired from `main.ts` today:** settings tab, folder **Create Summary** menu (P4-I05 stub). **Not yet wired:** `ollama/`, `rag/`, full summary orchestration beyond the menu stub.
 - Prefer barrel imports from `summary/index.ts` for public summary exports.
 
 ## Tests
 
-Colocated Vitest files: `**/*.test.ts` next to the module under test. Run: `npm test`.
+Colocated `src/**/*.test.ts`. Commands and Obsidian mocking: [README.md § Tests](../README.md#tests).
 
-Obsidian APIs are not loaded in unit tests: Vitest resolves `obsidian` to `src/test-utils/obsidian-stub.ts` (see `vitest.config.ts`).
-
-## Quality before PR
-
-Recommended order (same as CI):
-
-1. `npm run format:check` — or `npm run format` to fix formatting
-2. `npm run lint`
-3. `npm test`
-4. `npm run build`
+`vitest.config.ts` aliases `obsidian` → `src/test-utils/obsidian-stub.ts`.
