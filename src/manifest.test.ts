@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { PLUGIN_ID, validateManifest } from './manifest.js';
+import { PLUGIN_DISPLAY_NAME, PLUGIN_ID, validateManifest } from './manifest.js';
 
 const manifestPath = join(process.cwd(), 'manifest.json');
 
@@ -10,7 +10,7 @@ describe('validateManifest', () => {
     const raw = JSON.parse(readFileSync(manifestPath, 'utf8')) as unknown;
     const manifest = validateManifest(raw);
     expect(manifest.id).toBe(PLUGIN_ID);
-    expect(manifest.name.length).toBeGreaterThan(0);
+    expect(manifest.name).toBe(PLUGIN_DISPLAY_NAME);
     expect(manifest.version.length).toBeGreaterThan(0);
     expect(manifest.minAppVersion.length).toBeGreaterThan(0);
   });
