@@ -4,7 +4,7 @@
 
 Im Projekt entsteht ein Werkzeug, das Benutzer:innen beim Erstellen von Zusammenfassungen in Obsidian unterstützt: ein Plugin, das Markdown-Dateien aus einem Ordner eines Vaults einliest und daraus eine strukturierte Zusammenfassung erzeugt.
 
-Bedienung über die Obsidian-Oberfläche, beispielsweise über ein Kontextmenü mit der Aktion «Summary erstellen». Nach dem Start liest das Plugin die relevanten Markdown-Dateien, bereitet die Inhalte auf, holt passende Ausschnitte über einen Retrieval-Mechanismus und übergibt sie zusammen mit einem Prompt an ein lokales Sprachmodell (über Ollama). Das Ergebnis landet als Markdown-Datei, typischerweise `summary.md`, im gleichen Ordner oder in einem festgelegten Zielordner.
+Bedienung über die Obsidian-Oberfläche, beispielsweise über ein Kontextmenü mit der Aktion «Summary erstellen». Nach dem Start liest das Plugin die relevanten Markdown-Dateien, bereitet die Inhalte auf, holt passende Ausschnitte über einen Retrieval-Mechanismus und übergibt sie zusammen mit einem Prompt an ein lokales Sprachmodell (über Ollama). Das Ergebnis landet als Markdown-Datei im Zielordner, mit ordnerspezifischem Namen (z. B. `MeinOrdner_summary.md`; optional `MeinOrdner_summary_2.md` für weitere Versionen), siehe [SPEC.md](SPEC.md) US-03.
 
 Architektur in Kurzform:
 
@@ -15,7 +15,7 @@ Architektur in Kurzform:
 - Embeddings: Vektoren für die Abschnitte.
 - Vektorindex / Retrieval: speichert Embeddings, semantische Suche.
 - Lokales LLM (Ollama): erzeugt den Zusammenfassungstext.
-- `summary.md`: Ausgabedatei.
+- `{Ordnername}_summary.md`: Standard-Ausgabedatei; optional nummerierte Varianten `_summary_2`, `_summary_3`, …
 
 Das Plugin erstellt und speichert die Datei; das Modell liefert nur den Inhalt der Zusammenfassung. So bleibt der Kontext des Modells fokussiert, und das Plugin kann die üblichen Obsidian-Events nutzen, um auf Änderungen im Vault zu reagieren.
 

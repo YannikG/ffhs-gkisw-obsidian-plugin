@@ -9,7 +9,7 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 | `main.ts` | Obsidian entry: thin wiring only (`onload` / `onunload`). |
 | `manifest.ts` | Build-time manifest validation (P4-I02). |
 | `settings.ts` | `PluginSettings`, `DEFAULT_SETTINGS`, `mergeSettings` (SPEC §6). UI in P4-I04. |
-| `summary/` | Summary output constants and future orchestration (SPEC §1, US-03, §4.4). |
+| `summary/` | Summary output filenames (`buildSummaryOutputFilename`, …) and future orchestration (SPEC §1, US-03, §4.4). |
 | `ollama/` | Local Ollama client stub (SPEC §5). |
 | `rag/` | Vector index / retrieval stub (SPEC §4.1, §4.3). |
 
