@@ -21,7 +21,7 @@ disable-model-invocation: true
 
 Repo: `.agents/AGENTS.md`, `docs/agents-docs/README.md`, `docs/zusammenarbeit/README.md`.
 
-**Companion:** impl → `caveman/SKILL.md`; Ende → `review-and-fix/SKILL.md`.
+**Companion:** impl → `caveman/SKILL.md`; TDD explizit → `tdd/SKILL.md` während S3; Ende → `review-and-fix/SKILL.md`.
 
 **Pre:** working tree clean sonst stop+fragen; `gh` login; Issue URL/# Pflicht sonst einmal nachfragen — **nie** Ersatz-Issue selbst anlegen.
 

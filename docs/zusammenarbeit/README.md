@@ -42,6 +42,7 @@ Im Ordner [`.agents/skills/`](../../.agents/skills/) liegen Markdown-Anleitungen
 | [github-issue-anlegen](../../.agents/skills/github-issue-anlegen/SKILL.md) | Du nennst den Skill und den Pfad zur `issues/*.md`; der Agent legt das GitHub-Issue an, inklusive Titel, Permalink im Body und Abhängigkeiten aus der Datei, soweit sich das auf GitHub abbilden lässt. |
 | [implement-plan-workflow](../../.agents/skills/implement-plan-workflow/SKILL.md) | Du gibst ein GitHub-Issue per URL oder Nummer. Enthält der Body einen Permalink auf eine `issues/*.md`, gilt diese Datei als Spezifikation und wird beim Implementieren nicht mitbearbeitet; fehlt der Link, gelten Titel und Body des Issues (etwa bei Bugs). |
 | [review-and-fix](../../.agents/skills/review-and-fix/SKILL.md) | Review mit anschliessender Nachbesserung zu Qualität, Architektur und Sicherheit, bis keine offensichtlichen Findings mehr offen sind. |
+| [tdd](../../.agents/skills/tdd/SKILL.md) | Test-first mit red-green-refactor und vertikalen Slices; Verhalten aus Issue-Akzeptanzkriterien, Vitest und Obsidian-Grenzen siehe Begleitdateien im Skill-Ordner. |
 
 ---
 
