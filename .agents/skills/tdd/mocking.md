@@ -2,12 +2,12 @@
 
 Mock **system boundaries** only:
 
-| Boundary   | Examples                                                |
-| ---------- | ------------------------------------------------------- |
-| Obsidian   | `obsidian`: `Plugin`, `App`, `Vault`, `Modal`, `Notice` |
-| Network    | `fetch` → Ollama (later)                                |
-| Time / RNG | `vi.useFakeTimers()`, seeded RNG                        |
-| FS         | Rare; prefer pure fns + string/path args                |
+| Boundary | Examples |
+|----------|----------|
+| Obsidian | `obsidian`: `Plugin`, `App`, `Vault`, `Modal`, `Notice` |
+| Network | `fetch` → Ollama (later) |
+| Time / RNG | `vi.useFakeTimers()`, seeded RNG |
+| FS | Rare; prefer pure fns + string/path args |
 
 **Do not mock:** own `src/` modules, internal collaborators, anything you run for real in Node.
 

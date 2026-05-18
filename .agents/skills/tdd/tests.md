@@ -17,7 +17,10 @@ describe('mergeSettings', () => {
   });
 
   it('overrides only provided keys', () => {
-    const result = mergeSettings({ model: 'llama', temperature: 0.7 }, { temperature: 0.2 });
+    const result = mergeSettings(
+      { model: 'llama', temperature: 0.7 },
+      { temperature: 0.2 },
+    );
     expect(result).toEqual({ model: 'llama', temperature: 0.2 });
   });
 });
@@ -60,9 +63,7 @@ import { mergeSettings } from './settings';
 
 ```typescript
 // BAD: HOW not WHAT
-it('mergeSettings calls Object.assign', () => {
-  /* … */
-});
+it('mergeSettings calls Object.assign', () => { /* … */ });
 ```
 
 Red flags:

@@ -41,10 +41,10 @@ Before code:
 
 Cannot test everything. Critical paths + non-trivial logic only.
 
-| When       | Skill                                                                                     |
-| ---------- | ----------------------------------------------------------------------------------------- |
+| When | Skill |
+|------|--------|
 | Issue impl | [implement-plan-workflow](../implement-plan-workflow/SKILL.md) — same spec; TDD during S3 |
-| Done       | [review-and-fix](../review-and-fix/SKILL.md)                                              |
+| Done | [review-and-fix](../review-and-fix/SKILL.md) |
 
 ### 2. Tracer bullet
 

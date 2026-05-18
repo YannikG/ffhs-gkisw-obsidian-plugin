@@ -37,7 +37,7 @@ Repeat until done criteria:
    - `high`: likely bug/regression or big maintainability risk.
    - `medium`: real debt, cheap fix now.
    - `low`: polish optional.
-     Each: `actionable-now` vs `blocked`.
+   Each: `actionable-now` vs `blocked`.
 
 3. **Fix** — all `critical` / `high` / `medium` that are `actionable-now`. Smallest safe refactor, root cause. Behavior stable unless user asked behavior change.
 
