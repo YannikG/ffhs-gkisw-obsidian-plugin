@@ -1,25 +1,19 @@
-# When to mock (this repo)
+# Mocking (this repo)
 
-Mock at **system boundaries** only:
+Mock **system boundaries** only:
 
 | Boundary | Examples |
 |----------|----------|
-| Obsidian API | `obsidian` package: `Plugin`, `App`, `Vault`, `Modal`, `Notice` |
-| Network | `fetch` to Ollama or other HTTP (later phases) |
-| Time / random | `vi.useFakeTimers()`, seeded RNG if needed |
-| File system | Rare; prefer pure functions that accept strings/paths |
+| Obsidian | `obsidian`: `Plugin`, `App`, `Vault`, `Modal`, `Notice` |
+| Network | `fetch` → Ollama (later) |
+| Time / RNG | `vi.useFakeTimers()`, seeded RNG |
+| FS | Rare; prefer pure fns + string/path args |
 
-Do **not** mock:
-
-- Your own `src/` modules (settings, chunk, merge helpers)
-- Internal collaborators between pure modules
-- Anything you control and can call for real in Node
+**Do not mock:** own `src/` modules, internal collaborators, anything you run for real in Node.
 
 ## Obsidian boundary
 
-Unit tests run in **Node**, not inside Obsidian. The `obsidian` package is an external boundary.
-
-Minimal pattern:
+Tests run in **Node**, not Obsidian. `obsidian` = external.
 
 ```typescript
 import { describe, expect, it, vi } from 'vitest';
@@ -35,59 +29,55 @@ vi.mock('obsidian', () => ({
   Notice: class Notice {},
 }));
 
-// Import module under test *after* mock when it imports from 'obsidian'
-const { createDefaultSettings } = await import('./settings');
+// vi.mock hoisted; static import after mock OK
+import { createDefaultSettings } from './settings';
+
+describe('createDefaultSettings', () => {
+  it('returns defaults without Vault', () => {
+    expect(createDefaultSettings().model).toBeDefined();
+  });
+});
 ```
 
-Extend the mock object only with exports your module actually imports. Keep stubs dumb (return fixed data, no behavior assertions on Obsidian classes).
+Mock only exports module imports. Stubs dumb — fixed data, no assert on Obsidian class behavior.
 
-## Designing for testability
+## Testability
 
-**1. Inject dependencies**
+**Inject deps**
 
 ```typescript
-// Easy to test: pass client in
+// OK: client in
 export async function generateSummary(text: string, client: OllamaClient) {
   return client.generate(text);
 }
 
-// Hard to test: constructs client inside
+// Bad: client inside
 export async function generateSummary(text: string) {
   const client = new OllamaClient(process.env.OLLAMA_URL!);
   return client.generate(text);
 }
 ```
 
-**2. Prefer pure functions**
+**Prefer pure fns**
 
 ```typescript
-// Testable
 export function applyTemperature(settings: Settings, value: number): Settings {
   return { ...settings, temperature: value };
 }
-
-// Harder: mutates plugin instance in place
-export function applyTemperature(plugin: MyPlugin, value: number): void {
-  plugin.settings.temperature = value;
-}
 ```
 
-**3. Small surface per module**
-
-Fewer exports → fewer tests to maintain; hide complexity behind one clear function.
+**Small surface** — fewer exports → fewer tests.
 
 ## Ollama / fetch (later)
 
-When adding HTTP:
+- Mock `fetch` or inject `OllamaClient`
+- Do not mock prompt/chunk assembly you own
+- Assert **return value**, not `fetch` order (unless contract says no call when disabled)
 
-- Mock `fetch` or inject a thin `OllamaClient` interface
-- Do not mock your own prompt-building or chunk assembly modules
-- Assert on **returned** summary text or structured result, not `fetch` call order unless the contract is explicitly “must not call when disabled”
+## Vitest
 
-## Vitest reference
+- `vi.mock('obsidian', factory)`
+- `vi.spyOn(globalThis, 'fetch')` at boundary only
+- `vi.clearAllMocks()` / `afterEach` as needed
 
-- Module mock: `vi.mock('obsidian', factory)`
-- Spy on boundary only when necessary: `vi.spyOn(globalThis, 'fetch')`
-- Reset between tests: `vi.clearAllMocks()` / `afterEach` as needed
-
-Config and scripts: [P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md), root `README.md` once I07 is done.
+Config: [P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md), root `README.md` after I07.

@@ -1,10 +1,10 @@
-# Good and bad tests (this repo)
+# Tests (this repo)
 
-Vitest in Node. Files: `src/**/*.test.ts` next to the module under test (see [P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md)).
+Vitest, Node. Files: `src/**/*.test.ts` beside module ([P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md)).
 
-## Good tests
+## Good
 
-Integration-style through **exported** APIs. Names describe capability, not internals.
+Exported APIs. Name = capability, not internals.
 
 ```typescript
 import { describe, expect, it } from 'vitest';
@@ -37,17 +37,16 @@ describe('normalizeChunkText', () => {
 });
 ```
 
-Characteristics:
+- Behavior callers care about (settings, chunks, defaults)
+- Public exports only
+- Survives refactor
+- One logical focus per test
 
-- Tests behavior callers care about (settings, chunks, defaults)
-- Uses public exports only
-- Survives refactors inside the module
-- One logical assertion focus per test
-
-## Bad tests
+## Bad
 
 ```typescript
-// BAD: tests private / internal wiring
+// BAD: private wiring
+import { it, vi } from 'vitest';
 import { plugin } from './main';
 it('calls saveSettings on load', async () => {
   const spy = vi.spyOn(plugin as never, 'saveSettings');
@@ -57,33 +56,30 @@ it('calls saveSettings on load', async () => {
 ```
 
 ```typescript
-// BAD: mocks own module instead of boundary
+// BAD: mock own module
 vi.mock('./settings', () => ({ mergeSettings: vi.fn() }));
 import { mergeSettings } from './settings';
-// … asserts on mock, not real merge behavior
 ```
 
 ```typescript
-// BAD: name and assert describe HOW
-it('mergeSettings calls Object.assign', () => {
-  /* … */
-});
+// BAD: HOW not WHAT
+it('mergeSettings calls Object.assign', () => { /* … */ });
 ```
 
 Red flags:
 
-- Mocking `src/` collaborators you own
-- Testing private methods or `Plugin` lifecycle with spies
-- Asserting call order/count on internals
-- `expect(true)` with no domain behavior (forbidden as only example per P4-I09)
+- Mock `src/` you own
+- Spy `Plugin` lifecycle
+- Assert internal call order/count
+- Lone `expect(true)` (P4-I09 forbids as only example)
 
-## What to test first in this plugin
+## Tracer bullets first
 
-Typical **tracer bullets** (pure modules, no Obsidian UI):
+Pure modules, no Obsidian UI:
 
 - Default settings factory
 - Settings merge / validation
-- String or path normalization helpers
-- Chunk or context helpers without `App` / `Vault`
+- String/path normalize
+- Chunk helpers without `App` / `Vault`
 
-Defer to manual issue checklists or later phases: command palette, modals, real vault I/O, Ollama HTTP (mock boundary when you add client tests).
+Later / manual: palette, modals, real vault I/O. Ollama HTTP → mock boundary when added.

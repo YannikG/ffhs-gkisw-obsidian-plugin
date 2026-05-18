@@ -12,7 +12,7 @@ Aus der Folie «Vorbereitung — Effektive Prompts für die Implementierung» (F
 
 **Muster:** «Implementiere `[Funktion]` in `[Datei]`. Input: `[Typ]`. Output: `[Typ]`. Fehlerbehandlung: `[Strategie]`. Tests in `[Testdatei]`.»
 
-**Anpassung:** Testpfad und Runner folgen der Repo-Konvention (z. B. Vitest, `*.test.ts`); den Testteil im Prompt explizit nennen, sobald das Tooling steht.
+**Anpassung:** Testpfad und Runner folgen der Repo-Konvention (z. B. Vitest, `*.test.ts`); den Testteil im Prompt explizit nennen, sobald das Tooling steht. Bei test-first-Arbeit: [tdd-Skill](../../.agents/skills/tdd/SKILL.md).
 
 ## 3. Debug-Prompt
 

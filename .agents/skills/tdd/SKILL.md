@@ -1,114 +1,105 @@
 ---
 name: tdd
 description: >-
-  Test-driven development (red-green-refactor), vertical slices. Use when user
-  asks for TDD, test-first, red-green-refactor, or behavior tests before impl.
+  TDD red-green-refactor, vertical slices. Triggers: TDD, test-first,
+  red-green-refactor, behavior tests before impl.
 ---
 
-# Test-Driven Development
+# TDD
+
+**Style:** write this skill caveman-compressed ([caveman](../caveman/SKILL.md) **full**). Code blocks normal.
 
 ## Philosophy
 
-**Core principle:** Tests verify behavior through **public interfaces**, not implementation details. Code can change entirely; tests should not.
+Tests hit **public interface**, not impl details. Code may change; tests should not.
 
-**Good tests** exercise real code paths through exported APIs. They describe _what_ the system does. They survive refactors.
+**Good:** real paths via exports. Describe _what_, not _how_. Survive refactor.
 
-**Bad tests** mock internal collaborators, test private methods, or assert call order on internals. Warning sign: refactor without behavior change breaks tests.
+**Bad:** mock internals, test private methods, assert call order. Refactor breaks test but behavior same → bad test.
 
-See [tests.md](tests.md) and [mocking.md](mocking.md).
+→ [tests.md](tests.md), [mocking.md](mocking.md)
 
 ## Anti-pattern: horizontal slices
-
-**Do not** write all tests first, then all implementation.
 
 ```
 WRONG:  RED test1..5  →  GREEN impl1..5
 RIGHT:  RED test1 → GREEN impl1 → RED test2 → GREEN impl2 → …
 ```
 
-One test → minimal code → repeat. Each test responds to what you learned in the previous cycle.
+One test → minimal code → repeat.
 
 ## Workflow
 
-### 1. Planning (this repo)
+### 1. Plan (this repo)
 
-Before any code:
+Before code:
 
-- Read [`.agents/AGENTS.md`](../../AGENTS.md): `docs/roadmap/overview.md`, affected phase/README, and if applicable the GitHub issue + `docs/roadmap/**/issues/*.md` (testable acceptance criteria = behaviors to test).
-- With user: prioritize which acceptance criteria become the **tracer bullet** first.
-- Prefer **testable surface**: exported functions/classes in `src/`, not private `Plugin` methods.
-- List behaviors to test (not implementation steps). Get user approval when scope is unclear.
+- Read [AGENTS.md](../../AGENTS.md): `docs/roadmap/overview.md`, phase README, GitHub issue + `docs/roadmap/**/issues/*.md` if linked. **Acceptance criteria = behaviors.**
+- With user: pick **tracer bullet** first.
+- Test **exports** in `src/`, not private `Plugin` methods.
+- List behaviors (not impl steps). Ask if scope unclear.
 
-**You cannot test everything.** Focus on critical paths and non-trivial logic.
-
-**Companion workflows**
+Cannot test everything. Critical paths + non-trivial logic only.
 
 | When | Skill |
 |------|--------|
-| Implement from GitHub issue | [`implement-plan-workflow`](../implement-plan-workflow/SKILL.md) — same spec source; user says TDD → use this skill during S3 |
-| After cycles | [`review-and-fix`](../review-and-fix/SKILL.md) |
+| Issue impl | [implement-plan-workflow](../implement-plan-workflow/SKILL.md) — same spec; TDD during S3 |
+| Done | [review-and-fix](../review-and-fix/SKILL.md) |
 
 ### 2. Tracer bullet
 
 ```
-RED:   One test for first behavior → fails
-GREEN: Minimal code to pass → passes
+RED:   one test, one behavior → fail
+GREEN: minimal pass
 ```
 
-### 3. Incremental loop
-
-For each remaining behavior:
+### 3. Loop
 
 ```
-RED:   Next test → fails
-GREEN: Minimal code → passes
+RED → GREEN → RED → GREEN …
 ```
 
-Rules: one test at a time; no speculative features; observable behavior only.
+Rules: one test at a time; no speculative code; observable behavior only.
 
-### 4. Refactor (only when GREEN)
+### 4. Refactor (GREEN only)
 
-Never refactor while RED.
+Never refactor on RED.
 
-Candidates:
+- Extract dup
+- Small public API, complexity inside
+- Simpler interfaces
+- `npm test` after each step
 
-- Extract duplication
-- Deepen modules (small public API, complexity inside)
-- Move logic behind simpler interfaces
-- Run tests after each refactor step
+### 5. Validate
 
-### 5. Validate (this repo)
+- `npm test` or `npx vitest run path/to/file.test.ts`
+- `npm run typecheck` / `npm run build` if types or bundle touched
 
-Per cycle or before PR:
+**No `npm test` yet** (pre-P4-I09): do [P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md) first, or Vitest setup = first RED; note in PR.
 
-- `npm test` (or `npx vitest run path/to/file.test.ts` for a single file)
-- `npm run typecheck` / `npm run build` when types or bundle are affected
-
-**If `npm test` is missing** (pre–P4-I09): either implement [P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md) first (Vitest tracer), or add minimal Vitest setup as the first RED step and document in the PR.
-
-Convention once tooling exists: `src/**/*.test.ts` next to source ([P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md)).
+Convention: `src/**/*.test.ts` next to source ([P4-I09](../../../docs/roadmap/phase-4/issues/P4-I09-unit-tests-infrastruktur.md)).
 
 ### 6. Exit
 
-Run [`review-and-fix`](../review-and-fix/SKILL.md). Findings against the same spec / acceptance criteria as planning.
+[review-and-fix](../review-and-fix/SKILL.md) against same spec as plan.
 
-## Obsidian plugin constraints
+## Obsidian constraints
 
-- **Unit TDD:** pure logic in Node/Vitest; keep `Plugin` subclass thin wiring.
-- **System boundary:** `obsidian` package → `vi.mock('obsidian', …)`; see [mocking.md](mocking.md).
-- **Out of scope for this skill:** E2E in a real Obsidian window, full UI click tests (later phases / manual checks in issues).
-- **Security:** vault access only via APIs; no secrets in tests ([`SPEC.md`](../../../SPEC.md) NFR).
+- **Unit TDD:** pure logic in Node/Vitest; `Plugin` = thin wire only.
+- **Boundary:** `obsidian` → `vi.mock('obsidian', …)` → [mocking.md](mocking.md)
+- **Out of scope:** E2E in Obsidian window, full UI clicks (later phases / manual in issues).
+- **Security:** vault via APIs only; no secrets in tests ([SPEC.md](../../../SPEC.md) PRD-NF01/NF02).
 
-## Checklist per cycle
+## Per-cycle checklist
 
 ```
-[ ] Test describes behavior, not implementation
-[ ] Test uses public interface only
-[ ] Test would survive internal refactor
-[ ] Code is minimal for this test
-[ ] No speculative features added
+[ ] behavior not impl
+[ ] public interface only
+[ ] survives internal refactor
+[ ] minimal code for this test
+[ ] no speculative features
 ```
 
-## Attribution
+## Source
 
-Adapted from [mattpocock/skills – engineering/tdd](https://github.com/mattpocock/skills/tree/main/skills/engineering/tdd).
+[mattpocock/skills engineering/tdd](https://github.com/mattpocock/skills/tree/main/skills/engineering/tdd).
