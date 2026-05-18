@@ -35,3 +35,14 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 ## Tests
 
 Colocated Vitest files: `**/*.test.ts` next to the module under test. Run: `npm test`.
+
+Obsidian APIs are not loaded in unit tests: Vitest resolves `obsidian` to `src/test-utils/obsidian-stub.ts` (see `vitest.config.ts`).
+
+## Quality before PR
+
+Recommended order (same as CI):
+
+1. `npm run format:check` — or `npm run format` to fix formatting
+2. `npm run lint`
+3. `npm test`
+4. `npm run build`

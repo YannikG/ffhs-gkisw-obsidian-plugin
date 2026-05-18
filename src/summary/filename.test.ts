@@ -46,12 +46,8 @@ describe('buildSummaryOutputFilename', () => {
 
   it('sanitizes folder names with whitespace', () => {
     expect(buildSummaryOutputFilename('Test Vault')).toBe('Test_Vault_summary.md');
-    expect(buildSummaryOutputFilename('My Lecture Notes', 2)).toBe(
-      'My_Lecture_Notes_summary_2.md',
-    );
-    expect(buildSummaryOutputFilename('courses/semester 1')).toBe(
-      'semester_1_summary.md',
-    );
+    expect(buildSummaryOutputFilename('My Lecture Notes', 2)).toBe('My_Lecture_Notes_summary_2.md');
+    expect(buildSummaryOutputFilename('courses/semester 1')).toBe('semester_1_summary.md');
   });
 });
 
@@ -83,9 +79,7 @@ describe('nextSummaryOutputVersion', () => {
   });
 
   it('returns 2 when only the base summary exists', () => {
-    expect(
-      nextSummaryOutputVersion('GKISW', ['GKISW_summary.md', 'other.md']),
-    ).toBe(2);
+    expect(nextSummaryOutputVersion('GKISW', ['GKISW_summary.md', 'other.md'])).toBe(2);
   });
 
   it('returns one above the highest existing version', () => {
@@ -99,18 +93,13 @@ describe('nextSummaryOutputVersion', () => {
   });
 
   it('ignores malformed version suffixes', () => {
-    expect(
-      nextSummaryOutputVersion('GKISW', [
-        'GKISW_summary.md',
-        'GKISW_summary_2extra.md',
-      ]),
-    ).toBe(2);
+    expect(nextSummaryOutputVersion('GKISW', ['GKISW_summary.md', 'GKISW_summary_2extra.md'])).toBe(
+      2,
+    );
   });
 
   it('matches existing outputs for sanitized whitespace folder names', () => {
-    expect(
-      nextSummaryOutputVersion('Test Vault', ['Test_Vault_summary.md']),
-    ).toBe(2);
+    expect(nextSummaryOutputVersion('Test Vault', ['Test_Vault_summary.md'])).toBe(2);
     expect(
       nextSummaryOutputVersion('My Lecture Notes', [
         'My_Lecture_Notes_summary.md',

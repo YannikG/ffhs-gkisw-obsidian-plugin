@@ -1,11 +1,7 @@
 import { Plugin } from 'obsidian';
 import { registerCreateSummaryFileMenu } from './summary/create-summary-file-menu.js';
 import { ObsidianSummarizerSettingTab } from './settings-tab.js';
-import {
-  DEFAULT_SETTINGS,
-  resolvePluginSettings,
-  type PluginSettings,
-} from './settings.js';
+import { DEFAULT_SETTINGS, resolvePluginSettings, type PluginSettings } from './settings.js';
 
 export default class ObsidianSummarizerPlugin extends Plugin {
   settings: PluginSettings = { ...DEFAULT_SETTINGS };

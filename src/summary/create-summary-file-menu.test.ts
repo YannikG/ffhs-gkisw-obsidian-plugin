@@ -1,9 +1,6 @@
 import type { Menu as ObsidianMenu, Plugin, TAbstractFile } from 'obsidian';
 import { beforeEach, describe, expect, it } from 'vitest';
-import {
-  CREATE_SUMMARY_MENU_LABEL,
-  CREATE_SUMMARY_STUB_NOTICE,
-} from './create-summary-stub.js';
+import { CREATE_SUMMARY_MENU_LABEL, CREATE_SUMMARY_STUB_NOTICE } from './create-summary-stub.js';
 import {
   handleCreateSummaryFileMenu,
   registerCreateSummaryFileMenu,
@@ -29,15 +26,11 @@ function asObsidianMenu(menu: Menu): ObsidianMenu {
 
 describe('shouldOfferCreateSummaryMenu', () => {
   it('returns true for folders', () => {
-    expect(shouldOfferCreateSummaryMenu(asAbstractFile(new TFolder()))).toBe(
-      true,
-    );
+    expect(shouldOfferCreateSummaryMenu(asAbstractFile(new TFolder()))).toBe(true);
   });
 
   it('returns false for files', () => {
-    expect(shouldOfferCreateSummaryMenu(asAbstractFile(new TFile()))).toBe(
-      false,
-    );
+    expect(shouldOfferCreateSummaryMenu(asAbstractFile(new TFile()))).toBe(false);
   });
 });
 
@@ -49,10 +42,7 @@ describe('handleCreateSummaryFileMenu', () => {
   it('adds Create Summary for folders', () => {
     const menu = new Menu();
 
-    handleCreateSummaryFileMenu(
-      asObsidianMenu(menu),
-      asAbstractFile(new TFolder()),
-    );
+    handleCreateSummaryFileMenu(asObsidianMenu(menu), asAbstractFile(new TFolder()));
 
     expect(menu.items).toHaveLength(1);
     expect(menu.items[0]?.title).toBe(CREATE_SUMMARY_MENU_LABEL);
@@ -61,10 +51,7 @@ describe('handleCreateSummaryFileMenu', () => {
   it('shows stub notice when the menu item is clicked', () => {
     const menu = new Menu();
 
-    handleCreateSummaryFileMenu(
-      asObsidianMenu(menu),
-      asAbstractFile(new TFolder()),
-    );
+    handleCreateSummaryFileMenu(asObsidianMenu(menu), asAbstractFile(new TFolder()));
     menu.items[0]?.click();
 
     expect(noticeMessages).toEqual([CREATE_SUMMARY_STUB_NOTICE]);

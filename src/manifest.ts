@@ -35,16 +35,11 @@ export function validateManifest(value: unknown): PluginManifest {
 
   const record = value as Record<string, unknown>;
   const manifest = Object.fromEntries(
-    REQUIRED_STRING_FIELDS.map((field) => [
-      field,
-      requireNonEmptyString(record, field),
-    ]),
+    REQUIRED_STRING_FIELDS.map((field) => [field, requireNonEmptyString(record, field)]),
   ) as PluginManifest;
 
   if (manifest.id !== PLUGIN_ID) {
-    throw new Error(
-      `Manifest id must be "${PLUGIN_ID}", got "${manifest.id}"`,
-    );
+    throw new Error(`Manifest id must be "${PLUGIN_ID}", got "${manifest.id}"`);
   }
 
   return manifest;
