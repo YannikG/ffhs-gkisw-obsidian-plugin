@@ -1,4 +1,7 @@
-/**
- * Build stub (P4-I01). The Obsidian Plugin subclass and manifest.json arrive in later issues.
- */
-export {};
+import { Plugin } from 'obsidian';
+
+export default class FfhsGkiswPlugin extends Plugin {
+  async onload(): Promise<void> {}
+
+  onunload(): void {}
+}

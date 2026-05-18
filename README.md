@@ -19,15 +19,52 @@ Architektur in Kurzform:
 
 Das Plugin erstellt und speichert die Datei; das Modell liefert nur den Inhalt der Zusammenfassung. So bleibt der Kontext des Modells fokussiert, und das Plugin kann die üblichen Obsidian-Events nutzen, um auf Änderungen im Vault zu reagieren.
 
-Das Projekt entsteht im Rahmen des Bachelorstudiums Informatik an der FFHS, im Kurs «Generative KI für Softwareentwickler» (GKISW), als Projektarbeit. Architektur, Anforderungen und Schnittstellen sind in der [SPEC.md](SPEC.md) dokumentiert.
+Das Projekt entsteht im Rahmen des Bachelorstudiums Informatik an der FFHS, im Kurs «Generative KI für Softwareentwickler» (GKISW), als Projektarbeit. Autoren: Gian Luca Tehrani, Kaan Kaplan, Yannik Gartmann. Architektur, Anforderungen und Schnittstellen sind in der [SPEC.md](SPEC.md) dokumentiert.
 
 ## Abhängigkeiten
 
 Für die Arbeit an diesem Repository rechnen wir mit einem agentischen Coding-Agenten (z. B. [Cursor](https://cursor.com) oder [Claude Code](https://www.anthropic.com/claude-code)) sowie der [GitHub CLI](https://cli.github.com) (`gh`) für Issues, Branches und den Umgang mit GitHub.
 
-**Build:** Node.js **20 oder neuer** (siehe `engines` in `package.json`). Auf einem frischen Clone: `npm ci`, danach `npm run build` erzeugt `main.js` im Repository-Root. `npm run dev` startet parallel `tsc --noEmit --watch` und esbuild im Watch-Modus. Einmaliges Typecheck ohne Bundle: `npm run typecheck`.
+**Build:** Node.js **20 oder neuer** (siehe `engines` in `package.json`). Auf einem frischen Clone: `npm ci`, danach `npm run build` erzeugt `main.js` im Repository-Root. `npm run dev` startet parallel `tsc --noEmit --watch` und esbuild im Watch-Modus. Einmaliges Typecheck ohne Bundle: `npm run typecheck`. Tests: `npm test` (Vitest). In einen Test-Vault deployen: `npm run deploy -- "<vault-pfad>"` (siehe unten).
 
-Weitere Voraussetzungen (Obsidian, Ollama, Installation im Vault) ergänzen wir hier nach und nach, sobald die zugehörigen Arbeitspakete umgesetzt sind.
+### Plugin in einem Test-Vault installieren
+
+Plugin-ID (Ordnername): `ffhs-gkisw-obsidian-plugin` (siehe `manifest.json`).
+
+Ziel im Vault:
+
+`.obsidian/plugins/ffhs-gkisw-obsidian-plugin/`
+
+Dort liegen `manifest.json`, `main.js` und optional `main.js.map`.
+
+**Automatisch bauen und kopieren** (`scripts/deploy-to-vault.mjs`):
+
+```bash
+npm run deploy -- "/pfad/zum/Test Vault"
+```
+
+Der Pfad kann sein:
+
+- Vault-Root → kopiert nach `<vault>/.obsidian/plugins/ffhs-gkisw-obsidian-plugin/`
+- `.obsidian` → kopiert nach `<vault>/.obsidian/plugins/ffhs-gkisw-obsidian-plugin/`
+- `.obsidian/plugins` → legt den Plugin-Unterordner an
+- bereits der Plugin-Ordner `.../plugins/ffhs-gkisw-obsidian-plugin` → überschreibt Dateien dort
+
+**Pfade mit Leerzeichen in Anführungszeichen setzen**, sonst bricht die Shell den Pfad (z. B. `Test Vault` wird zu `Test`).
+
+Beispiele:
+
+```bash
+npm run deploy -- "/Users/you/vaults/Test Vault"
+npm run deploy -- "/Users/you/vaults/Test Vault/.obsidian"
+npm run deploy -- "/Users/you/vaults/Test Vault/.obsidian/plugins/ffhs-gkisw-obsidian-plugin"
+```
+
+In Obsidian: Einstellungen → Community plugins → Plugin aktivieren. Keine rote Fehlermeldung für dieses Plugin = Laden ok (`minAppVersion` in `manifest.json` beachten).
+
+**Manuell:** nach `npm run build` die drei Dateien oben in den Plugin-Ordner kopieren.
+
+Weitere Voraussetzungen (Ollama, Produktfunktionen) ergänzen wir hier nach und nach, sobald die zugehörigen Arbeitspakete umgesetzt sind.
 
 ## Roadmap
 
