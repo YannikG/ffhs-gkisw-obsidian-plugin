@@ -1,0 +1,35 @@
+# `src/` module map
+
+Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](../SPEC.md#4-architektur) (Komponenten und Datenfluss).
+
+## Modules
+
+| Path | Role |
+|------|------|
+| `main.ts` | Obsidian entry: thin wiring only (`onload` / `onunload`). |
+| `manifest.ts` | Build-time manifest validation (P4-I02). |
+| `settings.ts` | `PluginSettings`, `DEFAULT_SETTINGS`, `mergeSettings` (SPEC §6). UI in P4-I04. |
+| `summary/` | Summary output constants and future orchestration (SPEC §1, US-03, §4.4). |
+| `ollama/` | Local Ollama client stub (SPEC §5). |
+| `rag/` | Vector index / retrieval stub (SPEC §4.1, §4.3). |
+
+## Phase ownership (Phase 4)
+
+| Module | Primary issue |
+|--------|----------------|
+| `main.ts`, `manifest.ts` | P4-I02 |
+| `settings.ts` (types/defaults) | P4-I03; `PluginSettingTab` + persist → P4-I04 |
+| `summary/`, `ollama/`, `rag/` skeleton | P4-I03 |
+| Folder context menu | P4-I05 |
+| Unit tests infra | P4-I09 |
+
+## Import rules
+
+- **No import cycles** between feature modules. Dependency direction: `main.ts` → feature modules; feature modules must not import `main.ts`.
+- **Pure modules** (`settings`, `summary/*`, future helpers) must **not** import `obsidian`. Obsidian APIs stay in `main.ts` and thin adapters added in later issues.
+- **Do not** wire `ollama/`, `rag/`, or `summary/` from `main.ts` until the matching issue; keep `onload` minimal for smoke tests.
+- Prefer barrel imports from `summary/index.ts` for public summary exports.
+
+## Tests
+
+Colocated Vitest files: `**/*.test.ts` next to the module under test. Run: `npm test`.
