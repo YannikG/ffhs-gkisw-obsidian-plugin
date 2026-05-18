@@ -53,17 +53,17 @@ flowchart TD
 
 ## Arbeitspakete
 
-| ID     | GitHub-Issue-Titel                                                | Kanonische Markdown-Datei                                                                 |
-| ------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| P4-I01 | [P4-I01] Build-Pipeline Node 20, TypeScript, esbuild              | [P4-I01-tooling-build-pipeline.md](./issues/P4-I01-tooling-build-pipeline.md)             |
-| P4-I02 | [P4-I02] Obsidian-Manifest und Plugin-Lebenszyklus                | [P4-I02-manifest-plugin-lebenszyklus.md](./issues/P4-I02-manifest-plugin-lebenszyklus.md) |
-| P4-I03 | [P4-I03] Modul-Skelett unter `src/`                               | [P4-I03-modul-skelett-src.md](./issues/P4-I03-modul-skelett-src.md)                       |
-| P4-I04 | [P4-I04] Einstellungen und Persistenz (SPEC-Defaults)             | [P4-I04-einstellungen-persistenz.md](./issues/P4-I04-einstellungen-persistenz.md)         |
-| P4-I05 | [P4-I05] Ordner-Kontextmenü «Create Summary» (Stub)               | [P4-I05-ordner-kontextmenue-stub.md](./issues/P4-I05-ordner-kontextmenue-stub.md)         |
-| P4-I06 | [P4-I06] GitHub Actions: Build, Tests und Quality Gates           | [P4-I06-ci-workflow.md](./issues/P4-I06-ci-workflow.md)                                   |
-| P4-I07 | [P4-I07] Initiales README, Entwicklerdokumentation und Onboarding | [P4-I07-entwicklerdokumentation.md](./issues/P4-I07-entwicklerdokumentation.md)           |
-| P4-I08 | [P4-I08] Linting, Formatierung und Skripte für Quality Gates      | [P4-I08-lint-format-quality-gates.md](./issues/P4-I08-lint-format-quality-gates.md)       |
-| P4-I09 | [P4-I09] Unit-Test-Infrastruktur und erstes Beispiel              | [P4-I09-unit-tests-infrastruktur.md](./issues/P4-I09-unit-tests-infrastruktur.md)         |
+| ID | GitHub-Issue-Titel | Kanonische Markdown-Datei |
+|----|--------------------------|---------|
+| P4-I01 | [P4-I01] Build-Pipeline Node 20, TypeScript, esbuild | [P4-I01-tooling-build-pipeline.md](./issues/P4-I01-tooling-build-pipeline.md) |
+| P4-I02 | [P4-I02] Obsidian-Manifest und Plugin-Lebenszyklus | [P4-I02-manifest-plugin-lebenszyklus.md](./issues/P4-I02-manifest-plugin-lebenszyklus.md) |
+| P4-I03 | [P4-I03] Modul-Skelett unter `src/` | [P4-I03-modul-skelett-src.md](./issues/P4-I03-modul-skelett-src.md) |
+| P4-I04 | [P4-I04] Einstellungen und Persistenz (SPEC-Defaults) | [P4-I04-einstellungen-persistenz.md](./issues/P4-I04-einstellungen-persistenz.md) |
+| P4-I05 | [P4-I05] Ordner-Kontextmenü «Create Summary» (Stub) | [P4-I05-ordner-kontextmenue-stub.md](./issues/P4-I05-ordner-kontextmenue-stub.md) |
+| P4-I06 | [P4-I06] GitHub Actions: Build, Tests und Quality Gates | [P4-I06-ci-workflow.md](./issues/P4-I06-ci-workflow.md) |
+| P4-I07 | [P4-I07] Initiales README, Entwicklerdokumentation und Onboarding | [P4-I07-entwicklerdokumentation.md](./issues/P4-I07-entwicklerdokumentation.md) |
+| P4-I08 | [P4-I08] Linting, Formatierung und Skripte für Quality Gates | [P4-I08-lint-format-quality-gates.md](./issues/P4-I08-lint-format-quality-gates.md) |
+| P4-I09 | [P4-I09] Unit-Test-Infrastruktur und erstes Beispiel | [P4-I09-unit-tests-infrastruktur.md](./issues/P4-I09-unit-tests-infrastruktur.md) |
 
 GitHub-Issues und Repo-Markdown: [Zusammenarbeit](../../zusammenarbeit/README.md).
 

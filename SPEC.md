@@ -1,10 +1,10 @@
 # Obsidian Summarizer — Spezifikation (MVP)
 
-| Feld    | Wert                                                               |
-| ------- | ------------------------------------------------------------------ |
-| Version | 0.1                                                                |
+| Feld | Wert |
+|------|------|
+| Version | 0.1 |
 | Kontext | FFHS, Modul «Generative KI für Softwareentwickler», BSc Informatik |
-| Stand   | 9. Mai 2026                                                        |
+| Stand | 9. Mai 2026 |
 
 Dieses Dokument fasst ADR, PRD, MVP-Scope und technische Architektur zu **einer implementierungsnahen Referenz** zusammen. Abweichungen von der Seminararbeit sind bewusst geklärt (Modell-Tags, Quellenfilter).
 
@@ -37,9 +37,9 @@ Als Nutzerin möchte ich die Ausgabe **als normale Obsidian-Notiz** im Vault, im
 
 **Dateinamen-Muster (verbindlich):**
 
-| Fall                                        | Dateiname im Zielordner                                     |
-| ------------------------------------------- | ----------------------------------------------------------- |
-| Standard (erste Summary / Überschreiben)    | `{Ordnername}_summary.md`                                   |
+| Fall | Dateiname im Zielordner |
+|------|-------------------------|
+| Standard (erste Summary / Überschreiben) | `{Ordnername}_summary.md` |
 | Neue Version (optional, ohne Überschreiben) | `{Ordnername}_summary_2.md`, `{Ordnername}_summary_3.md`, … |
 
 - **`{Ordnername}`:** letztes Segment des gewählten Ordnerpfads, für Vault-Dateinamen **sanitisiert** (keine Pfadtrenner, keine Zeichen `\ / : * ? " < > |`, Leerzeichen → `_`, aufeinanderfolgende `_` zusammengezogen; leerer Rest → `folder`).
@@ -50,11 +50,11 @@ Als Nutzerin möchte ich die Ausgabe **als normale Obsidian-Notiz** im Vault, im
 
 ## 3. Nicht-funktionale Anforderungen (verbindlich)
 
-| ID       | Anforderung                                                     | Umsetzungshinweis                                      |
-| -------- | --------------------------------------------------------------- | ------------------------------------------------------ |
-| PRD-NF01 | Datenschutz: Inhalte bleiben lokal                              | Kein Versand von Vault-Text an Drittanbieter-LLM-APIs. |
+| ID | Anforderung | Umsetzungshinweis |
+|----|--------------|------------------|
+| PRD-NF01 | Datenschutz: Inhalte bleiben lokal | Kein Versand von Vault-Text an Drittanbieter-LLM-APIs. |
 | PRD-NF02 | Sicherheit: keine externe Übertragung von Vault-Inhalten für KI | Nur `127.0.0.1`/konfigurierbare lokale Ollama-Instanz. |
-| PRD-NF03 | Keine laufenden API-Kosten                                      | Kein Cloud-Token-Modell im MVP.                        |
+| PRD-NF03 | Keine laufenden API-Kosten | Kein Cloud-Token-Modell im MVP. |
 
 **Zusätzlich:** Plugin greift nur auf Vault-Pfade zu, die Obsidian ohnehin freigibt; **kein** Löschen von Nutzerdateien ausserhalb der definierten Schreibaktion auf Summary-Ausgabedateien (Muster US-03). Nutzerhinweis bei Überschreiben von `{Ordnername}_summary.md` ist wünschenswert (konkrete UX: Implementierung).
 
@@ -64,17 +64,17 @@ Als Nutzerin möchte ich die Ausgabe **als normale Obsidian-Notiz** im Vault, im
 
 ### 4.1 Komponenten
 
-| Bereich                | Technologie                                      | Rolle                                                                                         |
-| ---------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
-| UI                     | Obsidian Desktop Plugin API                      | Ordner-Kontextmenü **Create Summary**, Einstellungsseite                                      |
-| Logik                  | TypeScript / JavaScript                          | Orchestrierung, Chunking, Promptbau, IO                                                       |
-| Build                  | Node.js 20+, npm                                 | Build und Paketierung des Plugins                                                             |
-| LLM + Embeddings       | Ollama (lokal, Default `http://127.0.0.1:11434`) | Chat/Generate + Embedding-API                                                                 |
-| Generierung (Default)  | `gemma4:e2b`                                     | Leichteres Standardmodell                                                                     |
-| Generierung (optional) | `gemma4:e4b`                                     | Qualitäts-Modell, in Einstellungen wählbar                                                    |
-| Embeddings             | `nomic-embed-text`                               | Vektoren für Chunks                                                                           |
-| Vektorindex            | SQLite + `sqlite-wasm-vec`                       | Semantische Suche über Chunks                                                                 |
-| Index-Datei            | `vectors.db`                                     | Liegt im **Plugin-Datenverzeichnis** (nicht im Nutzer-Vault), sofern nicht anders entschieden |
+| Bereich | Technologie | Rolle |
+|---------|-------------|--------|
+| UI | Obsidian Desktop Plugin API | Ordner-Kontextmenü **Create Summary**, Einstellungsseite |
+| Logik | TypeScript / JavaScript | Orchestrierung, Chunking, Promptbau, IO |
+| Build | Node.js 20+, npm | Build und Paketierung des Plugins |
+| LLM + Embeddings | Ollama (lokal, Default `http://127.0.0.1:11434`) | Chat/Generate + Embedding-API |
+| Generierung (Default) | `gemma4:e2b` | Leichteres Standardmodell |
+| Generierung (optional) | `gemma4:e4b` | Qualitäts-Modell, in Einstellungen wählbar |
+| Embeddings | `nomic-embed-text` | Vektoren für Chunks |
+| Vektorindex | SQLite + `sqlite-wasm-vec` | Semantische Suche über Chunks |
+| Index-Datei | `vectors.db` | Liegt im **Plugin-Datenverzeichnis** (nicht im Nutzer-Vault), sofern nicht anders entschieden |
 
 **Hinweis Modell-Tags:** Im Projektbericht genannte Tags `gemma4:e2b` und `gemma4:e4b` sind auf der Referenz-Umgebung per `ollama list` verifiziert. Öffentliche Ollama-Library kann parallel andere Familien (z. B. `gemma3`) führen; **kanonisch für dieses Repo** bleiben die obigen Strings, bis das Team sie ändert.
 
@@ -125,12 +125,12 @@ Diese Regeln sind Teil der Akzeptanz des MVP.
 
 Konfigurierbar über Plugin-Einstellungen:
 
-| Schlüsselidee            | Beschreibung                                               |
-| ------------------------ | ---------------------------------------------------------- |
-| Ollama Base URL          | String, Default siehe oben                                 |
-| Modell Generierung       | Default `gemma4:e2b`, optional Umschalten auf `gemma4:e4b` |
-| Modell Embeddings        | Default `nomic-embed-text`                                 |
-| Chunking (optional MVP+) | Chunk-Grösse und Overlap, falls nicht fest im Code         |
+| Schlüsselidee | Beschreibung |
+|---------------|--------------|
+| Ollama Base URL | String, Default siehe oben |
+| Modell Generierung | Default `gemma4:e2b`, optional Umschalten auf `gemma4:e4b` |
+| Modell Embeddings | Default `nomic-embed-text` |
+| Chunking (optional MVP+) | Chunk-Grösse und Overlap, falls nicht fest im Code |
 
 ---
 
@@ -146,11 +146,11 @@ Der finale System- und User-Prompt wird iterativ festgelegt («Try and Error» l
 
 ## 8. Akzeptanzkriterien und Evaluation
 
-| Metrik           | Ziel                                                                                            | Messung                                                                                                                                                      |
-| ---------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Generierungszeit | unter 80 Sekunden                                                                               | Start bei Auswahl **Create Summary** bis fertig geschriebene Summary-Ausgabedatei (US-03) auf Referenzrechner (Projekt: MacBook M4 Pro, geringe Systemlast). |
-| Inhaltsabdeckung | ca. 80 % Schlüsselpunkte; speziell: eingebaute **Fehler in Quellen** tauchen in der Summary auf | Drei künstliche lange Markdown-Dateien mit eingestreuten Fehlern; manuell oder checklistenbasiert prüfen.                                                    |
-| Format           | Valides Markdown                                                                                | Automatisiert oder manuell; Link-Syntax und Math spot-check.                                                                                                 |
+| Metrik | Ziel | Messung |
+|--------|------|---------|
+| Generierungszeit | unter 80 Sekunden | Start bei Auswahl **Create Summary** bis fertig geschriebene Summary-Ausgabedatei (US-03) auf Referenzrechner (Projekt: MacBook M4 Pro, geringe Systemlast). |
+| Inhaltsabdeckung | ca. 80 % Schlüsselpunkte; speziell: eingebaute **Fehler in Quellen** tauchen in der Summary auf | Drei künstliche lange Markdown-Dateien mit eingestreuten Fehlern; manuell oder checklistenbasiert prüfen. |
+| Format | Valides Markdown | Automatisiert oder manuell; Link-Syntax und Math spot-check. |
 
 ---
 
@@ -187,7 +187,7 @@ Der finale System- und User-Prompt wird iterativ festgelegt («Try and Error» l
 
 ## 12. Glossar
 
-| Begriff | Bedeutung                                                                                    |
-| ------- | -------------------------------------------------------------------------------------------- |
-| RAG     | Retrieval-Augmented Generation: relevante Chunks werden gesucht und dem Generator mitgegeben |
-| Chunk   | kleiner Textabschnitt aus Markdown für Embedding und Suche                                   |
+| Begriff | Bedeutung |
+|---------|-----------|
+| RAG | Retrieval-Augmented Generation: relevante Chunks werden gesucht und dem Generator mitgegeben |
+| Chunk | kleiner Textabschnitt aus Markdown für Embedding und Suche |

@@ -12,10 +12,10 @@ Wir orientieren uns an den Phasen unter [`docs/roadmap/`](../roadmap/overview.md
 
 ## Wo liegt die Spezifikation (SSOT)
 
-| Ort                                | Rolle                                                                                             |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Ort | Rolle |
+|-----|--------|
 | `docs/roadmap/phase-N/issues/*.md` | Kanonische Spezifikation: Ziel, Abhängigkeiten, testbare Akzeptanzkriterien, Scope, Dev-Schritte. |
-| GitHub-Issue                       | Status, kurze Abstimmung, Board; verweist mit einem Permalink auf die zugehörige Markdown-Datei.  |
+| GitHub-Issue | Status, kurze Abstimmung, Board; verweist mit einem Permalink auf die zugehörige Markdown-Datei. |
 
 Die Datei im Repository ist die Referenz für Inhalt und Review; das GitHub-Issue begleitet den Vorgang und die Verknüpfungen.
 
@@ -36,13 +36,13 @@ Beim Umsetzen sind die Arbeitspaket-Dateien unter `docs/roadmap/**/issues/**` je
 
 Im Ordner [`.agents/skills/`](../../.agents/skills/) liegen Markdown-Anleitungen für Cursor bzw. andere Agenten: sie beschreiben, wie das Modell bei bestimmten Aufgaben vorgehen soll. Die folgende Tabelle ist nur ein Überblick; Details und Trigger stehen jeweils in der verlinkten `SKILL.md`.
 
-| Skill                                                                            | Kurzbeschreibung                                                                                                                                                                                                                                               |
-| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [caveman](../../.agents/skills/caveman/SKILL.md)                                 | Sehr knappe Antworten bei gleichbleibender technischer Genauigkeit; spart Zeit und Tokens, wenn du diesen Stil ausdrücklich möchtest.                                                                                                                          |
-| [github-issue-anlegen](../../.agents/skills/github-issue-anlegen/SKILL.md)       | Du nennst den Skill und den Pfad zur `issues/*.md`; der Agent legt das GitHub-Issue an, inklusive Titel, Permalink im Body und Abhängigkeiten aus der Datei, soweit sich das auf GitHub abbilden lässt.                                                        |
+| Skill | Kurzbeschreibung |
+|--------|------------------|
+| [caveman](../../.agents/skills/caveman/SKILL.md) | Sehr knappe Antworten bei gleichbleibender technischer Genauigkeit; spart Zeit und Tokens, wenn du diesen Stil ausdrücklich möchtest. |
+| [github-issue-anlegen](../../.agents/skills/github-issue-anlegen/SKILL.md) | Du nennst den Skill und den Pfad zur `issues/*.md`; der Agent legt das GitHub-Issue an, inklusive Titel, Permalink im Body und Abhängigkeiten aus der Datei, soweit sich das auf GitHub abbilden lässt. |
 | [implement-plan-workflow](../../.agents/skills/implement-plan-workflow/SKILL.md) | Du gibst ein GitHub-Issue per URL oder Nummer. Enthält der Body einen Permalink auf eine `issues/*.md`, gilt diese Datei als Spezifikation und wird beim Implementieren nicht mitbearbeitet; fehlt der Link, gelten Titel und Body des Issues (etwa bei Bugs). |
-| [review-and-fix](../../.agents/skills/review-and-fix/SKILL.md)                   | Review mit anschliessender Nachbesserung zu Qualität, Architektur und Sicherheit, bis keine offensichtlichen Findings mehr offen sind.                                                                                                                         |
-| [tdd](../../.agents/skills/tdd/SKILL.md)                                         | TDD red-green-refactor, vertical slices; Vitest + Obsidian boundary mocks (English, caveman-compressed).                                                                                                                                                       |
+| [review-and-fix](../../.agents/skills/review-and-fix/SKILL.md) | Review mit anschliessender Nachbesserung zu Qualität, Architektur und Sicherheit, bis keine offensichtlichen Findings mehr offen sind. |
+| [tdd](../../.agents/skills/tdd/SKILL.md) | TDD red-green-refactor, vertical slices; Vitest + Obsidian boundary mocks (English, caveman-compressed). |
 
 ---
 
