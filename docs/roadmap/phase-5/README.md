@@ -2,7 +2,7 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Entwurf
+**Status:** Geplant
 
 End-to-End **Create Summary** ohne RAG: alle Quell-`.md` unter dem Ordner als ein Korpus → Ollama `/api/chat` → Summary-Datei im Vault (erst `{Ordnername}_summary.md`, danach `_summary_2`, … ohne Überschreiben der Basisdatei).
 
@@ -52,17 +52,17 @@ flowchart TD
 
 ## Arbeitspakete
 
-| ID | GitHub-Issue-Titel (Vorschlag) | Kanonische Markdown-Datei |
-|----|--------------------------------|---------------------------|
-| P5-I01 | [P5-I01] Ollama-Entwickler-Setup und Modelle | [P5-I01-ollama-entwickler-setup.md](./issues/P5-I01-ollama-entwickler-setup.md) |
-| P5-I02 | [P5-I02] Ollama-HTTP-Client (Healthcheck und Chat) | [P5-I02-ollama-http-client.md](./issues/P5-I02-ollama-http-client.md) |
-| P5-I03 | [P5-I03] System-Prompt-Modul | [P5-I03-system-prompt-modul.md](./issues/P5-I03-system-prompt-modul.md) |
-| P5-I04 | [P5-I04] Markdown aus Ordner einlesen | [P5-I04-ordner-markdown-einlesen.md](./issues/P5-I04-ordner-markdown-einlesen.md) |
-| P5-I05 | [P5-I05] Summary-Datei ins Vault schreiben | [P5-I05-summary-datei-schreiben.md](./issues/P5-I05-summary-datei-schreiben.md) |
-| P5-I06 | [P5-I06] Create Summary End-to-End ohne RAG | [P5-I06-create-summary-ohne-rag.md](./issues/P5-I06-create-summary-ohne-rag.md) |
-| P5-I07 | [P5-I07] Phase-5-Dokumentation | [P5-I07-phase5-dokumentation.md](./issues/P5-I07-phase5-dokumentation.md) |
+| ID | GitHub | Titel | Kanonische Markdown-Datei |
+|----|--------|-------|---------------------------|
+| P5-I01 | #19 | [P5-I01] Ollama-Entwickler-Setup und Modelle | [P5-I01-ollama-entwickler-setup.md](./issues/P5-I01-ollama-entwickler-setup.md) |
+| P5-I02 | #20 | [P5-I02] Ollama-HTTP-Client (Healthcheck und Chat) | [P5-I02-ollama-http-client.md](./issues/P5-I02-ollama-http-client.md) |
+| P5-I03 | #21 | [P5-I03] System-Prompt-Modul | [P5-I03-system-prompt-modul.md](./issues/P5-I03-system-prompt-modul.md) |
+| P5-I04 | #22 | [P5-I04] Markdown aus Ordner einlesen | [P5-I04-ordner-markdown-einlesen.md](./issues/P5-I04-ordner-markdown-einlesen.md) |
+| P5-I05 | #23 | [P5-I05] Summary-Datei ins Vault schreiben | [P5-I05-summary-datei-schreiben.md](./issues/P5-I05-summary-datei-schreiben.md) |
+| P5-I06 | #24 | [P5-I06] Create Summary End-to-End ohne RAG | [P5-I06-create-summary-ohne-rag.md](./issues/P5-I06-create-summary-ohne-rag.md) |
+| P5-I07 | #25 | [P5-I07] Phase-5-Dokumentation | [P5-I07-phase5-dokumentation.md](./issues/P5-I07-phase5-dokumentation.md) |
 
-GitHub-Issues erst anlegen, wenn diese Phase von **Entwurf** auf **Geplant** wechselt: [Zusammenarbeit](../../zusammenarbeit/README.md).
+Label auf GitHub: **Phase 5** (zusätzlich **documentation** bei #19 und #25). [Zusammenarbeit](../../zusammenarbeit/README.md).
 
 ## Verweise
 
