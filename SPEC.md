@@ -39,12 +39,13 @@ Als Nutzerin möchte ich die Ausgabe **als normale Obsidian-Notiz** im Vault, im
 
 | Fall | Dateiname im Zielordner |
 |------|-------------------------|
-| Standard (erste Summary / Überschreiben) | `{Ordnername}_summary.md` |
-| Neue Version (optional, ohne Überschreiben) | `{Ordnername}_summary_2.md`, `{Ordnername}_summary_3.md`, … |
+| Erste Summary (Basisdatei) | `{Ordnername}_summary.md` |
+| Weitere Läufe (neue Version) | `{Ordnername}_summary_2.md`, `{Ordnername}_summary_3.md`, … |
 
 - **`{Ordnername}`:** letztes Segment des gewählten Ordnerpfads, für Vault-Dateinamen **sanitisiert** (keine Pfadtrenner, keine Zeichen `\ / : * ? " < > |`, Leerzeichen → `_`, aufeinanderfolgende `_` zusammengezogen; leerer Rest → `folder`).
-- **Standardverhalten:** wiederholte Ausführung für denselben Ordner **überschreibt** `{Ordnername}_summary.md`.
-- **Neue Version:** optional nächste freie Nummer ≥ 2 (`_summary_2`, `_summary_3`, …), wenn das Produkt Überschreiben vermeiden soll (konkrete UX: Implementierung, z. B. Notice oder Einstellung).
+- **Standardverhalten (MVP):** Der **erste** erfolgreiche Lauf für einen Ordner erzeugt `{Ordnername}_summary.md`. Existiert diese Basisdatei bereits, erzeugt jeder **weitere** Lauf die nächste freie Versionsdatei mit Nummer ≥ 2 (`_summary_2`, `_summary_3`, …). Die Basisdatei wird **nicht** überschrieben.
+- **Erfolgs-Feedback:** Nach dem Schreiben zeigt das Plugin eine Notice mit dem erzeugten Dateinamen.
+- **Optional (Einstellungen, Phase 8):** Nutzerin kann aktivieren, dass erneute Läufe die Basisdatei `{Ordnername}_summary.md` **überschreiben** statt eine neue Version anzulegen (Default: aus).
 
 ---
 
@@ -56,7 +57,7 @@ Als Nutzerin möchte ich die Ausgabe **als normale Obsidian-Notiz** im Vault, im
 | PRD-NF02 | Sicherheit: keine externe Übertragung von Vault-Inhalten für KI | Nur `127.0.0.1`/konfigurierbare lokale Ollama-Instanz. |
 | PRD-NF03 | Keine laufenden API-Kosten | Kein Cloud-Token-Modell im MVP. |
 
-**Zusätzlich:** Plugin greift nur auf Vault-Pfade zu, die Obsidian ohnehin freigibt; **kein** Löschen von Nutzerdateien ausserhalb der definierten Schreibaktion auf Summary-Ausgabedateien (Muster US-03). Nutzerhinweis bei Überschreiben von `{Ordnername}_summary.md` ist wünschenswert (konkrete UX: Implementierung).
+**Zusätzlich:** Plugin greift nur auf Vault-Pfade zu, die Obsidian ohnehin freigibt; **kein** Löschen von Nutzerdateien ausserhalb der definierten Schreibaktion auf Summary-Ausgabedateien (Muster US-03). Bei aktivierter Option «Basisdatei überschreiben» (US-03, optional): Nutzerhinweis vor oder nach dem Überschreiben ist wünschenswert.
 
 ---
 

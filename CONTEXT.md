@@ -106,4 +106,4 @@ _Avoid_: stilles Weiter mit leerem Prompt, automatischer Volltext-Fallback
 
 - «Zusammenfassung» vs **Summary** — resolved: **Summary** = Datei/Artefakt; «Zusammenfassung» = Prozess oder UI-Label ok.
 - «Kontext» vs **Ordner-Quellkorpus** — resolved: In Phase 5 explizit **Ordner-Quellkorpus**; «Kontext» allein zu ungenau.
-- SPEC US-03 «Standard: überschreiben» vs **Summary-Schreibmodus** hybrid — resolved für Implementierung Phase 5: hybrid; SPEC später per Team-Workflow angleichen, nicht stillschweigend im Code widersprechen.
+- SPEC US-03 «Standard: überschreiben» vs **Summary-Schreibmodus** hybrid — resolved: [SPEC.md](SPEC.md) US-03 beschreibt hybrid als MVP-Standard; optionales Überschreiben nur per Einstellung (Phase 8).
