@@ -1,0 +1,25 @@
+---
+description: Keine Personalpronomen in Doku und nutzerorientierten Texten (Schweizer Hochdeutsch)
+globs: README.md,docs/**/*.md,CONTEXT.md,SPEC.md
+alwaysApply: false
+---
+
+# Keine Personalpronomen in schriftlichen Artefakten
+
+In README, `docs/`, `CONTEXT.md`, `SPEC.md` und vergleichbaren Texten **keine direkte Anrede** und **keine Personalpronomen** (du, dein, ihr, euer, Sie, Ihr, uns, euch, dir, dich, …).
+
+## Stattdessen
+
+- **Infinitiv** oder **Passiv:** «Ollama installieren», «der Alias wird erzeugt»
+- **Sachlich:** «Erwartung: …», «Bei Fehlschlag: Version aktualisieren»
+- **Neutral:** «Entwickler:innen», «das Team», «die Anleitung» nur wenn nötig, ohne «du/ihr»
+
+## Beispiele
+
+| Vermeiden | Besser |
+|-----------|--------|
+| «Du kannst den Tag so erzeugen …» | «Den Tag so erzeugen: …» oder «Der Alias lässt sich so erzeugen: …» |
+| «Prüfe, ob Ollama läuft» | «Prüfen, ob Ollama läuft» oder «Ollama-Erreichbarkeit prüfen» |
+| «Deine Einstellungen …» | «Die Plugin-Einstellungen …» |
+
+Gilt auch für Agent-Antworten auf Deutsch in diesem Repository, wenn Doku oder PR-Beschreibungen formuliert werden.

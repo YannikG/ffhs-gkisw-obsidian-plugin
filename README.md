@@ -48,6 +48,33 @@ npm run build
 
 Spezifikation und Verhalten: [SPEC.md](SPEC.md). Modulübersicht unter `src/`: [src/README.md](src/README.md).
 
+### Ollama
+
+Für Phase 5 und später: lokale [Ollama](https://ollama.com/download)-Instanz mit den Modell-Tags aus [SPEC.md](SPEC.md) §4.1. Vault-Inhalte gehen nur an `127.0.0.1` (oder die konfigurierte Base URL), siehe SPEC PRD-NF02.
+
+1. **Installation:** Ollama von [ollama.com/download](https://ollama.com/download) installieren und starten (Desktop-App oder `ollama serve`). Default-API: `http://127.0.0.1:11434`.
+2. **Modelle laden:**
+
+```bash
+ollama pull gemma4:e2b
+ollama pull nomic-embed-text
+```
+
+Optional (mehr RAM, bessere Qualität): `ollama pull gemma4:e4b`.
+
+Details und Troubleshooting: [docs/ollama/README.md](docs/ollama/README.md).
+
+3. **Verifikation:**
+
+```bash
+ollama list
+curl -s http://127.0.0.1:11434/api/tags
+```
+
+`ollama list` soll mindestens `gemma4:e2b` und `nomic-embed-text` zeigen. `curl` liefert JSON mit den installierten Modellen (HTTP 200).
+
+Die Plugin-Einstellungen nutzen dieselben Defaults (SPEC §6): Base URL `http://127.0.0.1:11434`, Generierung `gemma4:e2b`, Embeddings `nomic-embed-text`.
+
 ### Tests
 
 - Testdateien: `src/**/*.test.ts` (Vitest, neben dem Modul).
@@ -115,7 +142,7 @@ In Obsidian: **Einstellungen → Community plugins** → **Obsidian Summarizer**
 2. **Einstellungen** des Plugins (drei Felder): Defaults laut [SPEC.md](SPEC.md) §6 — Ollama-URL `http://127.0.0.1:11434`, Generierungsmodell `gemma4:e2b`, Embedding-Modell `nomic-embed-text`. Wert ändern, Plugin neu laden (oder Obsidian neu starten): Wert bleibt erhalten.
 3. Im Datei-Explorer **Rechtsklick auf einen Ordner** (nicht auf eine Datei) → **Create Summary** → Notice mit Text `Stub: Create Summary`.
 
-Weitere Produktfunktionen (Ollama, RAG, echte Zusammenfassung) folgen in späteren Phasen; siehe [Roadmap](docs/roadmap/overview.md).
+Ollama-Setup siehe Abschnitt **Ollama** oben. RAG und echte **Create Summary**-Generierung folgen in späteren Phasen; siehe [Roadmap](docs/roadmap/overview.md).
 
 ### Onboarding-Checkliste (Reviewer, P4-I07)
 
