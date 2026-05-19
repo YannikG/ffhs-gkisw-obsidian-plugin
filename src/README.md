@@ -14,7 +14,7 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 | `settings-tab.ts` | `ObsidianSummarizerSettingTab` — drei Eingabefelder, Persistenz via `saveData` (P4-I04). |
 | `settings-restore-modal.ts` | Bestätigungsdialog zum Wiederherstellen leerer Pflichtfelder. |
 | `summary/` | Summary output filenames (`buildSummaryOutputFilename`, …) and future orchestration (SPEC §1, US-03, §4.4). |
-| `ollama/` | Local Ollama client stub (SPEC §5). |
+| `ollama/` | Ollama HTTP client: healthcheck (`/api/tags`) + chat (`/api/chat`, SPEC §5). |
 | `rag/` | Vector index / retrieval stub (SPEC §4.1, §4.3). |
 
 ## Phase ownership (Phase 4)
