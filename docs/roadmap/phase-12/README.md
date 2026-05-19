@@ -2,18 +2,27 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Geplant
+**Status:** Entwurf
 
-MVP nach erfolgreichen Tests freigeben; Entscheid und Hinweise (Version, README, Release-Notizen) gemäss [Zusammenarbeit](../../zusammenarbeit/README.md) festhalten.
+MVP-Freigabe nach erfolgreichen Tests und dokumentierten Nachweisen aus Phase 11.
 
-## Arbeitsinhalt
+Voraussetzung: [Phase 11](../phase-11/README.md). Prozess: [Zusammenarbeit](../../zusammenarbeit/README.md).
 
-- Freigabe-Kriterien mit Testnachweisen aus [Phase 11](../phase-11/README.md) abgleichen.
-- Veröffentlichung oder internes «Go» dokumentieren.
+## Definition of Done (Entwurf)
+
+- [ ] Freigabe-Checkliste gegen Phase-11-Nachweise abgehakt.
+- [ ] Version/`manifest.json`/Release-Hinweise im README festgehalten.
+- [ ] Team-Entscheid «Go» dokumentiert (Ort im Team vereinbart).
+
+## Arbeitspakete (Entwurf)
+
+| ID | Kurzbeschreibung |
+|----|------------------|
+| P12-I01 | Freigabe-Checkliste und Abgleich Testnachweise |
+| P12-I02 | Version, Manifest, Release-Notizen |
 
 ## Verweise
 
-- [Roadmap-Übersicht](../overview.md)
-- [SPEC.md](../../../SPEC.md)
 - [Phase 11](../phase-11/README.md)
+- [SPEC.md](../../../SPEC.md)
 - [Zusammenarbeit](../../zusammenarbeit/README.md)
