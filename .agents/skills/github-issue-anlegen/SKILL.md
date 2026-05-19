@@ -27,9 +27,11 @@ SSOT: `docs/zusammenarbeit/README.md`.
 
 7. `gh issue create` wenn Netz+Auth (Body mehrzeilig → `--body-file`). Sonst Titel+Body+Kommando ausgeben. Neue Nummer **N** merken.
 
+7b. **Label:** `Phase N` aus Issue-ID (`P5-I01` → Label `Phase 5`). Label fehlt → `gh label create "Phase N" --description "Roadmap Phase N: …" --color "1D76DB"` (Farbe wie bestehende Phasen-Labels). Danach `gh issue edit N --add-label "Phase N"`.
+
 8. Deps auf GitHub: `gh issue create`/`gh issue edit --help` → Flags für Links/Block wenn da; sonst `gh api` nur wenn Mutation sicher bekannt; sonst Chat: `N` + `#`-Liste → User kurz Web-UI.
 
-9. Output: Link `#N` + welche Deps erkannt + welche `#` + Schritt 8 auto oder manuell.
+9. Output: Link `#N` + Label `Phase N` + welche Deps erkannt + welche `#` + Schritt 8 auto oder manuell.
 
 **Inhalt (nicht verletzen)**
 
