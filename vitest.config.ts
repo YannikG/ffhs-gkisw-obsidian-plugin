@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config';
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
+/** Unit tests run in Node; `obsidian` resolves to a stub (see README § Tests). */
 export default defineConfig({
   resolve: {
     alias: {

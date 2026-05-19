@@ -40,6 +40,7 @@ npm run build
 | `npm run dev` | `tsc --noEmit --watch` und esbuild im Watch-Modus |
 | `npm run typecheck` | TypeScript ohne Bundle |
 | `npm test` | Vitest (alle Unit-Tests) |
+| `npm run test:watch` | Vitest im Watch-Modus |
 | `npm run lint` | ESLint |
 | `npm run format:check` | Prettier-Prüfung (CI; siehe Hinweis unten) |
 | `npm run format` | Prettier schreibt Korrekturen |
@@ -52,7 +53,7 @@ Spezifikation und Verhalten: [SPEC.md](SPEC.md). Modulübersicht unter `src/`: [
 - Testdateien: `src/**/*.test.ts` (Vitest, neben dem Modul).
 - Gesamtsuite: `npm test`.
 - Einzeldatei: `npx vitest run src/settings.test.ts`
-- Watch: `npx vitest` oder `npx vitest --watch`
+- Watch: `npm run test:watch` (oder `npx vitest` / `npx vitest --watch`)
 
 In Unit-Tests läuft kein echtes Obsidian: `vitest.config.ts` mappt `obsidian` auf `src/test-utils/obsidian-stub.ts`. Zusätzliche Grenzen mocken mit Vitest `vi.mock('obsidian', …)` nach Bedarf.
 

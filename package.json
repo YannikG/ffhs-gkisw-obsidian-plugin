@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
+    "test:watch": "vitest",
     "build": "npm run typecheck && node esbuild.config.mjs",
     "deploy": "node scripts/deploy-to-vault.mjs",
     "dev": "concurrently -c blue,magenta -n tsc,esbuild \"tsc --noEmit --watch\" \"node esbuild.config.mjs --watch\""
