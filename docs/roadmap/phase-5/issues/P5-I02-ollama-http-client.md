@@ -3,13 +3,15 @@
 ```text
 Phase: 5
 Issue-ID: P5-I02
-Blockiert von: P4-I04
+GitHub: #20
+Blockiert von: P4-I04 (#6)
 ```
 
 ## Meta
 
 - **Issue-ID:** P5-I02
-- **Blockiert von:** P4-I04
+- **GitHub:** #20
+- **Blockiert von:** P4-I04 (#6)
 - **Blockiert:** P5-I06
 
 ## Abhängigkeiten
