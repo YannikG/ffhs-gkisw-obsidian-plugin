@@ -18,12 +18,7 @@ export interface OllamaChatOptions {
   timeoutMs?: number;
 }
 
-export type OllamaErrorKind =
-  | 'connection'
-  | 'http'
-  | 'timeout'
-  | 'model'
-  | 'response';
+export type OllamaErrorKind = 'connection' | 'http' | 'timeout' | 'model' | 'response';
 
 export interface OllamaError {
   kind: OllamaErrorKind;
@@ -31,14 +26,9 @@ export interface OllamaError {
   status?: number;
 }
 
-export type OllamaResult<T> =
-  | { ok: true; value: T }
-  | { ok: false; error: OllamaError };
+export type OllamaResult<T> = { ok: true; value: T } | { ok: false; error: OllamaError };
 
 export interface OllamaClient {
   checkOllamaReachable(): Promise<OllamaResult<void>>;
-  chat(
-    messages: OllamaChatMessage[],
-    options?: OllamaChatOptions,
-  ): Promise<OllamaResult<string>>;
+  chat(messages: OllamaChatMessage[], options?: OllamaChatOptions): Promise<OllamaResult<string>>;
 }

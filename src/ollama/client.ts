@@ -56,11 +56,10 @@ async function checkReachable(
   generationModel: string,
   timeoutMs: number,
 ): Promise<OllamaResult<void>> {
-  const result = await requestJson<TagsResponse>(
-    fetchFn,
-    `${baseUrl}/api/tags`,
-    { method: 'GET', timeoutMs },
-  );
+  const result = await requestJson<TagsResponse>(fetchFn, `${baseUrl}/api/tags`, {
+    method: 'GET',
+    timeoutMs,
+  });
   if (!result.ok) {
     return result;
   }
@@ -85,19 +84,15 @@ async function runChat(
   messages: OllamaChatMessage[],
   timeoutMs: number,
 ): Promise<OllamaResult<string>> {
-  const result = await requestJson<ChatResponse>(
-    fetchFn,
-    `${baseUrl}/api/chat`,
-    {
-      method: 'POST',
-      timeoutMs,
-      body: JSON.stringify({
-        model: generationModel,
-        messages,
-        stream: false,
-      }),
-    },
-  );
+  const result = await requestJson<ChatResponse>(fetchFn, `${baseUrl}/api/chat`, {
+    method: 'POST',
+    timeoutMs,
+    body: JSON.stringify({
+      model: generationModel,
+      messages,
+      stream: false,
+    }),
+  });
 
   if (!result.ok) {
     return result;

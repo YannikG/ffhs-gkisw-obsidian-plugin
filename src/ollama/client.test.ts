@@ -70,8 +70,8 @@ describe('createOllamaClient', () => {
     });
 
     it('returns http error when tags endpoint fails', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(JSON.stringify({ error: 'internal error' }), { status: 500 }),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify({ error: 'internal error' }), { status: 500 }),
       );
 
       const client = createOllamaClient(
@@ -91,8 +91,8 @@ describe('createOllamaClient', () => {
     });
 
     it('returns http error on 404 without model hint in body', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(JSON.stringify({ error: 'not found' }), { status: 404 }),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify({ error: 'not found' }), { status: 404 }),
       );
 
       const client = createOllamaClient(
@@ -112,8 +112,8 @@ describe('createOllamaClient', () => {
     });
 
     it('returns model error when generation model is not in tags', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(JSON.stringify(tagsBody(['other:model'])), { status: 200 }),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody(['other:model'])), { status: 200 }),
       );
 
       const client = createOllamaClient(
@@ -132,8 +132,8 @@ describe('createOllamaClient', () => {
     });
 
     it('matches model tags with variant suffix', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(JSON.stringify(tagsBody([`${MODEL}:latest`])), { status: 200 }),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody([`${MODEL}:latest`])), { status: 200 }),
       );
 
       const client = createOllamaClient(
@@ -180,11 +180,11 @@ describe('createOllamaClient', () => {
 
     it('uses default timeout of 90 seconds', async () => {
       const timeoutSpy = vi.spyOn(AbortSignal, 'timeout');
-      const fetchFn = mockFetch(() =>
-        new Response(
-          JSON.stringify({ message: { role: 'assistant', content: 'ok' } }),
-          { status: 200 },
-        ),
+      const fetchFn = mockFetch(
+        () =>
+          new Response(JSON.stringify({ message: { role: 'assistant', content: 'ok' } }), {
+            status: 200,
+          }),
       );
 
       const client = createOllamaClient(
@@ -197,9 +197,9 @@ describe('createOllamaClient', () => {
     });
 
     it('returns timeout error when request aborts', async () => {
-      const fetchFn = vi.fn().mockRejectedValue(
-        new DOMException('The operation timed out.', 'TimeoutError'),
-      );
+      const fetchFn = vi
+        .fn()
+        .mockRejectedValue(new DOMException('The operation timed out.', 'TimeoutError'));
 
       const client = createOllamaClient(
         { baseUrl: BASE_URL, generationModel: MODEL, timeoutMs: 50 },
@@ -217,8 +217,8 @@ describe('createOllamaClient', () => {
     });
 
     it('returns http error on non-ok status', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(JSON.stringify({ error: 'internal error' }), { status: 500 }),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify({ error: 'internal error' }), { status: 500 }),
       );
 
       const client = createOllamaClient(
@@ -238,11 +238,8 @@ describe('createOllamaClient', () => {
     });
 
     it('returns model error when Ollama reports missing model', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(
-          JSON.stringify({ error: "model 'missing' not found" }),
-          { status: 404 },
-        ),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify({ error: "model 'missing' not found" }), { status: 404 }),
       );
 
       const client = createOllamaClient(
@@ -262,8 +259,8 @@ describe('createOllamaClient', () => {
     });
 
     it('returns response error when assistant content is missing', async () => {
-      const fetchFn = mockFetch(() =>
-        new Response(JSON.stringify({ message: { role: 'assistant' } }), { status: 200 }),
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify({ message: { role: 'assistant' } }), { status: 200 }),
       );
 
       const client = createOllamaClient(
@@ -283,11 +280,11 @@ describe('createOllamaClient', () => {
 
     it('allows per-call timeout override', async () => {
       const timeoutSpy = vi.spyOn(AbortSignal, 'timeout');
-      const fetchFn = mockFetch(() =>
-        new Response(
-          JSON.stringify({ message: { role: 'assistant', content: 'ok' } }),
-          { status: 200 },
-        ),
+      const fetchFn = mockFetch(
+        () =>
+          new Response(JSON.stringify({ message: { role: 'assistant', content: 'ok' } }), {
+            status: 200,
+          }),
       );
 
       const client = createOllamaClient(
