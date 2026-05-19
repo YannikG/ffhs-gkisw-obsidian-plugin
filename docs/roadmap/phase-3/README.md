@@ -4,7 +4,9 @@
 
 **Status:** In Arbeit
 
-Projektplan und Arbeitspakete aus dem Anforderungskatalog; Abhängigkeiten und Reihenfolge dokumentieren. Ollama, RAG, Einstellungs-UI und Boilerplate gehören zu den späteren Umsetzungsschritten, nicht hierher. Technische Referenz: [SPEC.md](../../../SPEC.md). Technische Basis und Issues: [Phase 4](../phase-4/README.md) (P4-I01ff.).
+Projektplan und Arbeitspakete aus dem Anforderungskatalog; Abhängigkeiten und Reihenfolge dokumentieren. Technische Referenz: [SPEC.md](../../../SPEC.md).
+
+**Stand:** [Phase 4](../phase-4/README.md) mit kanonischen Issues umgesetzt/planbar. [Phasen 5–12](../overview.md) haben README-**Entwürfe** (Issue-Skelette); Phase 5 zusätzlich volle `issues/*.md`. Abschluss Phase 3, wenn Entwürfe vom Team freigegeben sind.
 
 ## Arbeitsinhalt (Kurz)
 

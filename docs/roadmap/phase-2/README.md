@@ -9,7 +9,7 @@ Skills, Cursor-Regeln, `.agents/`-Struktur und übrige Anweisungen, damit Agente
 ## Arbeitsinhalt (Kurz)
 
 - Skills und Regeln versionieren (z. B. unter `.agents/`, `.cursor/rules/`).
-- [Agenten-Themenindex](../../agents-docs/README.md), [Phasen planen](../../agents-docs/phasen-planen-fuer-agenten.md).
+- [Agenten-Themenindex](../../agents-docs/README.md), [Phasen planen](../../agents-docs/phasen-planen-fuer-agenten.md), [Grill with docs](../../../.agents/skills/grill-with-docs/SKILL.md) (Domänensprache vor Implementation).
 
 ## Verweise
 

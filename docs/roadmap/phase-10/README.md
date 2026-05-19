@@ -2,18 +2,27 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Geplant
+**Status:** Entwurf
 
-Systemarchitektur und aktuelle Implementation dokumentieren; Projektteam reviewed die Doku. Ergänzt [SPEC.md](../../../SPEC.md), ersetzt sie nicht.
+Systemarchitektur und Implementation dokumentieren; ersetzt [SPEC.md](../../../SPEC.md) nicht.
 
-## Arbeitsinhalt
+Voraussetzung: [Phase 9](../phase-9/README.md).
 
-- Architektur- und Implementationsbeschreibung (Ort: Repo, Vault oder anderes Team-Format).
-- Review-Runde, Nacharbeit.
+## Definition of Done (Entwurf)
+
+- [ ] Architektur-Doku (Datenfluss, Module, Index-Policy, Summary-Lauf).
+- [ ] Team-Review der Doku; Nacharbeit eingearbeitet.
+- [ ] `src/README.md` und Root-README konsistent mit Ist-Stand.
+
+## Arbeitspakete (Entwurf)
+
+| ID | Kurzbeschreibung |
+|----|------------------|
+| P10-I01 | Architektur- und Implementationsbeschreibung im Repo |
+| P10-I02 | Team-Review und Nacharbeit |
 
 ## Verweise
 
-- [Roadmap-Übersicht](../overview.md)
-- [SPEC.md](../../../SPEC.md)
 - [Phase 9](../phase-9/README.md)
-- [Phase 11 — Testen](../phase-11/README.md)
+- [Phase 11](../phase-11/README.md)
+- [SPEC.md](../../../SPEC.md)
