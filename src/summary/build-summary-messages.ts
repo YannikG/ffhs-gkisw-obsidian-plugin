@@ -27,9 +27,7 @@ function buildUserMessage(folderLabel: string, sourceContext: string): string {
   return `## Folder\n${folderLabel}\n\n## Source corpus\n${sourceContext}`;
 }
 
-export function buildSummaryMessages(
-  input: BuildSummaryMessagesInput,
-): OllamaChatMessage[] {
+export function buildSummaryMessages(input: BuildSummaryMessagesInput): OllamaChatMessage[] {
   return [
     { role: 'system', content: SUMMARY_SYSTEM_PROMPT },
     {

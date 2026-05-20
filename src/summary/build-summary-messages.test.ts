@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  SUMMARY_SYSTEM_PROMPT,
-  buildSummaryMessages,
-} from './build-summary-messages.js';
+import { SUMMARY_SYSTEM_PROMPT, buildSummaryMessages } from './build-summary-messages.js';
 
 describe('buildSummaryMessages', () => {
   const sourceContext = '# Note\n\nContent about $x$ and $$y$$.';
