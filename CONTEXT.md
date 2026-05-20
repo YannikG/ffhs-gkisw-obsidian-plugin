@@ -33,8 +33,40 @@ Die Obsidian-Notizensammlung des Nutzers; das Plugin liest und schreibt nur übe
 _Avoid_: Repository, Projektordner
 
 **Ordner-Quellkorpus** (Phase 5, ohne RAG):
-Der für einen Lauf zusammengeführte Text aller eingeschlossenen Quell-`.md` unter dem **Ordner**, noch ohne Retrieval-Chunks. Reihenfolge der Dateien: Vault-Pfad alphabetisch aufsteigend (reproduzierbar).
-_Avoid_: RAG, Index, Embedding (gelten erst ab späteren Phasen)
+Der für einen Lauf zusammengeführte Text aller eingeschlossenen Quell-`.md` unter dem **Ordner**, noch ohne Retrieval-Chunks. Reihenfolge der Dateien: Vault-Pfad alphabetisch aufsteigend (reproduzierbar). Format im Prompt (P5-I04): pro Datei `### ` + vault-relativer Pfad in Backticks, Inhalt, Trennung `---` zwischen Dateien (API `sourceContext`).
+_Avoid_: RAG, Index, Embedding (gelten erst ab späteren Phasen); blosser Inhalts-Concat ohne Pfad
+
+**Summary-System-Prompt** (Phase 5):
+Meta-Instruktionen an das Modell auf **Englisch** (Rollen, Markdown/Obsidian-Regeln, Quelltreue, Ausgabesprache-Regel). Die **Summary**-Ausgabe folgt **Summary-Ausgabesprache**, nicht zwingend Englisch.
+_Avoid_: deutsche System-Prompts in Phase 5 ohne Team-Entscheid; Englische Summary erzwingen wenn Quellen deutsch sind
+
+**Summary-User-Prompt** (Phase 5):
+User-Message mit englischen Abschnitts-Labels (z. B. `## Folder`, `## Source corpus`), eingebettet `folderLabel` und `sourceContext` (**Ordner-Quellkorpus** unverändert aus P5-I04).
+_Avoid_: deutsche Rahmenlabels wenn System-Prompt Englisch; Korpus im Prompt umformatieren (bleibt P5-I04)
+
+**Summary-Quelltreue** (Phase 5, Prompt, Eval-Vorbereitung):
+Faktische Aussagen aus dem **Ordner-Quellkorpus** nicht korrigieren oder weglassen, auch wenn sie falsch oder widersprüchlich wirken (SPEC §7, eingebaute Fehler für Evaluation). Plausibilität geht nachrangig.
+_Avoid_: «Fact-checking» oder stilles Entfernen von Fehlern in der Summary
+
+**Summary-Link-Policy** (Phase 5, Prompt):
+Nur Obsidian-**Wikilinks** zwischen **bestehenden** Quell-`.md` im **Ordner-Quellkorpus** ([Obsidian: Notizen verlinken](https://obsidian.md/de/help/link-notes)). Bestehende `[[…]]` aus Quellen beibehalten wenn relevant. **Keine** erfundenen Wikilinks, **keine** externen URLs, die nicht wörtlich in den Quellen stehen.
+_Avoid_: neue `[[Notiz]]` ausserhalb des Laufs; erfundene `https://`-Links
+
+**Summary-Länge und -Ton** (Phase 5, Prompt, US-02):
+Qualitativ **concise** und **key points** (Aufzählungen wo sinnvoll); kein festes Wortlimit in Phase 5. Nicht den ganzen **Ordner-Quellkorpus** paraphrasieren oder grossflächig zitieren. Obergrenze indirekt über **Kontextlimit** und Modell.
+_Avoid_: festes Wortlimit oder Prozent-Ratio im MVP-Prompt; Summary so lang wie Quellen
+
+**Summary-Body-Struktur** (Phase 5, Prompt):
+Keine Pflicht-H1 im generierten Markdown; der sichtbare Titel kommt vom Obsidian-Dateinamen (**Summary**-Datei). Body: Absätze und Aufzählungen nach Inhalt. Optionales YAML-Frontmatter erlaubt, nicht Pflicht in Phase 5.
+_Avoid_: `# Zusammenfassung: …` als feste erste Zeile (doppelt zum Dateinamen); Frontmatter als MVP-Pflicht
+
+**Summary-Ausgabesprache** (Phase 5, Prompt):
+Sprache der erzeugten **Summary** folgt der dominanten Sprache im **Ordner-Quellkorpus**; bei Deutsch → Schweizer Hochdeutsch (ss, Umlaute, kein scharfes S). Rein englische Quellen → Englisch. Gemischt: Deutsch wenn klar dominant, sonst Englisch.
+_Avoid_: immer Deutsch erzwingen bei englischen Quellen; mehrsprachige Summary pro Abschnitt ohne MVP-Bedarf
+
+**Ordner-Label** (API `folderLabel`, Phase 5):
+Sanitisierter Ordner-Basename, identisch dem Token in Summary-Dateinamen vor `_summary` (via `sanitizeFolderBasename`). Orchestrator (P5-I06) übergibt denselben Wert an `buildSummaryMessages` und `buildSummaryOutputFilename`.
+_Avoid_: Rohsegment mit Leerzeichen im Prompt, wenn der Dateiname `Test_Vault` lautet; «Label» ohne Klärung als voller Vault-Pfad
 
 **Kontextlimit** (Phase 5 und 7):
 Obergrenze (Zeichen) für den Kontext vor dem Ollama-Chat: Phase 5 = **Ordner-Quellkorpus**; Phase 7 = Summe der Retrieval-Chunks. Überschreitung → Abbruch mit Notice. Wert ist **einstellbar** (Plugin-Einstellungen, UI ab Phase 5); Default 32'000 Zeichen für `gemma4:e2b` und `gemma4:e4b` (gleicher Startwert, Nutzer kann anpassen).
