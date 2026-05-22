@@ -80,19 +80,27 @@ Nach Einlesen existiert kein eingeschlossenes Quell-`.md` unter dem **Ordner** (
 _Avoid_: leere Summary erzeugen, stilles No-Op
 
 **Chunk** (Phase 6+):
-Kleiner Textabschnitt aus einer Quell-`.md` für Embedding und Retrieval. **Chunk-Grösse** und **Overlap** sind in den Plugin-Einstellungen einstellbar (ab Phase 6); Defaults: 1000 Zeichen, Overlap 200.
+Kleiner Textabschnitt aus einer Quell-`.md` für Embedding und Retrieval. Entsteht durch **Absatz-Chunking** (nicht ganze Datei als ein Chunk). **Chunk-Grösse** und **Chunk-Overlap** sind in den Plugin-Einstellungen einstellbar (ab Phase 6); Defaults: 1000 Zeichen, Overlap 200.
 _Avoid_: ganze Datei als ein Chunk (ohne Klärung)
+
+**Absatz-Chunking** (Phase 6):
+Zerlegung von Quell-Markdown in **Chunks** an Absatzgrenzen (`\n\n`) und Überschriften (`#` … `######`); Blöcke werden bis zur **Chunk-Grösse** zusammengeführt.
+_Avoid_: reines Zeichen-Fenster ohne Absatzgrenzen
+
+**Chunk-Overlap** (Phase 6):
+Zwischen aufeinanderfolgenden **Chunks** derselben Datei: am Anfang von Chunk N+1 werden die letzten vollständigen Absatz-Blöcke von Chunk N wiederholt, bis die Summe der Zeichen ≤ **Chunk-Overlap** (Default 200); kein Schnitt mitten im Absatz.
+_Avoid_: rohe Zeichen-Overlap ohne Blockgrenzen
 
 **Vektorindex** (Phase 6+):
 Lokale SQLite-Datenbank (`vectors.db` im Plugin-Datenverzeichnis) mit Embeddings pro **Chunk** aus Quell-`.md`.
 _Avoid_: Index (ohne Klärung), Datenbank allein
 
 **Embedding-Modell-Wechsel**:
-Änderung des Embedding-Modells in den Einstellungen → Notice + vollständiger Re-Index (`vectors.db` neu). Alter Index wird nicht weiterverwendet.
-_Avoid_: gemischte Embeddings im selben Index, stiller Re-Index
+Änderung des Embedding-Modells in den Einstellungen → Notice + vollständiger Re-Index: alle Index-Tabellen in derselben `vectors.db` leeren (**truncate**), Schema bleibt, danach vault-weiter Neuaufbau. Alter Vektorinhalt wird nicht weiterverwendet.
+_Avoid_: gemischte Embeddings im selben Index, stiller Re-Index, zweite DB-Datei pro Modell
 
 **Index zurücksetzen** (UI):
-In den Einstellungen (ab Phase 6): Aktion «Vektorindex zurücksetzen / neu aufbauen» für Troubleshooting; löst vollständigen Re-Index aus.
+In den Einstellungen (ab Phase 6): Aktion «Vektorindex zurücksetzen / neu aufbauen» für Troubleshooting; gleicher Mechanismus wie beim **Embedding-Modell-Wechsel** (truncate + Re-Index).
 _Avoid_: nur verstecktes Löschen von `vectors.db` ohne UI
 
 **Generierungsmodell-Wechsel**:
@@ -103,7 +111,7 @@ _Avoid_: Re-Index bei reinem Generierungsmodell-Wechsel
 Kein blockierender Voll-Scan beim Obsidian-Start. Ein leichter **Hintergrund-Job** (Idle) und Vault-**Events** pflegen den **Vektorindex** vault-weit schrittweise. **Retrieval** und «Create Summary» lesen nur Chunks aus dem gewählten **Ordner**-Scope. Ist der Scope noch nicht indexiert → On-Demand-Nachindex für diesen Baum vor dem Retrieve.
 
 **Index-Fortschritt** (UI):
-On-Demand-Index für den **Ordner**-Scope: Notice «Indexiere…», Lauf wartet bis fertig. Idle-Hintergrund-Job vault-weit: keine dauernde UI.
+On-Demand-Index für den **Ordner**-Scope: öffentliche Plugin-Fassade zeigt Notice «Indexiere…», Lauf wartet bis fertig (reine Index-Logik ohne Notice: separates Modul/Issue). Idle-Hintergrund-Job vault-weit: maximal **3 Dateien** pro Idle-Tick, keine dauernde UI.
 _Avoid_: blockierender Startup-Scan, Hintergrund-Job mit ständiger Fortschrittsanzeige
 
 **Retrieval Top-K** (Phase 7):
