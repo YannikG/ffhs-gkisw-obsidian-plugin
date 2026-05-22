@@ -13,3 +13,13 @@ export {
   nextSummaryOutputVersion,
   sanitizeFolderBasename,
 } from './filename.js';
+export {
+  buildSourceContext,
+  collectFolderSourceCorpus,
+  isPathUnderObsidianMeta,
+  shouldIncludeMarkdownEntry,
+  type FolderMarkdownEntry,
+  type FolderSourceErrorKind,
+  type FolderSourceResult,
+} from './folder-source-corpus.js';
+export { readFolderMarkdownSources } from './vault-folder-sources.js';

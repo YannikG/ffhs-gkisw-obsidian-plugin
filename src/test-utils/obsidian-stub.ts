@@ -93,6 +93,7 @@ export class Modal {
 
 export class TAbstractFile {
   name = '';
+  path = '';
 }
 
 export class TFolder extends TAbstractFile {
@@ -101,6 +102,18 @@ export class TFolder extends TAbstractFile {
 
 export class TFile extends TAbstractFile {
   extension = 'md';
+}
+
+export class Vault {
+  private readonly contents = new Map<string, string>();
+
+  setContent(path: string, content: string): void {
+    this.contents.set(path, content);
+  }
+
+  async cachedRead(file: TFile): Promise<string> {
+    return this.contents.get(file.path) ?? '';
+  }
 }
 
 export type MenuItemSnapshot = { title: string; click: () => void };
