@@ -3,13 +3,15 @@
 ```text
 Phase: 6
 Issue-ID: P6-I01
-Blockiert von: P5-I07
+GitHub: #34
+Blockiert von: P5-I07 (#25)
 ```
 
 ## Meta
 
 - **Issue-ID:** P6-I01
-- **Blockiert von:** [P5-I07](../../phase-5/issues/P5-I07-phase5-dokumentation.md) (Phase-5-DoD)
+- **GitHub:** #34
+- **Blockiert von:** [P5-I07](../../phase-5/issues/P5-I07-phase5-dokumentation.md) (#25)
 - **Blockiert:** P6-I05
 
 ## Abhängigkeiten

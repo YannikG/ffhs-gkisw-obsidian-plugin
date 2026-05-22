@@ -3,13 +3,15 @@
 ```text
 Phase: 6
 Issue-ID: P6-I06
-Blockiert von: P6-I03
+GitHub: #39
+Blockiert von: P6-I03 (#36), P5-I07 (#25)
 ```
 
 ## Meta
 
 - **Issue-ID:** P6-I06
-- **Blockiert von:** [P6-I03](./P6-I03-vectors-db-schema.md), [P5-I07](../../phase-5/issues/P5-I07-phase5-dokumentation.md)
+- **GitHub:** #39
+- **Blockiert von:** [P6-I03](./P6-I03-vectors-db-schema.md) (#36), [P5-I07](../../phase-5/issues/P5-I07-phase5-dokumentation.md) (#25)
 - **Blockiert:** P6-I07
 
 ## Abhängigkeiten

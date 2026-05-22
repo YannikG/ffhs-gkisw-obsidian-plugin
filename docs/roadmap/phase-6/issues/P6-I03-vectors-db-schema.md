@@ -3,13 +3,15 @@
 ```text
 Phase: 6
 Issue-ID: P6-I03
-Blockiert von: P6-I02
+GitHub: #36
+Blockiert von: P6-I02 (#35), P5-I07 (#25)
 ```
 
 ## Meta
 
 - **Issue-ID:** P6-I03
-- **Blockiert von:** [P6-I02](./P6-I02-ollama-embeddings-client.md), [P5-I07](../../phase-5/issues/P5-I07-phase5-dokumentation.md)
+- **GitHub:** #36
+- **Blockiert von:** [P6-I02](./P6-I02-ollama-embeddings-client.md) (#35), [P5-I07](../../phase-5/issues/P5-I07-phase5-dokumentation.md) (#25)
 - **Blockiert:** P6-I04, P6-I06
 
 ## Abhängigkeiten
