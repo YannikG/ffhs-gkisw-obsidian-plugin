@@ -3,13 +3,15 @@
 ```text
 Phase: 6
 Issue-ID: P6-I07
-Blockiert von: P6-I04, P6-I05, P6-I06
+GitHub: #40
+Blockiert von: P6-I04 (#38), P6-I05 (#37), P6-I06 (#39)
 ```
 
 ## Meta
 
 - **Issue-ID:** P6-I07
-- **Blockiert von:** [P6-I04](./P6-I04-idle-index-vault-events.md), [P6-I05](./P6-I05-quellenfilter-index.md), [P6-I06](./P6-I06-einstellungen-vektorindex.md)
+- **GitHub:** #40
+- **Blockiert von:** [P6-I04](./P6-I04-idle-index-vault-events.md) (#38), [P6-I05](./P6-I05-quellenfilter-index.md) (#37), [P6-I06](./P6-I06-einstellungen-vektorindex.md) (#39)
 - **Blockiert:** Phase 7 (Retrieval-Anbindung)
 
 ## Abhängigkeiten

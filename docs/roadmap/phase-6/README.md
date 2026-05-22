@@ -53,15 +53,15 @@ Empfohlene Implementierungsreihenfolge: **I01 → I02 → I03 → I05 (parallel 
 
 | ID | GitHub | Titel | Kanonische Markdown-Datei |
 |----|--------|-------|---------------------------|
-| P6-I01 | — | [P6-I01] Absatz-Chunking (Pure) | [P6-I01-absatz-chunking.md](./issues/P6-I01-absatz-chunking.md) |
-| P6-I02 | — | [P6-I02] Ollama-Embeddings-HTTP-Client | [P6-I02-ollama-embeddings-client.md](./issues/P6-I02-ollama-embeddings-client.md) |
-| P6-I03 | — | [P6-I03] vectors.db und SQLite-Schema | [P6-I03-vectors-db-schema.md](./issues/P6-I03-vectors-db-schema.md) |
-| P6-I04 | — | [P6-I04] Idle-Index und Vault-Events | [P6-I04-idle-index-vault-events.md](./issues/P6-I04-idle-index-vault-events.md) |
-| P6-I05 | — | [P6-I05] Quellenfilter im Vektorindex | [P6-I05-quellenfilter-index.md](./issues/P6-I05-quellenfilter-index.md) |
-| P6-I06 | — | [P6-I06] Einstellungen Vektorindex | [P6-I06-einstellungen-vektorindex.md](./issues/P6-I06-einstellungen-vektorindex.md) |
-| P6-I07 | — | [P6-I07] rag-Modul und Plugin-Integration | [P6-I07-rag-modul-integration.md](./issues/P6-I07-rag-modul-integration.md) |
+| P6-I01 | #34 | [P6-I01] Absatz-Chunking (Pure) | [P6-I01-absatz-chunking.md](./issues/P6-I01-absatz-chunking.md) |
+| P6-I02 | #35 | [P6-I02] Ollama-Embeddings-HTTP-Client | [P6-I02-ollama-embeddings-client.md](./issues/P6-I02-ollama-embeddings-client.md) |
+| P6-I03 | #36 | [P6-I03] vectors.db und SQLite-Schema | [P6-I03-vectors-db-schema.md](./issues/P6-I03-vectors-db-schema.md) |
+| P6-I04 | #38 | [P6-I04] Idle-Index und Vault-Events | [P6-I04-idle-index-vault-events.md](./issues/P6-I04-idle-index-vault-events.md) |
+| P6-I05 | #37 | [P6-I05] Quellenfilter im Vektorindex | [P6-I05-quellenfilter-index.md](./issues/P6-I05-quellenfilter-index.md) |
+| P6-I06 | #39 | [P6-I06] Einstellungen Vektorindex | [P6-I06-einstellungen-vektorindex.md](./issues/P6-I06-einstellungen-vektorindex.md) |
+| P6-I07 | #40 | [P6-I07] rag-Modul und Plugin-Integration | [P6-I07-rag-modul-integration.md](./issues/P6-I07-rag-modul-integration.md) |
 
-GitHub-Issues nach Team-Freigabe anlegen ([github-issue-anlegen](../../../.agents/skills/github-issue-anlegen/SKILL.md)); Spalte **GitHub** dann mit `#n` füllen. Label: **Phase 6**. [Zusammenarbeit](../../zusammenarbeit/README.md).
+Label auf GitHub: **Phase 6**. [Zusammenarbeit](../../zusammenarbeit/README.md).
 
 ## Verweise
 
