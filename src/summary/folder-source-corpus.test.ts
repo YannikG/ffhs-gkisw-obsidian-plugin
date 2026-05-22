@@ -20,7 +20,10 @@ describe('buildSourceContext', () => {
 });
 
 describe('shouldIncludeMarkdownEntry', () => {
-  const entry = (vaultPath: string, basename = vaultPath.split('/').pop() ?? vaultPath): FolderMarkdownEntry => ({
+  const entry = (
+    vaultPath: string,
+    basename = vaultPath.split('/').pop() ?? vaultPath,
+  ): FolderMarkdownEntry => ({
     vaultPath,
     basename,
     content: 'x',
@@ -93,8 +96,7 @@ describe('collectFolderSourceCorpus', () => {
 
     expect(result).toEqual({
       ok: true,
-      sourceContext:
-        '### `course/note.md`\nBody\n---\n### `course/sub/other.md`\nOther',
+      sourceContext: '### `course/note.md`\nBody\n---\n### `course/sub/other.md`\nOther',
     });
   });
 });

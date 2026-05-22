@@ -29,9 +29,7 @@ export function shouldIncludeMarkdownEntry(entry: FolderMarkdownEntry): boolean 
 }
 
 export function buildSourceContext(entries: readonly FolderMarkdownEntry[]): string {
-  return entries
-    .map((entry) => `### \`${entry.vaultPath}\`\n${entry.content}`)
-    .join('\n---\n');
+  return entries.map((entry) => `### \`${entry.vaultPath}\`\n${entry.content}`).join('\n---\n');
 }
 
 export function collectFolderSourceCorpus(
