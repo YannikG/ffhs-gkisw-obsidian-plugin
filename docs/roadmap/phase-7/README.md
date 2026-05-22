@@ -2,43 +2,60 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Entwurf
+**Status:** Geplant
 
-Retrieval-Chunks aus dem Vektorindex (nur Ordner-Scope) ersetzen den Volltext-Korpus aus Phase 5. Nach On-Demand-Index: bei 0 Treffern Abbruch mit Notice, kein Volltext-Fallback.
+**Create Summary** nutzt Retrieval: On-Demand-Index → Query-Embedding aus Mini-Korpus (roher Concat, Cap 8'000) → semantisches Top-K im **Ordner**-Scope → **Retrieval-Kontext** im Chat. Kein Volltext-**Ordner-Quellkorpus** mehr (P7-I05).
 
-Voraussetzungen: [Phase 5](../phase-5/README.md), [Phase 6](../phase-6/README.md). Architektur: [SPEC.md](../../../SPEC.md) §4.2.
+Voraussetzungen: [Phase 5](../phase-5/README.md) (P5-I06 E2E), [Phase 6](../phase-6/README.md) **Definition of Done** (P6-I07 inkl. `searchSimilarInFolder`). Architektur: [SPEC.md](../../../SPEC.md) §4.2.
 
-## Definition of Done (Entwurf)
+## Einordnung
 
-- [ ] Retrieve Top-K (einstellbar, Default 8) im Ordner-Scope.
-- [ ] **Kontextlimit** auf Summe der Chunk-Texte; Überschreitung → Abbruch.
-- [ ] Orchestrator nutzt nur Retrieval-Kontext (P5-Vollkorpus-Pfad entfernt).
-- [ ] On-Demand-Index + **Leeres Retrieval** gemäss CONTEXT.
-- [ ] Manueller E2E-Test mit indexiertem Ordner; `npm test` grün.
+Phase 7 verkabelt RAG und LLM. Phase 6 liefert **Vektorindex** und On-Demand; Phase 5 liefert Menü, Prompts und Summary-Schreiben. Implementierung startet erst nach Phase-6-DoD.
 
-## Abhängigkeitsgraph (Skelett)
+## Definition of Done (Phase 7)
+
+- [ ] Retrieval-Query-Text und semantisches Top-K (P7-I01, P7-I02).
+- [ ] **Retrieval-Kontext** + `retrievalTopK` in Einstellungen (Default 8) (P7-I03).
+- [ ] Summary-Orchestrator RAG mit Kontextlimit auf Chunks, zwei Leer-Notices (P7-I04).
+- [ ] Vollkorpus-Pfad aus Produktion entfernt (P7-I05).
+- [ ] `npm test`, `npm run build`, CI grün; manueller Test mit indexiertem Ordner (P7-I04).
+
+## Abhängigkeitsgraph
+
+Konkrete **Blockiert-von**-Angaben in den jeweiligen [`issues/`](./issues/)-Dateien.
 
 ```mermaid
 flowchart TD
-  P6[Phase6]
-  I01[P7-I01 Retrieve]
-  I02[P7-I02 Orchestrator]
-  I03[P7-I03 Fehlerfälle]
-  I04[P7-I04 Entfernen Vollkorpus]
-  P6 --> I01
+  P6DoD[P6_I07]
+  P5E2E[P5_I06]
+  I01[P7_I01 Query]
+  I02[P7_I02 TopK]
+  I03[P7_I03 Context]
+  I04[P7_I04 Orchestrator]
+  I05[P7_I05 NoCorpus]
+  P6DoD --> I02
+  P5E2E --> I01
   I01 --> I02
   I02 --> I03
-  I02 --> I04
+  I03 --> I04
+  P5E2E --> I04
+  P6DoD --> I04
+  I04 --> I05
 ```
 
-## Arbeitspakete (Entwurf)
+Empfohlene Reihenfolge: **I01 → I02 → I03 → I04 → I05**.
 
-| ID | Kurzbeschreibung |
-|----|------------------|
-| P7-I01 | Retrieve Top-K API (Ordner-Scope; K aus Einstellungen) |
-| P7-I02 | Orchestrator: Chunks → `buildSummaryMessages` → Chat |
-| P7-I03 | On-Demand-Index, 0 Treffer, Kontextlimit auf Chunks |
-| P7-I04 | P5-Vollkorpus-Pfad aus Produktionsflow entfernen |
+## Arbeitspakete
+
+| ID | GitHub | Titel | Kanonische Markdown-Datei |
+|----|--------|-------|---------------------------|
+| P7-I01 | — | [P7-I01] Retrieval-Query-Text (Pure) | [P7-I01-retrieval-query-text.md](./issues/P7-I01-retrieval-query-text.md) |
+| P7-I02 | — | [P7-I02] Retrieve Top-K (semantisch) | [P7-I02-retrieve-top-k.md](./issues/P7-I02-retrieve-top-k.md) |
+| P7-I03 | — | [P7-I03] Retrieval-Kontext und Top-K-Einstellung | [P7-I03-retrieval-kontext-top-k-settings.md](./issues/P7-I03-retrieval-kontext-top-k-settings.md) |
+| P7-I04 | — | [P7-I04] Summary-Orchestrator (RAG-Pfad) | [P7-I04-summary-orchestrator-rag.md](./issues/P7-I04-summary-orchestrator-rag.md) |
+| P7-I05 | — | [P7-I05] Vollkorpus-Pfad aus Produktionsflow entfernen | [P7-I05-vollkorpus-entfernen.md](./issues/P7-I05-vollkorpus-entfernen.md) |
+
+GitHub-Issues nach Team-Freigabe anlegen; Label **Phase 7**. [Zusammenarbeit](../../zusammenarbeit/README.md).
 
 ## Verweise
 

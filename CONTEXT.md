@@ -114,17 +114,29 @@ Kein blockierender Voll-Scan beim Obsidian-Start. Ein leichter **Hintergrund-Job
 On-Demand-Index für den **Ordner**-Scope: öffentliche Plugin-Fassade zeigt Notice «Indexiere…», Lauf wartet bis fertig (reine Index-Logik ohne Notice: separates Modul/Issue). Idle-Hintergrund-Job vault-weit: maximal **3 Dateien** pro Idle-Tick, keine dauernde UI.
 _Avoid_: blockierender Startup-Scan, Hintergrund-Job mit ständiger Fortschrittsanzeige
 
+**Retrieval-Query** (Phase 7):
+Text für das Query-Embedding vor semantischem Top-K: **roher Concat** der eingeschlossenen Quell-`.md` im **Ordner** (Leerzeile zwischen Dateien), nicht das Chat-Prompt-Format. Obergrenze **8'000 Zeichen** (Dateien alphabetisch anhängen bis Cap). Daraus ein Embedding → Similarity im **Ordner**-Scope.
+_Avoid_: gleiches `###`-Format wie **Retrieval-Kontext**; Vollkorpus im Chat als Query
+
+**Retrieval-Kontext** (Phase 7):
+Die Top-K-Chunks formatiert für `buildSummaryMessages` (`sourceContext`): pro Chunk `### \`vault_path\`` (optional Chunk-Index), Text, `---` — analog **Ordner-Quellkorpus**, Inhalt aus dem **Vektorindex**, nicht Volltext aller Quellen.
+_Avoid_: **Ordner-Quellkorpus** und **Retrieval-Kontext** verwechseln
+
 **Retrieval Top-K** (Phase 7):
-Maximale Anzahl Chunks, die ins Prompt dürfen (vor Prüfung des **Kontextlimits**). Einstellbar in den Plugin-Einstellungen; sinnvoller Default z. B. 8.
-_Avoid_: «alle Treffer», feste K ohne Einstellung
+Maximale Anzahl Chunks, die ins Prompt dürfen (vor Prüfung des **Kontextlimits**). Einstellbar in den Plugin-Einstellungen (UI ab P7-I03); Default **8**. Liefert **min(K, verfügbar)** Treffer im Ordner-Scope.
+_Avoid_: «alle Treffer», feste K ohne Einstellung, Fehler wenn weniger als K Chunks existieren
 
 **Summary-Lauf** (Orchestrierung):
 Ein aktiver Create-Summary-Lauf zur Zeit; zweiter Klick → Notice «Läuft bereits» oder wird ignoriert.
 _Avoid_: parallele Ollama-Aufrufe ohne Absicherung, stille Doppel-Läufe
 
 **Leeres Retrieval** (Phase 7):
-Vor dem LLM-Aufruf: On-Demand-Index für den **Ordner**-Scope, falls nötig. Bleiben 0 Treffer → Abbruch mit Notice, keine Summary. Kein Fallback auf **Ordner-Quellkorpus**.
+Nach On-Demand-Index: **0 Chunks** im Ordner-Scope → Abbruch mit Notice «Keine indexierten Inhalte für die Zusammenfassung.», keine Summary. Kein Fallback auf **Ordner-Quellkorpus**.
 _Avoid_: stilles Weiter mit leerem Prompt, automatischer Volltext-Fallback
+
+**Keine Quellen im Ordner** (Phase 7, vor Index):
+Kein eingeschlossenes Quell-`.md` für die Retrieval-Query → Notice «Keine Quellen in diesem Ordner.», vor On-Demand/Embed. Unterscheidet sich von **Leeres Retrieval**.
+_Avoid_: eine Notice für beide Fälle
 
 ## Relationships
 

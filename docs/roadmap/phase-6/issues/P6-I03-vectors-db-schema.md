@@ -28,7 +28,8 @@ Lokaler **Vektorindex** als SQLite-Datenbank `vectors.db` im **Plugin-Datenverze
 - [ ] Persistenz unter Plugin-Datenpfad; Dateiname `vectors.db`.
 - [ ] Schema mindestens: `vault_path`, `chunk_index`, `embedding_model`, `text` (oder Hash), Vektor-Spalte kompatibel mit `sqlite-wasm-vec`; `mtime` oder `content_hash` für Invalidierung dokumentiert.
 - [ ] API (Pure oder dünn): `upsertChunks`, `deleteByVaultPath`, `queryByFolderPrefix(folderPath)`, `truncateAll` (leert alle Index-Tabellen, Schema bleibt).
-- [ ] Unit-Test: zwei Chunks upserten → Abfrage per Ordner-Prefix liefert Treffer → `deleteByVaultPath` entfernt alle Chunks der Datei → `npm test` grün.
+- [ ] **`searchSimilarInFolder(embedding, folderPrefix, k)`:** cosine Top-K nur unter `vault_path`-Prefix (Phase 7); Rückgabe mit `vaultPath`, `chunkIndex`, `text`, Similarity absteigend.
+- [ ] Unit-Test: zwei Chunks upserten → Abfrage per Ordner-Prefix liefert Treffer → `searchSimilarInFolder` liefert höchstens k Treffer → `deleteByVaultPath` entfernt alle Chunks der Datei → `npm test` grün.
 - [ ] **Manueller Obsidian-Smoke** in PR beschrieben (WASM/Electron-Risiko); bei Blocker Kurzbegründung und Follow-up.
 - [ ] `npm run build` grün nach Abhängigkeits-Ergänzung in `package.json`.
 
@@ -40,6 +41,6 @@ Lokaler **Vektorindex** als SQLite-Datenbank `vectors.db` im **Plugin-Datenverze
 
 ## Ausserhalb des Scopes
 
-- Retrieval Top-K und Ranking-Qualität (Phase 7).
+- Orchestrierung Create Summary (Phase 7); Ranking-Tuning über MVP hinaus.
 - Idle-Job, Vault-Events (P6-I04).
 - Einstellungs-UI (P6-I06); Embedding-Aufrufe bleiben in P6-I02.
