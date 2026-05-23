@@ -22,9 +22,15 @@ export {
   type FolderSourceErrorKind,
   type FolderSourceResult,
 } from './folder-source-corpus.js';
-export { resolveSummaryOutputFilename } from './resolve-summary-output.js';
 export { readFolderMarkdownSources } from './vault-folder-sources.js';
 export {
+  buildSummaryOutputVaultPath,
+  resolveSummaryOutputFilename,
+  writeSummaryMarkdown,
+  type SummaryVaultWritePort,
+  type SummaryWriteResult,
+} from './summary-output.js';
+export {
+  collectMarkdownBasenamesRecursive,
   writeSummaryMarkdownToFolder,
-  type WriteSummaryMarkdownResult,
 } from './vault-write-summary.js';
