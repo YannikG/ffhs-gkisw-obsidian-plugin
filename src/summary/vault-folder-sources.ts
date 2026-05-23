@@ -1,25 +1,10 @@
-import { TFile, TFolder, type Vault } from 'obsidian';
+import { TFolder, type Vault } from 'obsidian';
 import {
   collectFolderSourceCorpus,
   type FolderMarkdownEntry,
   type FolderSourceResult,
 } from './folder-source-corpus.js';
-
-function collectMarkdownFilesUnderFolder(folder: TFolder): TFile[] {
-  const files: TFile[] = [];
-
-  for (const child of folder.children) {
-    if (child instanceof TFolder) {
-      files.push(...collectMarkdownFilesUnderFolder(child));
-      continue;
-    }
-    if (child instanceof TFile && child.extension === 'md') {
-      files.push(child);
-    }
-  }
-
-  return files;
-}
+import { collectMarkdownFilesUnderFolder } from './vault-folder-tree.js';
 
 export async function readFolderMarkdownSources(
   vault: Vault,

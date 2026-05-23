@@ -1,0 +1,26 @@
+import { TFolder, type Vault } from 'obsidian';
+import { writeSummaryMarkdown, type SummaryWriteResult } from './summary-output.js';
+import { collectMarkdownFilesUnderFolder } from './vault-folder-tree.js';
+
+/** Markdown basenames under the folder tree; used for summary version detection (SPEC US-03). */
+export function collectMarkdownBasenamesRecursive(folder: TFolder): string[] {
+  return collectMarkdownFilesUnderFolder(folder).map((file) => file.name);
+}
+
+export async function writeSummaryMarkdownToFolder(
+  vault: Vault,
+  folder: TFolder,
+  content: string,
+): Promise<SummaryWriteResult> {
+  return writeSummaryMarkdown(
+    {
+      listMarkdownBasenamesInTree: () => collectMarkdownBasenamesRecursive(folder),
+      createFile: async (vaultPath, body) => {
+        await vault.create(vaultPath, body);
+      },
+    },
+    folder.path,
+    folder.name,
+    content,
+  );
+}
