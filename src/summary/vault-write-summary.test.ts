@@ -1,6 +1,9 @@
 import type { TFolder, Vault } from 'obsidian';
 import { describe, expect, it } from 'vitest';
-import { collectMarkdownBasenamesRecursive, writeSummaryMarkdownToFolder } from './vault-write-summary.js';
+import {
+  collectMarkdownBasenamesRecursive,
+  writeSummaryMarkdownToFolder,
+} from './vault-write-summary.js';
 import { TFile, TFolder as StubFolder, Vault as StubVault } from '../test-utils/obsidian-stub.js';
 
 function mdFile(path: string, name: string): TFile {
@@ -29,11 +32,7 @@ describe('collectMarkdownBasenamesRecursive', () => {
       ]),
     ]);
 
-    expect(collectMarkdownBasenamesRecursive(root)).toEqual([
-      'a.md',
-      'b.md',
-      'GKISW_summary_2.md',
-    ]);
+    expect(collectMarkdownBasenamesRecursive(root)).toEqual(['a.md', 'b.md', 'GKISW_summary_2.md']);
   });
 });
 
