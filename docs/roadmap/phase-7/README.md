@@ -49,13 +49,13 @@ Empfohlene Reihenfolge: **I01 → I02 → I03 → I04 → I05**.
 
 | ID | GitHub | Titel | Kanonische Markdown-Datei |
 |----|--------|-------|---------------------------|
-| P7-I01 | — | [P7-I01] Retrieval-Query-Text (Pure) | [P7-I01-retrieval-query-text.md](./issues/P7-I01-retrieval-query-text.md) |
-| P7-I02 | — | [P7-I02] Retrieve Top-K (semantisch) | [P7-I02-retrieve-top-k.md](./issues/P7-I02-retrieve-top-k.md) |
-| P7-I03 | — | [P7-I03] Retrieval-Kontext und Top-K-Einstellung | [P7-I03-retrieval-kontext-top-k-settings.md](./issues/P7-I03-retrieval-kontext-top-k-settings.md) |
-| P7-I04 | — | [P7-I04] Summary-Orchestrator (RAG-Pfad) | [P7-I04-summary-orchestrator-rag.md](./issues/P7-I04-summary-orchestrator-rag.md) |
-| P7-I05 | — | [P7-I05] Vollkorpus-Pfad aus Produktionsflow entfernen | [P7-I05-vollkorpus-entfernen.md](./issues/P7-I05-vollkorpus-entfernen.md) |
+| P7-I01 | #43 | [P7-I01] Retrieval-Query-Text (Pure) | [P7-I01-retrieval-query-text.md](./issues/P7-I01-retrieval-query-text.md) |
+| P7-I02 | #44 | [P7-I02] Retrieve Top-K (semantisch) | [P7-I02-retrieve-top-k.md](./issues/P7-I02-retrieve-top-k.md) |
+| P7-I03 | #45 | [P7-I03] Retrieval-Kontext und Top-K-Einstellung | [P7-I03-retrieval-kontext-top-k-settings.md](./issues/P7-I03-retrieval-kontext-top-k-settings.md) |
+| P7-I04 | #46 | [P7-I04] Summary-Orchestrator (RAG-Pfad) | [P7-I04-summary-orchestrator-rag.md](./issues/P7-I04-summary-orchestrator-rag.md) |
+| P7-I05 | #47 | [P7-I05] Vollkorpus-Pfad aus Produktionsflow entfernen | [P7-I05-vollkorpus-entfernen.md](./issues/P7-I05-vollkorpus-entfernen.md) |
 
-GitHub-Issues nach Team-Freigabe anlegen; Label **Phase 7**. [Zusammenarbeit](../../zusammenarbeit/README.md).
+Label auf GitHub: **Phase 7**. [Zusammenarbeit](../../zusammenarbeit/README.md).
 
 ## Verweise
 

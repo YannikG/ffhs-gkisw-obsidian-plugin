@@ -3,13 +3,15 @@
 ```text
 Phase: 7
 Issue-ID: P7-I04
-Blockiert von: P7-I01, P7-I02, P7-I03, P6-I07, P5-I06
+GitHub: #46
+Blockiert von: P7-I01 (#43), P7-I02 (#44), P7-I03 (#45), P6-I07 (#40), P5-I06 (#24)
 ```
 
 ## Meta
 
 - **Issue-ID:** P7-I04
-- **Blockiert von:** [P7-I01](./P7-I01-retrieval-query-text.md), [P7-I02](./P7-I02-retrieve-top-k.md), [P7-I03](./P7-I03-retrieval-kontext-top-k-settings.md), [P6-I07](../../phase-6/issues/P6-I07-rag-modul-integration.md), [P5-I06-create-summary-ohne-rag.md](../../phase-5/issues/P5-I06-create-summary-ohne-rag.md)
+- **GitHub:** #46
+- **Blockiert von:** [P7-I01](./P7-I01-retrieval-query-text.md) (#43), [P7-I02](./P7-I02-retrieve-top-k.md) (#44), [P7-I03](./P7-I03-retrieval-kontext-top-k-settings.md) (#45), [P6-I07](../../phase-6/issues/P6-I07-rag-modul-integration.md) (#40), [P5-I06-create-summary-ohne-rag.md](../../phase-5/issues/P5-I06-create-summary-ohne-rag.md) (#24)
 - **Blockiert:** P7-I05
 
 ## Abhängigkeiten

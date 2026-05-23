@@ -3,13 +3,15 @@
 ```text
 Phase: 7
 Issue-ID: P7-I02
-Blockiert von: P7-I01, P6-I07
+GitHub: #44
+Blockiert von: P7-I01 (#43), P6-I07 (#40)
 ```
 
 ## Meta
 
 - **Issue-ID:** P7-I02
-- **Blockiert von:** [P7-I01](./P7-I01-retrieval-query-text.md), [P6-I07](../../phase-6/issues/P6-I07-rag-modul-integration.md)
+- **GitHub:** #44
+- **Blockiert von:** [P7-I01](./P7-I01-retrieval-query-text.md) (#43), [P6-I07](../../phase-6/issues/P6-I07-rag-modul-integration.md) (#40)
 - **Blockiert:** P7-I03
 
 ## Abhängigkeiten

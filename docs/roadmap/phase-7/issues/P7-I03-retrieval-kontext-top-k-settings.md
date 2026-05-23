@@ -3,13 +3,15 @@
 ```text
 Phase: 7
 Issue-ID: P7-I03
-Blockiert von: P7-I02
+GitHub: #45
+Blockiert von: P7-I02 (#44)
 ```
 
 ## Meta
 
 - **Issue-ID:** P7-I03
-- **Blockiert von:** [P7-I02](./P7-I02-retrieve-top-k.md)
+- **GitHub:** #45
+- **Blockiert von:** [P7-I02](./P7-I02-retrieve-top-k.md) (#44)
 - **Blockiert:** P7-I04
 
 ## Abhängigkeiten
