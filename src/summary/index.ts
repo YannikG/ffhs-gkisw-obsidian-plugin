@@ -23,3 +23,14 @@ export {
   type FolderSourceResult,
 } from './folder-source-corpus.js';
 export { readFolderMarkdownSources } from './vault-folder-sources.js';
+export {
+  buildSummaryOutputVaultPath,
+  resolveSummaryOutputFilename,
+  writeSummaryMarkdown,
+  type SummaryVaultWritePort,
+  type SummaryWriteResult,
+} from './summary-output.js';
+export {
+  collectMarkdownBasenamesRecursive,
+  writeSummaryMarkdownToFolder,
+} from './vault-write-summary.js';

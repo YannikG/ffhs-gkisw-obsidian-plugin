@@ -13,7 +13,7 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 | `settings.ts` | `PluginSettings`, `DEFAULT_SETTINGS`, `mergeSettings`, `resolvePluginSettings` (SPEC §6). |
 | `settings-tab.ts` | `ObsidianSummarizerSettingTab` — drei Eingabefelder, Persistenz via `saveData` (P4-I04). |
 | `settings-restore-modal.ts` | Bestätigungsdialog zum Wiederherstellen leerer Pflichtfelder. |
-| `summary/` | Summary output filenames (`buildSummaryOutputFilename`, …) and future orchestration (SPEC §1, US-03, §4.4). |
+| `summary/` | Summary filenames (US-03), folder corpus read, vault write adapter, prompts, menu (SPEC §1, US-03, §4.4). |
 | `ollama/` | Ollama HTTP client: healthcheck (`/api/tags`) + chat (`/api/chat`, SPEC §5). |
 | `rag/` | Vector index / retrieval stub (SPEC §4.1, §4.3). |
 
@@ -25,6 +25,7 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 | `settings.ts`, `settings-tab.ts`, `settings-restore-modal.ts` | P4-I03 (types/defaults); P4-I04 (UI + persist) |
 | `summary/`, `ollama/`, `rag/` skeleton | P4-I03 |
 | Folder context menu | P4-I05 |
+| Summary vault write (`summary-output`, `vault-write-summary`) | P5-I05 |
 | Unit tests infra | P4-I09 |
 
 ## Import rules

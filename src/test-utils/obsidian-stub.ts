@@ -111,8 +111,21 @@ export class Vault {
     this.contents.set(path, content);
   }
 
+  getContent(path: string): string | undefined {
+    return this.contents.get(path);
+  }
+
   async cachedRead(file: TFile): Promise<string> {
     return this.contents.get(file.path) ?? '';
+  }
+
+  async create(path: string, content: string): Promise<TFile> {
+    this.contents.set(path, content);
+    const file = new TFile();
+    file.path = path;
+    file.name = path.split('/').pop() ?? path;
+    file.extension = 'md';
+    return file;
   }
 }
 
