@@ -119,7 +119,7 @@ Text für das Query-Embedding vor semantischem Top-K: **roher Concat** der einge
 _Avoid_: gleiches `###`-Format wie **Retrieval-Kontext**; Vollkorpus im Chat als Query
 
 **Retrieval-Kontext** (Phase 7):
-Die Top-K-Chunks formatiert für `buildSummaryMessages` (`sourceContext`): pro Chunk `### \`vault_path\`` (optional Chunk-Index), Text, `---` — analog **Ordner-Quellkorpus**, Inhalt aus dem **Vektorindex**, nicht Volltext aller Quellen.
+Die Top-K-Chunks formatiert für `buildSummaryMessages` (`sourceContext`): pro Chunk Überschrift mit vault-relativem Pfad in Backticks (optional Chunk-Index), Text, Trennung `---` zwischen Chunks — analog **Ordner-Quellkorpus**, Inhalt aus dem **Vektorindex**, nicht Volltext aller Quellen.
 _Avoid_: **Ordner-Quellkorpus** und **Retrieval-Kontext** verwechseln
 
 **Retrieval Top-K** (Phase 7):
