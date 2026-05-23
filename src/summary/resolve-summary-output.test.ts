@@ -7,9 +7,7 @@ describe('resolveSummaryOutputFilename', () => {
   });
 
   it('returns version 2 when only the base summary exists', () => {
-    expect(resolveSummaryOutputFilename('GKISW', ['GKISW_summary.md'])).toBe(
-      'GKISW_summary_2.md',
-    );
+    expect(resolveSummaryOutputFilename('GKISW', ['GKISW_summary.md'])).toBe('GKISW_summary_2.md');
   });
 
   it('returns the next free version above existing outputs', () => {

@@ -1,7 +1,11 @@
 import type { TFile, TFolder, Vault } from 'obsidian';
 import { describe, expect, it } from 'vitest';
 import { writeSummaryMarkdownToFolder } from './vault-write-summary.js';
-import { TFile as StubFile, TFolder as StubFolder, Vault as StubVault } from '../test-utils/obsidian-stub.js';
+import {
+  TFile as StubFile,
+  TFolder as StubFolder,
+  Vault as StubVault,
+} from '../test-utils/obsidian-stub.js';
 
 function mdFile(path: string, name: string): TFile {
   const file = new StubFile();
