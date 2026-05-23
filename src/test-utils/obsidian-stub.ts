@@ -111,8 +111,25 @@ export class Vault {
     this.contents.set(path, content);
   }
 
+  getContent(path: string): string | undefined {
+    return this.contents.get(path);
+  }
+
   async cachedRead(file: TFile): Promise<string> {
     return this.contents.get(file.path) ?? '';
+  }
+
+  async create(path: string, data: string): Promise<TFile> {
+    if (this.contents.has(path)) {
+      throw new Error(`File already exists: ${path}`);
+    }
+    this.contents.set(path, data);
+    const file = new TFile();
+    file.path = path;
+    const slash = path.lastIndexOf('/');
+    file.name = slash >= 0 ? path.slice(slash + 1) : path;
+    file.extension = 'md';
+    return file;
   }
 }
 
