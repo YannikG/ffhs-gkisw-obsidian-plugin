@@ -3,13 +3,15 @@
 ```text
 Phase: 7
 Issue-ID: P7-I01
-Blockiert von: P5-I04, P5-I07
+GitHub: #43
+Blockiert von: P5-I04 (#22), P5-I07 (#25)
 ```
 
 ## Meta
 
 - **Issue-ID:** P7-I01
-- **Blockiert von:** [P5-I04-ordner-markdown-einlesen.md](../../phase-5/issues/P5-I04-ordner-markdown-einlesen.md), [P5-I07-phase5-dokumentation.md](../../phase-5/issues/P5-I07-phase5-dokumentation.md)
+- **GitHub:** #43
+- **Blockiert von:** [P5-I04-ordner-markdown-einlesen.md](../../phase-5/issues/P5-I04-ordner-markdown-einlesen.md) (#22), [P5-I07-phase5-dokumentation.md](../../phase-5/issues/P5-I07-phase5-dokumentation.md) (#25)
 - **Blockiert:** P7-I02
 
 ## Abhängigkeiten

@@ -3,13 +3,15 @@
 ```text
 Phase: 7
 Issue-ID: P7-I05
-Blockiert von: P7-I04
+GitHub: #47
+Blockiert von: P7-I04 (#46)
 ```
 
 ## Meta
 
 - **Issue-ID:** P7-I05
-- **Blockiert von:** [P7-I04](./P7-I04-summary-orchestrator-rag.md)
+- **GitHub:** #47
+- **Blockiert von:** [P7-I04](./P7-I04-summary-orchestrator-rag.md) (#46)
 - **Blockiert:** Phase 8
 
 ## Abhängigkeiten
