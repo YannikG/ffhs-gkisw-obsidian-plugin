@@ -1,5 +1,5 @@
 import type { Menu as ObsidianMenu, Plugin, TAbstractFile } from 'obsidian';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { CREATE_SUMMARY_MENU_LABEL } from './create-summary-stub.js';
 import {
   handleCreateSummaryFileMenu,
