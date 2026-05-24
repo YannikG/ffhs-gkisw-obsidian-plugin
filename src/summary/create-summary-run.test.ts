@@ -6,7 +6,11 @@ import {
   CREATE_SUMMARY_GENERATING_NOTICE,
   CREATE_SUMMARY_RUN_ALREADY_NOTICE,
 } from './create-summary-notices.js';
-import { mapOllamaErrorToNotice, runCreateSummary, type CreateSummaryRunPorts } from './create-summary-run.js';
+import {
+  mapOllamaErrorToNotice,
+  runCreateSummary,
+  type CreateSummaryRunPorts,
+} from './create-summary-run.js';
 import type { SummaryWriteResult } from './summary-output.js';
 
 const INPUT = { folderLabel: 'GKISW', contextLimit: 100 };
@@ -20,7 +24,10 @@ function err(kind: 'connection' | 'model' | 'timeout', message: string): OllamaR
 }
 
 function createPorts(overrides: Partial<CreateSummaryRunPorts> = {}): CreateSummaryRunPorts {
-  const writeResult: SummaryWriteResult = { vaultPath: 'course/GKISW_summary.md', filename: 'GKISW_summary.md' };
+  const writeResult: SummaryWriteResult = {
+    vaultPath: 'course/GKISW_summary.md',
+    filename: 'GKISW_summary.md',
+  };
   let runActive = false;
 
   return {
@@ -48,7 +55,9 @@ function createPorts(overrides: Partial<CreateSummaryRunPorts> = {}): CreateSumm
 
 describe('mapOllamaErrorToNotice', () => {
   it('maps connection errors to a fixed notice', () => {
-    expect(mapOllamaErrorToNotice({ kind: 'connection', message: 'x' })).toMatch(/nicht erreichbar/i);
+    expect(mapOllamaErrorToNotice({ kind: 'connection', message: 'x' })).toMatch(
+      /nicht erreichbar/i,
+    );
   });
 
   it('maps timeout errors to a fixed notice', () => {
@@ -64,9 +73,7 @@ describe('mapOllamaErrorToNotice', () => {
 describe('runCreateSummary', () => {
   it('shows run-already notice when a second run starts', async () => {
     const ports = createPorts({
-      tryBeginRun: vi.fn()
-        .mockReturnValueOnce(true)
-        .mockReturnValueOnce(false),
+      tryBeginRun: vi.fn().mockReturnValueOnce(true).mockReturnValueOnce(false),
     });
 
     await runCreateSummary(ports, INPUT);
@@ -78,7 +85,10 @@ describe('runCreateSummary', () => {
 
   it('aborts with empty-folder notice and does not call chat', async () => {
     const ports = createPorts({
-      readSources: vi.fn(async () => ({ ok: false as const, error: { kind: 'empty_folder' as const } })),
+      readSources: vi.fn(async () => ({
+        ok: false as const,
+        error: { kind: 'empty_folder' as const },
+      })),
     });
 
     await runCreateSummary(ports, INPUT);

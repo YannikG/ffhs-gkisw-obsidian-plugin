@@ -34,7 +34,8 @@ export function registerCreateSummaryFileMenu(
   plugin: Plugin,
   host: CreateSummaryMenuHost,
 ): () => void {
-  const handler = (menu: Menu, file: TAbstractFile) => handleCreateSummaryFileMenu(menu, file, host);
+  const handler = (menu: Menu, file: TAbstractFile) =>
+    handleCreateSummaryFileMenu(menu, file, host);
   const ref = plugin.app.workspace.on('file-menu', handler);
   return () => plugin.app.workspace.offref(ref);
 }
