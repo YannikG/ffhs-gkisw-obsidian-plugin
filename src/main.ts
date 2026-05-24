@@ -1,5 +1,9 @@
 import { Plugin } from 'obsidian';
-import { registerCreateSummaryFileMenu } from './summary/create-summary-file-menu.js';
+import { runCreateSummaryForFolder } from './summary/create-summary-for-folder.js';
+import {
+  registerCreateSummaryFileMenu,
+  showCreateSummaryNotice,
+} from './summary/create-summary-file-menu.js';
 import { ObsidianSummarizerSettingTab } from './settings-tab.js';
 import { DEFAULT_SETTINGS, resolvePluginSettings, type PluginSettings } from './settings.js';
 
@@ -10,7 +14,10 @@ export default class ObsidianSummarizerPlugin extends Plugin {
   async onload(): Promise<void> {
     await this.loadSettings();
     this.addSettingTab(new ObsidianSummarizerSettingTab(this.app, this));
-    this.disposeCreateSummaryMenu = registerCreateSummaryFileMenu(this);
+    this.disposeCreateSummaryMenu = registerCreateSummaryFileMenu(this, {
+      runCreateSummary: (folder) =>
+        runCreateSummaryForFolder(this.app.vault, folder, this.settings, showCreateSummaryNotice),
+    });
   }
 
   onunload(): void {
