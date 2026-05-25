@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
+import { DEFAULT_OLLAMA_TIMEOUT_MS } from './ollama/types.js';
 import {
+  DEFAULT_CONTEXT_LIMIT,
   DEFAULT_SETTINGS,
   mergeSettings,
   resolvePluginSettings,
   buildRestoreSettingDialogContent,
+  coercePositiveIntSetting,
   normalizeOllamaBaseUrl,
   validateOllamaBaseUrl,
+  validatePositiveIntSetting,
   validateRequiredSetting,
   type PluginSettings,
 } from './settings.js';
@@ -16,6 +20,8 @@ describe('DEFAULT_SETTINGS', () => {
       ollamaBaseUrl: 'http://127.0.0.1:11434',
       generationModel: 'gemma4:e2b',
       embeddingModel: 'nomic-embed-text',
+      contextLimit: DEFAULT_CONTEXT_LIMIT,
+      ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
     } satisfies PluginSettings);
   });
 });
@@ -26,6 +32,8 @@ describe('mergeSettings', () => {
       ollamaBaseUrl: 'http://custom:11434',
       generationModel: 'gemma4:e4b',
       embeddingModel: 'custom-embed',
+      contextLimit: 10_000,
+      ollamaTimeoutMs: 60_000,
     };
     expect(mergeSettings(base, {})).toEqual(base);
   });
@@ -87,7 +95,7 @@ describe('resolvePluginSettings', () => {
     });
   });
 
-  it('ignores non-string values for known keys', () => {
+  it('ignores non-string values for known string keys', () => {
     expect(
       resolvePluginSettings({
         ollamaBaseUrl: 123,
@@ -95,6 +103,51 @@ describe('resolvePluginSettings', () => {
         embeddingModel: ['nomic-embed-text'],
       }),
     ).toEqual(DEFAULT_SETTINGS);
+  });
+
+  it('merges valid numeric fields from stored object', () => {
+    expect(
+      resolvePluginSettings({
+        contextLimit: 40_000,
+        ollamaTimeoutMs: 120_000,
+      }),
+    ).toEqual({
+      ...DEFAULT_SETTINGS,
+      contextLimit: 40_000,
+      ollamaTimeoutMs: 120_000,
+    });
+  });
+
+  it('falls back to defaults for invalid numeric fields', () => {
+    expect(
+      resolvePluginSettings({
+        contextLimit: 0,
+        ollamaTimeoutMs: -1,
+      }),
+    ).toEqual(DEFAULT_SETTINGS);
+  });
+});
+
+describe('coercePositiveIntSetting', () => {
+  it('returns default for invalid values', () => {
+    expect(coercePositiveIntSetting(null, 100)).toBe(100);
+    expect(coercePositiveIntSetting('abc', 100)).toBe(100);
+  });
+
+  it('parses positive integers from numbers and strings', () => {
+    expect(coercePositiveIntSetting(42.9, 100)).toBe(42);
+    expect(coercePositiveIntSetting(' 5000 ', 100)).toBe(5000);
+  });
+});
+
+describe('validatePositiveIntSetting', () => {
+  it('returns error for empty or non-positive values', () => {
+    expect(validatePositiveIntSetting('', 'Kontextlimit')).toMatch(/Kontextlimit/);
+    expect(validatePositiveIntSetting('0', 'Kontextlimit')).toMatch(/positive/i);
+  });
+
+  it('returns null for valid positive integers', () => {
+    expect(validatePositiveIntSetting('32000', 'Kontextlimit')).toBeNull();
   });
 });
 

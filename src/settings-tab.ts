@@ -3,6 +3,7 @@ import { promptRestoreSetting } from './settings-restore-modal.js';
 import {
   DEFAULT_SETTINGS,
   normalizeOllamaBaseUrl,
+  validatePositiveIntSetting,
   validateRequiredSetting,
   type PluginSettings,
 } from './settings.js';
@@ -20,6 +21,16 @@ type RequiredTextFieldOptions = {
   getSavedValue: () => string;
   setSavedValue: (value: string) => void;
   normalize?: (value: string) => string;
+};
+
+type PositiveIntFieldOptions = {
+  label: string;
+  desc: string;
+  placeholder: string;
+  getSavedValue: () => number;
+  setSavedValue: (value: number) => void;
+  /** When true, UI shows seconds but storage is milliseconds. */
+  displaySeconds?: boolean;
 };
 
 export class ObsidianSummarizerSettingTab extends PluginSettingTab {
@@ -65,6 +76,66 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
         this.plugin.settings.embeddingModel = value;
       },
     });
+
+    this.addPositiveIntField(containerEl, {
+      label: 'Kontextlimit',
+      desc: 'Maximale Zeichenanzahl des Ordner-Quellkorpus vor dem Chat.',
+      placeholder: String(DEFAULT_SETTINGS.contextLimit),
+      getSavedValue: () => this.plugin.settings.contextLimit,
+      setSavedValue: (value) => {
+        this.plugin.settings.contextLimit = value;
+      },
+    });
+
+    this.addPositiveIntField(containerEl, {
+      label: 'Ollama-Timeout (Sekunden)',
+      desc: 'Maximale Wartezeit für einen Chat-Aufruf.',
+      placeholder: String(DEFAULT_SETTINGS.ollamaTimeoutMs / 1000),
+      getSavedValue: () => this.plugin.settings.ollamaTimeoutMs,
+      setSavedValue: (value) => {
+        this.plugin.settings.ollamaTimeoutMs = value;
+      },
+      displaySeconds: true,
+    });
+  }
+
+  private addPositiveIntField(containerEl: HTMLElement, options: PositiveIntFieldOptions): void {
+    new Setting(containerEl)
+      .setName(options.label)
+      .setDesc(options.desc)
+      .addText((text) => {
+        const displayValue = options.displaySeconds
+          ? String(Math.floor(options.getSavedValue() / 1000))
+          : String(options.getSavedValue());
+        text
+          .setPlaceholder(options.placeholder)
+          .setValue(displayValue)
+          .onChange((value) => {
+            void this.commitPositiveIntValue(value, options, text);
+          });
+      });
+  }
+
+  private async commitPositiveIntValue(
+    value: string,
+    options: PositiveIntFieldOptions,
+    text: TextComponent,
+  ): Promise<void> {
+    const error = validatePositiveIntSetting(value, options.label);
+    if (error) {
+      return;
+    }
+    const parsed = Number.parseInt(value.trim(), 10);
+    const stored = options.displaySeconds ? parsed * 1000 : parsed;
+    if (stored === options.getSavedValue()) {
+      return;
+    }
+    options.setSavedValue(stored);
+    await this.plugin.saveSettings();
+    const displayValue = options.displaySeconds ? String(parsed) : String(stored);
+    if (text.getValue() !== displayValue) {
+      text.setValue(displayValue);
+    }
   }
 
   private addRequiredTextField(containerEl: HTMLElement, options: RequiredTextFieldOptions): void {

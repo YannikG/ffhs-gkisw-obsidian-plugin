@@ -1,3 +1,5 @@
+import { DEFAULT_OLLAMA_TIMEOUT_MS } from './ollama/types.js';
+
 /**
  * Plugin configuration shape and defaults.
  * @see {@link ../SPEC.md} section 6 (Einstellungen)
@@ -9,13 +11,22 @@ export interface PluginSettings {
   generationModel: string;
   /** Embedding model tag for RAG chunks. */
   embeddingModel: string;
+  /** Max characters for Ordner-Quellkorpus before chat (CONTEXT Kontextlimit). */
+  contextLimit: number;
+  /** Ollama chat timeout in milliseconds. */
+  ollamaTimeoutMs: number;
 }
 
-/** Defaults from SPEC.md §6. */
+/** Default context limit (characters) for Phase 5 full-folder corpus. */
+export const DEFAULT_CONTEXT_LIMIT = 32_000;
+
+/** Defaults from SPEC.md §6 and P5-I06. */
 export const DEFAULT_SETTINGS: PluginSettings = {
   ollamaBaseUrl: 'http://127.0.0.1:11434',
   generationModel: 'gemma4:e2b',
   embeddingModel: 'nomic-embed-text',
+  contextLimit: DEFAULT_CONTEXT_LIMIT,
+  ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
 };
 
 /**
@@ -30,24 +41,73 @@ export function mergeSettings(
   for (const key of Object.keys(partial) as (keyof PluginSettings)[]) {
     const value = partial[key];
     if (value !== undefined) {
-      result[key] = value;
+      (result as Record<keyof PluginSettings, PluginSettings[keyof PluginSettings]>)[key] = value;
     }
   }
   return result;
 }
 
-const PLUGIN_SETTINGS_KEYS: (keyof PluginSettings)[] = [
+type StringSettingKey = 'ollamaBaseUrl' | 'generationModel' | 'embeddingModel';
+type NumberSettingKey = 'contextLimit' | 'ollamaTimeoutMs';
+
+const PLUGIN_SETTINGS_STRING_KEYS: StringSettingKey[] = [
   'ollamaBaseUrl',
   'generationModel',
   'embeddingModel',
 ];
 
+const PLUGIN_SETTINGS_NUMBER_KEYS: NumberSettingKey[] = ['contextLimit', 'ollamaTimeoutMs'];
+
+const NUMBER_SETTING_DEFAULTS: Pick<PluginSettings, 'contextLimit' | 'ollamaTimeoutMs'> = {
+  contextLimit: DEFAULT_CONTEXT_LIMIT,
+  ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
+};
+
+/**
+ * Coerces persisted or user input to a positive integer setting.
+ * @returns default when value is missing or invalid.
+ */
+export function coercePositiveIntSetting(value: unknown, defaultValue: number): number {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return Math.floor(value);
+  }
+  if (typeof value === 'string' && value.trim().length > 0) {
+    const parsed = Number.parseInt(value.trim(), 10);
+    if (Number.isFinite(parsed) && parsed > 0) {
+      return parsed;
+    }
+  }
+  return defaultValue;
+}
+
+/**
+ * Validates a positive integer setting field.
+ * @returns Error message, or `null` when valid.
+ */
+export function validatePositiveIntSetting(value: string, fieldLabel: string): string | null {
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    return `${fieldLabel} darf nicht leer sein.`;
+  }
+  const parsed = Number.parseInt(trimmed, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return `${fieldLabel} muss eine positive ganze Zahl sein.`;
+  }
+  return null;
+}
+
 function partialFromStored(stored: Record<string, unknown>): Partial<PluginSettings> {
   const partial: Partial<PluginSettings> = {};
-  for (const key of PLUGIN_SETTINGS_KEYS) {
+  for (const key of PLUGIN_SETTINGS_STRING_KEYS) {
     const value = stored[key];
     if (typeof value === 'string' && value.trim().length > 0) {
       partial[key] = value;
+    }
+  }
+  for (const key of PLUGIN_SETTINGS_NUMBER_KEYS) {
+    const value = stored[key];
+    if (value !== undefined) {
+      partial[key] = coercePositiveIntSetting(value, NUMBER_SETTING_DEFAULTS[key]);
     }
   }
   return partial;
