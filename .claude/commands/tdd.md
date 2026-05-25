@@ -19,29 +19,35 @@ Ein Test → minimaler Code → wiederholen.
 ## Workflow
 
 **1. Plan**
+
 - `docs/roadmap/overview.md` + Phase-README + GitHub-Issue + verlinkte `issues/*.md` lesen
 - Mit User: ersten **Tracer Bullet** wählen
 - Tests auf Exports in `src/`, nicht auf `Plugin`-Methoden
 - Verhalten auflisten (nicht Impl-Schritte)
 
 **2. Tracer Bullet**
+
 ```
 RED:   ein Test, ein Verhalten → fail
 GREEN: minimaler Pass
 ```
 
 **3. Loop**
+
 ```
 RED → GREEN → RED → GREEN …
 ```
+
 Regeln: ein Test auf einmal; kein spekulativer Code; nur beobachtbares Verhalten.
 
 **4. Refactor (nur auf GREEN)**
+
 - Duplikate extrahieren
 - Kleine öffentliche API, Komplexität innen
 - `npm test` nach jedem Schritt
 
 **5. Validieren**
+
 ```
 npm test
 npx vitest run path/to/file.test.ts
@@ -59,6 +65,7 @@ npm run typecheck   # wenn Typen oder Build betroffen
 ## Mock-Regeln
 
 Mock nur **System-Boundaries**:
+
 - `obsidian`: `Plugin`, `App`, `Vault`, `Modal`, `Notice`
 - `fetch` → Ollama
 - Zeit / RNG

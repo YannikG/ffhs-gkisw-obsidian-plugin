@@ -18,6 +18,7 @@ Implement plan workflow for issue: $ARGUMENTS
 **S3 — Implementierung**
 
 Gegen Spec aus S1. Companion-Skills aktiv:
+
 - Während Code: `/caveman` für komprimierte Kommunikation
 - Test-first: `/tdd`
 - Keine Edits auf `docs/roadmap/**/issues/*.md` im Impl-PR (ausser User will explizit Planänderung)

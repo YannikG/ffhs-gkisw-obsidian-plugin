@@ -14,10 +14,10 @@ Pattern: `[thing] [action] [reason]. [next step].`
 
 ## Intensity
 
-| Level | What changes |
-|-------|-------------|
-| **lite** | No filler/hedging. Keep articles + full sentences. Professional but tight |
-| **full** | Drop articles, fragments OK, short synonyms. Classic caveman |
+| Level     | What changes                                                                                        |
+| --------- | --------------------------------------------------------------------------------------------------- |
+| **lite**  | No filler/hedging. Keep articles + full sentences. Professional but tight                           |
+| **full**  | Drop articles, fragments OK, short synonyms. Classic caveman                                        |
 | **ultra** | Abbreviate prose (DB/auth/config/req/res/fn/impl), strip conjunctions, arrows for causality (X → Y) |
 
 ## Auto-Clarity (caveman pauses for)

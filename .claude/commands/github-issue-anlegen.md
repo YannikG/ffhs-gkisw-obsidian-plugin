@@ -16,6 +16,7 @@ Format: `https://github.com/<org>/<repo>/blob/<default-branch>/docs/roadmap/phas
 **4.** Body = **ein** Kontextsatz + **eine** Permalink-Zeile. Kein Spez-Copy aus der `.md`.
 
 **5.** Abhängigkeiten aus `.md` parsen (nicht nachfragen wenn eindeutig):
+
 - Links unter `## Abhängigkeiten` → `./….md` gleicher Ordner
 - `## Meta` **Blockiert von** / Kopfblock `Blockiert von:`
 - IDs `PN-Iyy` sammeln, aktuelle Datei raus, Deduplizieren
@@ -25,6 +26,7 @@ Format: `https://github.com/<org>/<repo>/blob/<default-branch>/docs/roadmap/phas
 **7.** `gh issue create` (Body mehrzeilig → `--body-file`). Neue Nummer **N** merken.
 
 **7b.** Label: `Phase N` aus Issue-ID (`P5-I01` → Label `Phase 5`).
+
 - Label fehlt → `gh label create "Phase N" --description "Roadmap Phase N" --color "1D76DB"`
 - Danach: `gh issue edit N --add-label "Phase N"`
 

@@ -35,24 +35,24 @@ Schweizer Hochdeutsch: **ss** nie ß, Umlaute ä/ö/ü.
 
 ## Tech Stack
 
-| Tool | Kommando |
-|------|----------|
-| Tests | `npm test` oder `npx vitest run path/to/file.test.ts` |
-| Typecheck | `npm run typecheck` |
-| Build | `npm run build` |
-| Lint | `npm run lint` |
-| Format | `npm run format` |
+| Tool      | Kommando                                              |
+| --------- | ----------------------------------------------------- |
+| Tests     | `npm test` oder `npx vitest run path/to/file.test.ts` |
+| Typecheck | `npm run typecheck`                                   |
+| Build     | `npm run build`                                       |
+| Lint      | `npm run lint`                                        |
+| Format    | `npm run format`                                      |
 
 ## Modulstruktur `src/`
 
-| Pfad | Rolle |
-|------|-------|
-| `main.ts` | Obsidian-Einstieg: nur Verdrahtung (`onload`/`onunload`) |
-| `settings.ts` | `PluginSettings`, Defaults, Merge, Resolve |
-| `settings-tab.ts` | Settings-UI, Persistenz via `saveData` |
-| `summary/` | Corpus-Lesen, Vault-Schreiben, Prompts, Menü |
-| `ollama/` | HTTP-Client: Healthcheck + Chat |
-| `rag/` | Vektorindex-Stub |
+| Pfad              | Rolle                                                    |
+| ----------------- | -------------------------------------------------------- |
+| `main.ts`         | Obsidian-Einstieg: nur Verdrahtung (`onload`/`onunload`) |
+| `settings.ts`     | `PluginSettings`, Defaults, Merge, Resolve               |
+| `settings-tab.ts` | Settings-UI, Persistenz via `saveData`                   |
+| `summary/`        | Corpus-Lesen, Vault-Schreiben, Prompts, Menü             |
+| `ollama/`         | HTTP-Client: Healthcheck + Chat                          |
+| `rag/`            | Vektorindex-Stub                                         |
 
 ## Import-Regeln
 
@@ -71,11 +71,11 @@ Schweizer Hochdeutsch: **ss** nie ß, Umlaute ä/ö/ü.
 
 ## Verfügbare Slash Commands
 
-| Command | Beschreibung |
-|---------|-------------|
-| `/implement-plan` | Issue implementieren (Branch → Code → Review) |
-| `/tdd` | TDD red-green-refactor Workflow |
-| `/review-and-fix` | Code-Review + Fix-Loop |
-| `/grill` | Plan-Stress-Test gegen Domänensprache und Docs |
-| `/caveman` | Ultra-komprimierter Kommunikationsmodus |
+| Command                 | Beschreibung                                          |
+| ----------------------- | ----------------------------------------------------- |
+| `/implement-plan`       | Issue implementieren (Branch → Code → Review)         |
+| `/tdd`                  | TDD red-green-refactor Workflow                       |
+| `/review-and-fix`       | Code-Review + Fix-Loop                                |
+| `/grill`                | Plan-Stress-Test gegen Domänensprache und Docs        |
+| `/caveman`              | Ultra-komprimierter Kommunikationsmodus               |
 | `/github-issue-anlegen` | GitHub-Issue aus `docs/roadmap/…/issues/*.md` anlegen |
