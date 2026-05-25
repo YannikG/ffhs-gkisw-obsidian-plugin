@@ -1,4 +1,5 @@
 import {
+  DEFAULT_OLLAMA_EMBEDDING_MODEL,
   DEFAULT_OLLAMA_TIMEOUT_MS,
   type OllamaChatMessage,
   type OllamaClient,
@@ -16,6 +17,10 @@ interface ChatResponse {
   error?: string;
 }
 
+interface EmbedResponse {
+  embeddings?: number[][];
+}
+
 interface ErrorBody {
   error?: string;
 }
@@ -27,6 +32,7 @@ export function createOllamaClient(
   const fetchFn = deps.fetch ?? fetch;
   const baseUrl = normalizeBaseUrl(config.baseUrl);
   const defaultTimeoutMs = config.timeoutMs ?? DEFAULT_OLLAMA_TIMEOUT_MS;
+  const embeddingModel = config.embeddingModel ?? DEFAULT_OLLAMA_EMBEDDING_MODEL;
 
   return {
     checkOllamaReachable: () =>
@@ -39,6 +45,8 @@ export function createOllamaClient(
         messages,
         options?.timeoutMs ?? defaultTimeoutMs,
       ),
+    embed: (inputs, options) =>
+      runEmbed(fetchFn, baseUrl, embeddingModel, inputs, options?.timeoutMs ?? defaultTimeoutMs),
   };
 }
 
@@ -110,6 +118,37 @@ async function runChat(
   }
 
   return { ok: true, value: content };
+}
+
+async function runEmbed(
+  fetchFn: typeof fetch,
+  baseUrl: string,
+  embeddingModel: string,
+  inputs: string[],
+  timeoutMs: number,
+): Promise<OllamaResult<number[][]>> {
+  const result = await requestJson<EmbedResponse>(fetchFn, `${baseUrl}/api/embed`, {
+    method: 'POST',
+    timeoutMs,
+    body: JSON.stringify({ model: embeddingModel, input: inputs }),
+  });
+
+  if (!result.ok) {
+    return result;
+  }
+
+  const embeddings = result.value.embeddings;
+  if (!Array.isArray(embeddings)) {
+    return {
+      ok: false,
+      error: {
+        kind: 'response',
+        message: 'Ollama-Antwort enthält keine Embeddings.',
+      },
+    };
+  }
+
+  return { ok: true, value: embeddings };
 }
 
 function modelListed(tags: TagsResponse, generationModel: string): boolean {
