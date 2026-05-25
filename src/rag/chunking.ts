@@ -67,8 +67,7 @@ function joinedLength(blocks: readonly string[]): number {
   }
 
   return blocks.reduce(
-    (total, block, index) =>
-      total + block.length + (index > 0 ? BLOCK_SEPARATOR_LENGTH : 0),
+    (total, block, index) => total + block.length + (index > 0 ? BLOCK_SEPARATOR_LENGTH : 0),
     0,
   );
 }
@@ -77,10 +76,7 @@ function joinBlocks(blocks: readonly string[]): string {
   return blocks.join(BLOCK_SEPARATOR);
 }
 
-function selectTrailingOverlapBlocks(
-  blocks: readonly string[],
-  overlap: number,
-): string[] {
+function selectTrailingOverlapBlocks(blocks: readonly string[], overlap: number): string[] {
   const selected: string[] = [];
   let length = 0;
 
@@ -159,10 +155,7 @@ function resolveChunkMarkdownOptions(options: ChunkMarkdownOptions): {
  * Splits markdown source text into ordered embedding chunks.
  * Invalid `size` (≤ 0) or negative `overlap` fall back to exported defaults.
  */
-export function chunkMarkdown(
-  text: string,
-  options: ChunkMarkdownOptions = {},
-): MarkdownChunk[] {
+export function chunkMarkdown(text: string, options: ChunkMarkdownOptions = {}): MarkdownChunk[] {
   const { size, overlap } = resolveChunkMarkdownOptions(options);
   const blocks = splitIntoBlocks(text);
   const chunkTexts = mergeBlocksWithOverlap(blocks, size, overlap);
