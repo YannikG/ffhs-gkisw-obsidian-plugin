@@ -22,7 +22,8 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 | `summary/create-summary-for-folder.ts` | Obsidian-Adapter: Vault, Settings, Ollama-Client, Notices (P5-I06). |
 | `summary/create-summary-notices.ts`, `summary/context-limit.ts` | Notice-Texte und Kontextlimit-Prüfung (P5-I06). |
 | `summary/create-summary-file-menu.ts` | Ordner-Kontextmenü **Create Summary** (P4-I05, P5-I06). |
-| `rag/` | Vector index / retrieval stub (SPEC §4.1, §4.3; Phase 6). |
+| `rag/chunking.ts` | Absatz-Chunking für Embeddings: `chunkMarkdown`, Defaults 1000/200 (P6-I01). |
+| `rag/index.ts` | Barrel für RAG-Exports; Index/Retrieval folgen in späteren P6-Issues (SPEC §4.1, §4.3). |
 
 Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implementierungsdetails der genannten Module.
 
@@ -48,6 +49,12 @@ Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implem
 | P5-I06 | `summary/create-summary-run.ts`, `summary/create-summary-for-folder.ts`, `summary/create-summary-notices.ts`, `summary/context-limit.ts`, Menü, Settings-Erweiterung |
 | P5-I07 | `src/README.md` (dieses Dokument) |
 
+## Phase ownership (Phase 6)
+
+| Issue | Primary paths |
+|-------|----------------|
+| P6-I01 | `rag/chunking.ts`, `rag/index.ts` |
+
 ## Entwicklung und manueller Test
 
 **Ollama-Setup (P5-I01):** [README.md § Ollama](../README.md#ollama), Details [docs/ollama/README.md](../docs/ollama/README.md).
@@ -68,7 +75,7 @@ Spezifikation der Akzeptanzkriterien: [P5-I06-create-summary-ohne-rag.md](../doc
 ## Import rules
 
 - **No import cycles** between feature modules. Dependency direction: `main.ts` → feature modules; feature modules must not import `main.ts`.
-- **Pure modules** (`settings`, `summary/*` ohne Obsidian-Import, `ollama/*`) must **not** import `obsidian`. Obsidian APIs stay in `main.ts` and thin adapters (`create-summary-for-folder.ts`, `vault-write-summary.ts`, `create-summary-file-menu.ts`).
+- **Pure modules** (`settings`, `summary/*` ohne Obsidian-Import, `ollama/*`, `rag/chunking.ts`) must **not** import `obsidian`. Obsidian APIs stay in `main.ts` and thin adapters (`create-summary-for-folder.ts`, `vault-write-summary.ts`, `create-summary-file-menu.ts`).
 - **Wired from `main.ts`:** settings tab; folder **Create Summary** → `runCreateSummaryForFolder` → `create-summary-run` → `ollama/` + Vault-Schreiben.
 - **Not yet wired:** `rag/` (Retrieval und Index, Phase 6+).
 - Prefer barrel imports from `summary/index.ts` for public summary exports.
