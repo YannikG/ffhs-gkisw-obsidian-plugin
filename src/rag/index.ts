@@ -1,2 +1,7 @@
-/** Placeholder: RAG index (SQLite) — @see {@link ../../SPEC.md} §4.1, §4.3. */
-export type RagModulePlaceholder = never;
+export {
+  chunkMarkdown,
+  DEFAULT_CHUNK_OVERLAP,
+  DEFAULT_CHUNK_SIZE,
+  type ChunkMarkdownOptions,
+  type MarkdownChunk,
+} from './chunking.js';
