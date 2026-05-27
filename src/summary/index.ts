@@ -24,6 +24,7 @@ export {
   buildSourceContext,
   collectFolderSourceCorpus,
   isPathUnderObsidianMeta,
+  shouldIndexVaultPath,
   shouldIncludeMarkdownEntry,
   type FolderMarkdownEntry,
   type FolderSourceErrorKind,

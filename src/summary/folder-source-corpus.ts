@@ -21,6 +21,18 @@ export function isPathUnderObsidianMeta(vaultPath: string): boolean {
   return vaultPath.split('/').includes('.obsidian');
 }
 
+/**
+ * Whether a given vault path should be indexed into the vector index.
+ * Mirrors the exclusion rules used when building folder source corpus.
+ * Exported as a small pure function for reuse by indexer code (P6-I05).
+ */
+export function shouldIndexVaultPath(vaultPath: string): boolean {
+  if (isPathUnderObsidianMeta(vaultPath)) {
+    return false;
+  }
+  return !isExcludedSummarySource(vaultPath);
+}
+
 export function shouldIncludeMarkdownEntry(entry: FolderMarkdownEntry): boolean {
   if (isPathUnderObsidianMeta(entry.vaultPath)) {
     return false;
