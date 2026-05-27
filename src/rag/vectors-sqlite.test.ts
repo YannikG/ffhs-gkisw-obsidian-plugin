@@ -9,7 +9,9 @@ describe('SqliteVectorsDB optional integration', () => {
       createSqliteVectorsDB(':memory:');
     } catch (err: unknown) {
       threw = true;
-      expect(String(err instanceof Error ? err.message : err)).toMatch(/better-sqlite3 is not installed/);
+      expect(String(err instanceof Error ? err.message : err)).toMatch(
+        /better-sqlite3 is not installed/,
+      );
     }
 
     // If environment actually has better-sqlite3 then the constructor will succeed
