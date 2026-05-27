@@ -6,9 +6,9 @@ describe('WASM vectors adapter', () => {
     let threw = false;
     try {
       createWasmVectorsDB(':memory:');
-    } catch (err: any) {
+    } catch (err: unknown) {
       threw = true;
-      expect(String(err.message)).toMatch(/sqlite-wasm-vec is not available or not bundled/);
+      expect(String(err instanceof Error ? err.message : err)).toMatch(/sqlite-wasm-vec is not available or not bundled/);
     }
 
     if (!threw) {

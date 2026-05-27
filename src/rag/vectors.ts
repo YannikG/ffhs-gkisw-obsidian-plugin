@@ -29,7 +29,7 @@ export class VectorsDB {
       } else {
         this.persist();
       }
-    } catch (err) {
+    } catch {
       // Corrupt file -> re-init
       this.data = { chunks: [] };
       this.persist();

@@ -9,13 +9,13 @@ import fs from 'fs';
  * helpful error explaining next steps for the developer (install or build).
  */
 export class WasmVectorsDB {
-  private impl: any;
+  private impl: unknown;
 
   constructor(filePath?: string) {
     // Try to load the wasm-backed module at runtime. Keep the error message
     // actionable for contributors: install package or use the JSON/SQLite fallbacks.
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const wasmModule = require('sqlite-wasm-vec');
       if (!wasmModule || typeof wasmModule.createDb !== 'function') {
         // Keep the error message unified so tests and users receive the same
@@ -31,10 +31,10 @@ export class WasmVectorsDB {
 
       // Initialize the wasm-backed DB (API details depend on package); adapt later.
       this.impl = wasmModule.createDb(resolved);
-    } catch (err: any) {
+    } catch (err: unknown) {
       throw new Error(
         'sqlite-wasm-vec is not available or not bundled. To enable the WASM-backed vectors DB install and bundle `sqlite-wasm-vec` according to docs, or fall back to the JSON/SQLite adapter. See docs/roadmap/phase-6/issues/P6-I03-vectors-db-schema.md for guidance. Original error: ' +
-          String(err?.message ?? err),
+          (err instanceof Error ? err.message : String(err)),
       );
     }
   }

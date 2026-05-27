@@ -25,7 +25,7 @@ export function openIndex(filePath?: string): VectorsStore {
   try {
     currentStore = createWasmVectorsDB(resolved);
     return currentStore;
-  } catch (_err) {
+  } catch {
     // swallow and try next
   }
 
@@ -33,7 +33,7 @@ export function openIndex(filePath?: string): VectorsStore {
   try {
     currentStore = createSqliteVectorsDB(resolved);
     return currentStore;
-  } catch (_err) {
+  } catch {
     // swallow and fall back
   }
 
@@ -60,9 +60,11 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
       if (
         p.manifest &&
         typeof p.manifest === 'object' &&
-        typeof (p.manifest as any).id === 'string'
+        typeof (p.manifest as Record<string, unknown>).id === 'string'
       ) {
-        candidates.push(path.resolve(process.cwd(), String((p.manifest as any).id)));
+        candidates.push(
+          path.resolve(process.cwd(), String((p.manifest as Record<string, unknown>).id)),
+        );
       }
 
       for (const c of candidates) {
@@ -72,7 +74,7 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
         }
       }
     }
-  } catch (_err) {
+  } catch {
     // ignore and fallback to default
   }
 
@@ -95,20 +97,19 @@ export function closeIndex(): void {
       const asObj = currentStore as unknown as Record<string, unknown>;
       const closeFn = asObj['close'];
       if (typeof closeFn === 'function') {
-        (closeFn as Function).call(asObj);
+        (closeFn as () => void).call(asObj);
       }
       const db = asObj['db'];
       if (db && typeof (db as Record<string, unknown>)['close'] === 'function') {
-        (db as Record<string, unknown>)['close'] as unknown;
         try {
           // call the db.close() if present
-          (db as unknown as { close?: Function }).close?.();
-        } catch (_e) {
+          (db as unknown as { close?: () => void }).close?.();
+        } catch {
           // ignore
         }
       }
     }
-  } catch (_err) {
+  } catch {
     // ignore errors during close
   } finally {
     currentStore = null;
