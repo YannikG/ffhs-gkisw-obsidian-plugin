@@ -3,7 +3,10 @@
  * @see {@link ../../CONTEXT.md} Ordner-Quellkorpus
  */
 
-import { isExcludedSummarySource } from './filename.js';
+import {
+  isPathUnderObsidianMeta as _isPathUnderObsidianMeta,
+  shouldIndexVaultPath,
+} from '../sources/should-index.js';
 
 export type FolderSourceErrorKind = 'empty_folder';
 
@@ -17,15 +20,11 @@ export interface FolderMarkdownEntry {
   content: string;
 }
 
-export function isPathUnderObsidianMeta(vaultPath: string): boolean {
-  return vaultPath.split('/').includes('.obsidian');
-}
+// Re-exported for compatibility/tests. Implementation lives in shared sources module.
+export const isPathUnderObsidianMeta = _isPathUnderObsidianMeta;
 
 export function shouldIncludeMarkdownEntry(entry: FolderMarkdownEntry): boolean {
-  if (isPathUnderObsidianMeta(entry.vaultPath)) {
-    return false;
-  }
-  return !isExcludedSummarySource(entry.vaultPath);
+  return shouldIndexVaultPath(entry.vaultPath);
 }
 
 export function buildSourceContext(entries: readonly FolderMarkdownEntry[]): string {
