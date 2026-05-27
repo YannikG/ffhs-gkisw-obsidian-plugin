@@ -4,7 +4,11 @@ import { createVectorsDB } from './vectors.js';
 import { createSqliteVectorsDB } from './vectors-sqlite.js';
 import { createWasmVectorsDB } from './vectors-wasm.js';
 
-export type VectorsStore = ReturnType<typeof createVectorsDB> | ReturnType<typeof createSqliteVectorsDB> | ReturnType<typeof createWasmVectorsDB> | null;
+export type VectorsStore =
+  | ReturnType<typeof createVectorsDB>
+  | ReturnType<typeof createSqliteVectorsDB>
+  | ReturnType<typeof createWasmVectorsDB>
+  | null;
 
 let currentStore: VectorsStore = null;
 
@@ -53,7 +57,11 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
       const candidates = [p['dataDir'], p['dataPath'], p['dataDirPath'], p['pluginPath']];
 
       // Manifest-based location (not always present in tests)
-      if (p.manifest && typeof p.manifest === 'object' && typeof (p.manifest as any).id === 'string') {
+      if (
+        p.manifest &&
+        typeof p.manifest === 'object' &&
+        typeof (p.manifest as any).id === 'string'
+      ) {
         candidates.push(path.resolve(process.cwd(), String((p.manifest as any).id)));
       }
 
@@ -94,7 +102,7 @@ export function closeIndex(): void {
         (db as Record<string, unknown>)['close'] as unknown;
         try {
           // call the db.close() if present
-          ((db as unknown) as { close?: Function }).close?.();
+          (db as unknown as { close?: Function }).close?.();
         } catch (_e) {
           // ignore
         }
@@ -106,5 +114,3 @@ export function closeIndex(): void {
     currentStore = null;
   }
 }
-
-

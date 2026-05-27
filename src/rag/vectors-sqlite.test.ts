@@ -20,4 +20,3 @@ describe('SqliteVectorsDB optional integration', () => {
     }
   });
 });
-

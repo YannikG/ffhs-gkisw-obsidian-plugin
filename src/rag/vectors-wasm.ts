@@ -67,5 +67,3 @@ export class WasmVectorsDB {
 export function createWasmVectorsDB(filePath?: string): WasmVectorsDB {
   return new WasmVectorsDB(filePath);
 }
-
-
