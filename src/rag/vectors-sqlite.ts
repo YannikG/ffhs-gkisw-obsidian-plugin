@@ -46,7 +46,7 @@ export class SqliteVectorsDB {
     let BetterSqlite3!: new (path: string) => BetterSqlite3DB;
     try {
       // Try to require at runtime; optional dependency.
-       
+
       BetterSqlite3 = require('better-sqlite3') as new (path: string) => BetterSqlite3DB;
     } catch {
       throw new Error(

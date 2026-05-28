@@ -89,7 +89,6 @@ export class Orchestrator {
       this.idleQueue.delete(p);
       // Call indexHandler but ensure errors do not abort remaining work
       try {
-         
         await this.indexHandler(p);
       } catch {
         // ignore individual errors
