@@ -22,6 +22,8 @@ describe('DEFAULT_SETTINGS', () => {
       embeddingModel: 'nomic-embed-text',
       contextLimit: DEFAULT_CONTEXT_LIMIT,
       ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
+      chunkSize: 1000,
+      chunkOverlap: 200,
     } satisfies PluginSettings);
   });
 });
@@ -34,6 +36,8 @@ describe('mergeSettings', () => {
       embeddingModel: 'custom-embed',
       contextLimit: 10_000,
       ollamaTimeoutMs: 60_000,
+      chunkSize: 500,
+      chunkOverlap: 50,
     };
     expect(mergeSettings(base, {})).toEqual(base);
   });
@@ -53,6 +57,18 @@ describe('mergeSettings', () => {
         generationModel: undefined,
       }),
     ).toEqual(base);
+  });
+
+  it('overrides chunkSize and chunkOverlap independently', () => {
+    const base: PluginSettings = { ...DEFAULT_SETTINGS };
+    expect(mergeSettings(base, { chunkSize: 500 })).toEqual({
+      ...DEFAULT_SETTINGS,
+      chunkSize: 500,
+    });
+    expect(mergeSettings(base, { chunkOverlap: 50 })).toEqual({
+      ...DEFAULT_SETTINGS,
+      chunkOverlap: 50,
+    });
   });
 });
 
@@ -125,6 +141,18 @@ describe('resolvePluginSettings', () => {
         ollamaTimeoutMs: -1,
       }),
     ).toEqual(DEFAULT_SETTINGS);
+  });
+
+  it('merges valid chunkSize and chunkOverlap from stored object', () => {
+    expect(resolvePluginSettings({ chunkSize: 500, chunkOverlap: 50 })).toEqual({
+      ...DEFAULT_SETTINGS,
+      chunkSize: 500,
+      chunkOverlap: 50,
+    });
+  });
+
+  it('falls back to defaults for invalid chunkSize and chunkOverlap', () => {
+    expect(resolvePluginSettings({ chunkSize: 0, chunkOverlap: -10 })).toEqual(DEFAULT_SETTINGS);
   });
 });
 

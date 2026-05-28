@@ -6,7 +6,7 @@ import {
 } from './summary/create-summary-file-menu.js';
 import { ObsidianSummarizerSettingTab } from './settings-tab.js';
 import { DEFAULT_SETTINGS, resolvePluginSettings, type PluginSettings } from './settings.js';
-import { openIndexForPlugin, closeIndex } from './rag/index.js';
+import { openIndexForPlugin, closeIndex, getIndex } from './rag/index.js';
 
 export default class ObsidianSummarizerPlugin extends Plugin {
   settings: PluginSettings = { ...DEFAULT_SETTINGS };
@@ -49,5 +49,9 @@ export default class ObsidianSummarizerPlugin extends Plugin {
 
   async saveSettings(): Promise<void> {
     await this.saveData(this.settings);
+  }
+
+  async resetVectorIndex(): Promise<void> {
+    getIndex()?.truncateAll();
   }
 }
