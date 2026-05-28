@@ -89,7 +89,7 @@ export class Orchestrator {
       this.idleQueue.delete(p);
       // Call indexHandler but ensure errors do not abort remaining work
       try {
-        // eslint-disable-next-line no-await-in-loop
+         
         await this.indexHandler(p);
       } catch {
         // ignore individual errors
@@ -127,5 +127,3 @@ export class Orchestrator {
 }
 
 export default Orchestrator;
-
-

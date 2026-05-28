@@ -68,6 +68,3 @@ describe('Orchestrator (idle & events)', () => {
     expect(calls[1]).toBe('index:zzz.md');
   });
 });
-
-
-
