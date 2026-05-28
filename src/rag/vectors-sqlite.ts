@@ -30,9 +30,9 @@ export class SqliteVectorsDB {
     let BetterSqlite3: any;
     try {
       // Try to require at runtime; optional dependency.
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
+
       BetterSqlite3 = require('better-sqlite3');
-    } catch (err) {
+    } catch {
       throw new Error(
         'better-sqlite3 is not installed. Install as devDependency for SQLite-backed vectors (npm i -D better-sqlite3) or use the JSON fallback vectors implementation.',
       );
@@ -60,7 +60,17 @@ export class SqliteVectorsDB {
     `);
   }
 
-  upsertChunks(vaultPath: string, chunks: Array<{ chunkIndex: number; text?: string; embedding: number[]; embedding_model?: string; mtime?: number; content_hash?: string }>): void {
+  upsertChunks(
+    vaultPath: string,
+    chunks: Array<{
+      chunkIndex: number;
+      text?: string;
+      embedding: number[];
+      embedding_model?: string;
+      mtime?: number;
+      content_hash?: string;
+    }>,
+  ): void {
     const insert = this.db.prepare(`
       INSERT OR REPLACE INTO chunks (vault_path, chunk_index, embedding_model, text, embedding, mtime, content_hash)
       VALUES (@vault_path, @chunk_index, @embedding_model, @text, @embedding, @mtime, @content_hash);
@@ -106,14 +116,23 @@ export class SqliteVectorsDB {
     this.db.exec('DELETE FROM chunks');
   }
 
-  searchSimilarInFolder(embedding: number[], folderPrefix: string, k: number): Array<{ vaultPath: string; chunkIndex: number; text?: string; similarity: number }> {
+  searchSimilarInFolder(
+    embedding: number[],
+    folderPrefix: string,
+    k: number,
+  ): Array<{ vaultPath: string; chunkIndex: number; text?: string; similarity: number }> {
     const candidates = this.queryByFolderPrefix(folderPrefix);
     const scored = candidates
       .map((c) => ({ c, sim: cosineSimilarity(embedding, c.embedding) }))
       .filter((x) => !Number.isNaN(x.sim) && Number.isFinite(x.sim))
       .sort((a, b) => b.sim - a.sim)
       .slice(0, k)
-      .map((x) => ({ vaultPath: x.c.vault_path, chunkIndex: x.c.chunk_index, text: x.c.text ?? undefined, similarity: x.sim }));
+      .map((x) => ({
+        vaultPath: x.c.vault_path,
+        chunkIndex: x.c.chunk_index,
+        text: x.c.text ?? undefined,
+        similarity: x.sim,
+      }));
 
     return scored;
   }
@@ -142,5 +161,3 @@ function cosineSimilarity(a: number[], b: number[]): number {
 export function createSqliteVectorsDB(filePath?: string): SqliteVectorsDB {
   return new SqliteVectorsDB(filePath);
 }
-
-

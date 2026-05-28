@@ -15,7 +15,6 @@ export class WasmVectorsDB {
     // Try to load the wasm-backed module at runtime. Keep the error message
     // actionable for contributors: install package or use the JSON/SQLite fallbacks.
     try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const wasmModule = require('sqlite-wasm-vec');
       if (!wasmModule || typeof wasmModule.createDb !== 'function') {
         // Keep the error message unified so tests and users receive the same
@@ -67,5 +66,3 @@ export class WasmVectorsDB {
 export function createWasmVectorsDB(filePath?: string): WasmVectorsDB {
   return new WasmVectorsDB(filePath);
 }
-
-

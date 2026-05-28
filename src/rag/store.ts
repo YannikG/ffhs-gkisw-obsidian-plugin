@@ -4,7 +4,11 @@ import { createVectorsDB } from './vectors.js';
 import { createSqliteVectorsDB } from './vectors-sqlite.js';
 import { createWasmVectorsDB } from './vectors-wasm.js';
 
-export type VectorsStore = ReturnType<typeof createVectorsDB> | ReturnType<typeof createSqliteVectorsDB> | ReturnType<typeof createWasmVectorsDB> | null;
+export type VectorsStore =
+  | ReturnType<typeof createVectorsDB>
+  | ReturnType<typeof createSqliteVectorsDB>
+  | ReturnType<typeof createWasmVectorsDB>
+  | null;
 
 let currentStore: VectorsStore = null;
 
@@ -21,7 +25,7 @@ export function openIndex(filePath?: string): VectorsStore {
   try {
     currentStore = createWasmVectorsDB(resolved);
     return currentStore;
-  } catch (_err) {
+  } catch {
     // swallow and try next
   }
 
@@ -29,7 +33,7 @@ export function openIndex(filePath?: string): VectorsStore {
   try {
     currentStore = createSqliteVectorsDB(resolved);
     return currentStore;
-  } catch (_err) {
+  } catch {
     // swallow and fall back
   }
 
@@ -53,8 +57,11 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
       const candidates = [p['dataDir'], p['dataPath'], p['dataDirPath'], p['pluginPath']];
 
       // Manifest-based location (not always present in tests)
-      if (p.manifest && typeof p.manifest === 'object' && typeof (p.manifest as any).id === 'string') {
-        candidates.push(path.resolve(process.cwd(), String((p.manifest as any).id)));
+      if (p.manifest && typeof p.manifest === 'object') {
+        const manifestObj = p.manifest as Record<string, unknown>;
+        if (typeof manifestObj.id === 'string') {
+          candidates.push(path.resolve(process.cwd(), String(manifestObj.id)));
+        }
       }
 
       for (const c of candidates) {
@@ -64,7 +71,7 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
         }
       }
     }
-  } catch (_err) {
+  } catch {
     // ignore and fallback to default
   }
 
@@ -87,24 +94,21 @@ export function closeIndex(): void {
       const asObj = currentStore as unknown as Record<string, unknown>;
       const closeFn = asObj['close'];
       if (typeof closeFn === 'function') {
-        (closeFn as Function).call(asObj);
+        (closeFn as unknown as (...args: unknown[]) => unknown).call(asObj);
       }
       const db = asObj['db'];
       if (db && typeof (db as Record<string, unknown>)['close'] === 'function') {
-        (db as Record<string, unknown>)['close'] as unknown;
         try {
           // call the db.close() if present
-          ((db as unknown) as { close?: Function }).close?.();
-        } catch (_e) {
+          (db as unknown as { close?: (...args: unknown[]) => unknown }).close?.();
+        } catch {
           // ignore
         }
       }
     }
-  } catch (_err) {
+  } catch {
     // ignore errors during close
   } finally {
     currentStore = null;
   }
 }
-
-

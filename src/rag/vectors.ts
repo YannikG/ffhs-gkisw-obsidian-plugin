@@ -29,7 +29,7 @@ export class VectorsDB {
       } else {
         this.persist();
       }
-    } catch (err) {
+    } catch {
       // Corrupt file -> re-init
       this.data = { chunks: [] };
       this.persist();
@@ -44,7 +44,17 @@ export class VectorsDB {
     fs.writeFileSync(this.filePath, JSON.stringify(this.data), 'utf8');
   }
 
-  upsertChunks(vaultPath: string, chunks: Array<{ chunkIndex: number; text?: string; embedding: number[]; embedding_model?: string; mtime?: number; content_hash?: string }>): void {
+  upsertChunks(
+    vaultPath: string,
+    chunks: Array<{
+      chunkIndex: number;
+      text?: string;
+      embedding: number[];
+      embedding_model?: string;
+      mtime?: number;
+      content_hash?: string;
+    }>,
+  ): void {
     for (const c of chunks) {
       const existingIndex = this.data.chunks.findIndex(
         (s) => s.vault_path === vaultPath && s.chunk_index === c.chunkIndex,
@@ -85,14 +95,23 @@ export class VectorsDB {
     this.persist();
   }
 
-  searchSimilarInFolder(embedding: number[], folderPrefix: string, k: number): Array<{ vaultPath: string; chunkIndex: number; text?: string; similarity: number }> {
+  searchSimilarInFolder(
+    embedding: number[],
+    folderPrefix: string,
+    k: number,
+  ): Array<{ vaultPath: string; chunkIndex: number; text?: string; similarity: number }> {
     const candidates = this.queryByFolderPrefix(folderPrefix);
     const scored = candidates
       .map((c) => ({ c, sim: cosineSimilarity(embedding, c.embedding) }))
       .filter((x) => !Number.isNaN(x.sim) && Number.isFinite(x.sim))
       .sort((a, b) => b.sim - a.sim)
       .slice(0, k)
-      .map((x) => ({ vaultPath: x.c.vault_path, chunkIndex: x.c.chunk_index, text: x.c.text, similarity: x.sim }));
+      .map((x) => ({
+        vaultPath: x.c.vault_path,
+        chunkIndex: x.c.chunk_index,
+        text: x.c.text,
+        similarity: x.sim,
+      }));
 
     return scored;
   }
@@ -121,4 +140,3 @@ function cosineSimilarity(a: number[], b: number[]): number {
 export function createVectorsDB(filePath?: string): VectorsDB {
   return new VectorsDB(filePath);
 }
-

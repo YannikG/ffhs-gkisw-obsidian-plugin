@@ -58,4 +58,3 @@ describe('VectorsDB basic lifecycle', () => {
     expect(afterTrunc.length).toBe(0);
   });
 });
-

@@ -14,7 +14,7 @@ const ctx = await esbuild.context({
   loader: {
     '.wasm': 'file',
   },
-  assetNames: 'assets/[name]-[hash]'
+  assetNames: 'assets/[name]-[hash]',
 });
 
 if (watch) {
