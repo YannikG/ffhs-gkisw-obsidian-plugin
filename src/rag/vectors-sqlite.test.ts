@@ -7,9 +7,11 @@ describe('SqliteVectorsDB optional integration', () => {
     try {
       // Try to construct pointing to a non-existing path in tmp
       createSqliteVectorsDB(':memory:');
-    } catch (err: any) {
+    } catch (err: unknown) {
       threw = true;
-      expect(String(err.message)).toMatch(/better-sqlite3 is not installed/);
+      expect(String(err instanceof Error ? err.message : err)).toMatch(
+        /better-sqlite3 is not installed/,
+      );
     }
 
     // If environment actually has better-sqlite3 then the constructor will succeed

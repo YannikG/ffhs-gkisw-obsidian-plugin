@@ -57,11 +57,14 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
       const candidates = [p['dataDir'], p['dataPath'], p['dataDirPath'], p['pluginPath']];
 
       // Manifest-based location (not always present in tests)
-      if (p.manifest && typeof p.manifest === 'object') {
-        const manifestObj = p.manifest as Record<string, unknown>;
-        if (typeof manifestObj.id === 'string') {
-          candidates.push(path.resolve(process.cwd(), String(manifestObj.id)));
-        }
+      if (
+        p.manifest &&
+        typeof p.manifest === 'object' &&
+        typeof (p.manifest as Record<string, unknown>).id === 'string'
+      ) {
+        candidates.push(
+          path.resolve(process.cwd(), String((p.manifest as Record<string, unknown>).id)),
+        );
       }
 
       for (const c of candidates) {
@@ -94,13 +97,13 @@ export function closeIndex(): void {
       const asObj = currentStore as unknown as Record<string, unknown>;
       const closeFn = asObj['close'];
       if (typeof closeFn === 'function') {
-        (closeFn as unknown as (...args: unknown[]) => unknown).call(asObj);
+        (closeFn as () => void).call(asObj);
       }
       const db = asObj['db'];
       if (db && typeof (db as Record<string, unknown>)['close'] === 'function') {
         try {
           // call the db.close() if present
-          (db as unknown as { close?: (...args: unknown[]) => unknown }).close?.();
+          (db as unknown as { close?: () => void }).close?.();
         } catch {
           // ignore
         }

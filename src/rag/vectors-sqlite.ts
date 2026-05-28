@@ -21,17 +21,33 @@ export type SqliteStoredChunk = {
  * prototype. For production the SPEC recommends a dedicated vector column
  * (e.g. sqlite-wasm-vec) and ANN support.
  */
+type ChunkRow = {
+  vault_path: string;
+  chunk_index: number;
+  embedding_model: string | null;
+  text: string | null;
+  embedding: string;
+  mtime: number | null;
+  content_hash: string | null;
+};
+
+type BetterSqlite3DB = {
+  exec(sql: string): void;
+  prepare(sql: string): { run(param: unknown): void; all(param: string): ChunkRow[] };
+  transaction(fn: (items: ChunkRow[]) => void): (items: ChunkRow[]) => void;
+};
+
 export class SqliteVectorsDB {
-  private db: any;
+  private db!: BetterSqlite3DB;
 
   constructor(filePath?: string) {
     const resolved = filePath ?? path.resolve(process.cwd(), 'vectors.db');
 
-    let BetterSqlite3: any;
+    let BetterSqlite3!: new (path: string) => BetterSqlite3DB;
     try {
       // Try to require at runtime; optional dependency.
-
-      BetterSqlite3 = require('better-sqlite3');
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      BetterSqlite3 = require('better-sqlite3') as new (path: string) => BetterSqlite3DB;
     } catch {
       throw new Error(
         'better-sqlite3 is not installed. Install as devDependency for SQLite-backed vectors (npm i -D better-sqlite3) or use the JSON fallback vectors implementation.',
@@ -75,7 +91,7 @@ export class SqliteVectorsDB {
       INSERT OR REPLACE INTO chunks (vault_path, chunk_index, embedding_model, text, embedding, mtime, content_hash)
       VALUES (@vault_path, @chunk_index, @embedding_model, @text, @embedding, @mtime, @content_hash);
     `);
-    const txn = this.db.transaction((items: any[]) => {
+    const txn = this.db.transaction((items: ChunkRow[]) => {
       for (const it of items) insert.run(it);
     });
 
@@ -101,7 +117,7 @@ export class SqliteVectorsDB {
     const normalized = folderPrefix.endsWith('/') ? folderPrefix : folderPrefix + '/';
     const stmt = this.db.prepare('SELECT * FROM chunks WHERE vault_path LIKE ?');
     const rows = stmt.all(normalized + '%');
-    return rows.map((r: any) => ({
+    return rows.map((r: ChunkRow) => ({
       vault_path: r.vault_path,
       chunk_index: r.chunk_index,
       embedding_model: r.embedding_model,
