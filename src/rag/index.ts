@@ -5,3 +5,5 @@ export {
   type ChunkMarkdownOptions,
   type MarkdownChunk,
 } from './chunking.js';
+
+export { openIndex, openIndexForPlugin, closeIndex, getIndex, type VectorsStore } from './store.js';

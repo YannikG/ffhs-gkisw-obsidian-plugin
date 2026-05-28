@@ -11,6 +11,10 @@ const ctx = await esbuild.context({
   sourcemap: true,
   logLevel: 'info',
   external: ['obsidian'],
+  loader: {
+    '.wasm': 'file',
+  },
+  assetNames: 'assets/[name]-[hash]',
 });
 
 if (watch) {
