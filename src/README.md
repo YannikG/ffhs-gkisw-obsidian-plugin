@@ -23,7 +23,10 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [SPEC.md §4](
 | `summary/create-summary-notices.ts`, `summary/context-limit.ts` | Notice-Texte und Kontextlimit-Prüfung (P5-I06). |
 | `summary/create-summary-file-menu.ts` | Ordner-Kontextmenü **Create Summary** (P4-I05, P5-I06). |
 | `rag/chunking.ts` | Absatz-Chunking für Embeddings: `chunkMarkdown`, Defaults 1000/200 (P6-I01). |
-| `rag/index.ts` | Barrel für RAG-Exports; Index/Retrieval folgen in späteren P6-Issues (SPEC §4.1, §4.3). |
+| `rag/store.ts` | Singleton-Verwaltung für VectorsStore und Orchestrator (`openIndex`, `getIndex`, `setOrchestrator`, `getOrchestrator`). |
+| `rag/orchestrator.ts` | Idle-Queue und Vault-Event-Verarbeitung: `Orchestrator`, `indexFolderScope` (P6-I04). |
+| `rag/background-index.ts` | Öffentliche Fassade: `startBackgroundIndex`, `disposeBackgroundIndex`, `indexFolderScopeWithNotice`, `resetIndex` (P6-I07). |
+| `rag/index.ts` | Barrel für alle RAG-Exporte. |
 
 Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implementierungsdetails der genannten Module.
 
@@ -53,7 +56,13 @@ Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implem
 
 | Issue | Primary paths |
 |-------|----------------|
-| P6-I01 | `rag/chunking.ts`, `rag/index.ts` |
+| P6-I01 | `rag/chunking.ts` |
+| P6-I02 | `ollama/client.ts` (Embeddings-Endpunkt) |
+| P6-I03 | `rag/vectors-sqlite.ts`, `rag/vectors-wasm.ts`, `rag/vectors.ts`, `rag/store.ts` |
+| P6-I04 | `rag/orchestrator.ts` |
+| P6-I05 | `sources/should-index.ts` |
+| P6-I06 | `settings.ts` (chunkSize/chunkOverlap), `settings-tab.ts` |
+| P6-I07 | `rag/background-index.ts`, `main.ts` (Idle + Events + onunload) |
 
 ## Entwicklung und manueller Test
 
@@ -77,7 +86,8 @@ Spezifikation der Akzeptanzkriterien: [P5-I06-create-summary-ohne-rag.md](../doc
 - **No import cycles** between feature modules. Dependency direction: `main.ts` → feature modules; feature modules must not import `main.ts`.
 - **Pure modules** (`settings`, `summary/*` ohne Obsidian-Import, `ollama/*`, `rag/chunking.ts`) must **not** import `obsidian`. Obsidian APIs stay in `main.ts` and thin adapters (`create-summary-for-folder.ts`, `vault-write-summary.ts`, `create-summary-file-menu.ts`).
 - **Wired from `main.ts`:** settings tab; folder **Create Summary** → `runCreateSummaryForFolder` → `create-summary-run` → `ollama/` + Vault-Schreiben.
-- **Not yet wired:** `rag/` (Retrieval und Index, Phase 6+).
+- **Wired in Phase 6:** `rag/background-index.ts` → `startBackgroundIndex` / `disposeBackgroundIndex` in `main.ts`; `indexFolderScopeWithNotice` für Phase-7-Aufruf bereit.
+- **Not yet wired:** Retrieval (`retrieveTopK`) und Embedding-Logik im `indexHandler` (Phase 7).
 - Prefer barrel imports from `summary/index.ts` for public summary exports.
 
 ## Tests

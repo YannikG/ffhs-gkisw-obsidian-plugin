@@ -1,4 +1,4 @@
-import { Plugin } from 'obsidian';
+import { Plugin, type TAbstractFile } from 'obsidian';
 import { runCreateSummaryForFolder } from './summary/create-summary-for-folder.js';
 import {
   registerCreateSummaryFileMenu,
@@ -6,7 +6,15 @@ import {
 } from './summary/create-summary-file-menu.js';
 import { ObsidianSummarizerSettingTab } from './settings-tab.js';
 import { DEFAULT_SETTINGS, resolvePluginSettings, type PluginSettings } from './settings.js';
-import { openIndexForPlugin, closeIndex, getIndex } from './rag/index.js';
+import {
+  openIndexForPlugin,
+  closeIndex,
+  startBackgroundIndex,
+  disposeBackgroundIndex,
+  resetIndex,
+  type RagVaultPorts,
+} from './rag/index.js';
+import { shouldIndexVaultPath } from './sources/should-index.js';
 
 export default class ObsidianSummarizerPlugin extends Plugin {
   settings: PluginSettings = { ...DEFAULT_SETTINGS };
@@ -29,11 +37,42 @@ export default class ObsidianSummarizerPlugin extends Plugin {
       // Opening index is non-fatal for the rest of plugin features; log if available.
       console.warn('Could not open vectors index:', _err);
     }
+
+    startBackgroundIndex(this.makeRagVaultPorts());
+  }
+
+  private makeRagVaultPorts(): RagVaultPorts {
+    const vault = this.app.vault;
+    return {
+      getAllVaultPaths: () =>
+        vault.getFiles().map((f) => f.path).filter(shouldIndexVaultPath),
+      getFilesUnderFolder: async (folderPath: string) => {
+        return vault
+          .getFiles()
+          .map((f) => f.path)
+          .filter((p) => p.startsWith(folderPath + '/'))
+          .filter(shouldIndexVaultPath);
+      },
+      onModify: (handler) => {
+        this.registerEvent(vault.on('modify', (file: TAbstractFile) => handler(file.path)));
+        return () => {};
+      },
+      onDelete: (handler) => {
+        this.registerEvent(vault.on('delete', (file: TAbstractFile) => handler(file.path)));
+        return () => {};
+      },
+      onCreate: (handler) => {
+        this.registerEvent(vault.on('create', (file: TAbstractFile) => handler(file.path)));
+        return () => {};
+      },
+    };
   }
 
   onunload(): void {
     this.disposeCreateSummaryMenu?.();
     this.disposeCreateSummaryMenu = undefined;
+
+    disposeBackgroundIndex();
 
     // Close vectors index when plugin unloads to free resources.
     try {
@@ -52,6 +91,6 @@ export default class ObsidianSummarizerPlugin extends Plugin {
   }
 
   async resetVectorIndex(): Promise<void> {
-    getIndex()?.truncateAll();
+    resetIndex();
   }
 }
