@@ -12,7 +12,7 @@ Blockiert von: P5-I05 (#23), P7-I04 (#46), P8-I01 (#64)
 - **Issue-ID:** P8-I02
 - **GitHub:** #65
 - **Blockiert von:** [P5-I05](../../phase-5/issues/P5-I05-summary-datei-schreiben.md) (#23), [P7-I04](../../phase-7/issues/P7-I04-summary-orchestrator-rag.md) (#46), [P8-I01](./P8-I01-settings-ux-validierung.md) (#64)
-- **Blockiert:** Phase 9
+- **Blockiert:** [P9-I01](../../phase-9/issues/P9-I01-review-and-fix.md) (#66)
 
 ## Abhängigkeiten
 

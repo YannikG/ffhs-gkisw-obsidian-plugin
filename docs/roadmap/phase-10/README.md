@@ -2,24 +2,43 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Entwurf
+**Status:** Geplant
 
-Systemarchitektur und Implementation dokumentieren; ersetzt [SPEC.md](../../../SPEC.md) nicht.
+Systemarchitektur und Implementation dokumentieren; [SPEC.md](../../../SPEC.md) bleibt Produktspezifikation.
 
-Voraussetzung: [Phase 9](../phase-9/README.md).
+Voraussetzung: [Phase 9](../phase-9/README.md) **Definition of Done** (P9-I03).
 
-## Definition of Done (Entwurf)
+## Einordnung
 
-- [ ] Architektur-Doku (Datenfluss, Module, Index-Policy, Summary-Lauf).
-- [ ] Team-Review der Doku; Nacharbeit eingearbeitet.
-- [ ] `src/README.md` und Root-README konsistent mit Ist-Stand.
+Phase 10 erfasst den **Ist-Stand** nach Review für zukünftige Agenten und Teammitglieder. P5-I07 und P4-I07 lieferten Entwickler-Onboarding; hier folgt die vollständige MVP-Architektur.
 
-## Arbeitspakete (Entwurf)
+## Definition of Done (Phase 10)
 
-| ID | Kurzbeschreibung |
-|----|------------------|
-| P10-I01 | Architektur- und Implementationsbeschreibung im Repo |
-| P10-I02 | Team-Review und Nacharbeit |
+- [ ] `docs/architecture.md` mit Datenfluss, Modulen, Index-Policy, Summary-Lauf (P10-I01).
+- [ ] `src/README.md` und Root-README konsistent mit Ist-Stand (P10-I01).
+- [ ] Team-Review durchgeführt; Nacharbeit eingearbeitet (P10-I02).
+
+## Abhängigkeitsgraph
+
+```mermaid
+flowchart TD
+  P9DoD[P9_I03]
+  I01[P10_I01 ArchDoc]
+  I02[P10_I02 TeamReview]
+  P9DoD --> I01
+  I01 --> I02
+```
+
+Empfohlene Reihenfolge: **I01 → I02**.
+
+## Arbeitspakete
+
+| ID | GitHub | Titel | Kanonische Markdown-Datei |
+|----|--------|-------|---------------------------|
+| P10-I01 | #69 | [P10-I01] Architektur- und Implementationsbeschreibung | [P10-I01-architektur-dokumentation.md](./issues/P10-I01-architektur-dokumentation.md) |
+| P10-I02 | #70 | [P10-I02] Team-Review und Nacharbeit | [P10-I02-team-review-doku.md](./issues/P10-I02-team-review-doku.md) |
+
+Label auf GitHub: **Phase 10**. [Zusammenarbeit](../../zusammenarbeit/README.md).
 
 ## Verweise
 
