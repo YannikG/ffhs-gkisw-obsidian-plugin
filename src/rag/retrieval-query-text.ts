@@ -16,7 +16,7 @@ export function buildRetrievalQueryText(
 ): RetrievalQueryResult {
   const included = entries
     .filter(shouldIncludeMarkdownEntry)
-    .sort((a, b) => a.vaultPath.localeCompare(b.vaultPath));
+    .sort((a, b) => (a.vaultPath < b.vaultPath ? -1 : a.vaultPath > b.vaultPath ? 1 : 0));
 
   if (included.length === 0) {
     return { ok: false, error: { kind: 'empty_folder' } };
