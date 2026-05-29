@@ -30,10 +30,11 @@ flowchart TD
   P7DoD[P7_I05]
   I01[P8_I01 Settings]
   I02[P8_I02 Overwrite]
+  P5I02[P5_I02]
   P5I05[P5_I05]
   P7I04[P7_I04]
   P7DoD --> I01
-  P7DoD --> I02
+  P5I02 --> I01
   I01 --> I02
   P5I05 --> I02
   P7I04 --> I02
