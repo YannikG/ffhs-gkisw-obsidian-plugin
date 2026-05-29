@@ -50,10 +50,11 @@ export default class ObsidianSummarizerPlugin extends Plugin {
           .map((f) => f.path)
           .filter(shouldIndexVaultPath),
       getFilesUnderFolder: async (folderPath: string) => {
+        const normalized = folderPath === '/' ? '' : folderPath;
         return vault
           .getFiles()
           .map((f) => f.path)
-          .filter((p) => p.startsWith(folderPath + '/'))
+          .filter((p) => normalized === '' || p.startsWith(normalized + '/'))
           .filter(shouldIndexVaultPath);
       },
       onModify: (handler) => {
