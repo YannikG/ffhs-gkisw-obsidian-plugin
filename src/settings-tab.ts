@@ -12,6 +12,7 @@ import {
 export interface ObsidianSummarizerSettingsHost {
   settings: PluginSettings;
   saveSettings(): Promise<void>;
+  resetVectorIndex(): Promise<void>;
 }
 
 type RequiredTextFieldOptions = {
@@ -21,6 +22,8 @@ type RequiredTextFieldOptions = {
   getSavedValue: () => string;
   setSavedValue: (value: string) => void;
   normalize?: (value: string) => string;
+  /** Called once on blur after a valid value is confirmed. Callback decides whether to act. */
+  onBlurChanged?: () => Promise<void>;
 };
 
 type PositiveIntFieldOptions = {
@@ -67,6 +70,8 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       },
     });
 
+    // Track the value at display time; onBlurChanged fires only when the model actually changed.
+    let lastEmbeddingModel = this.plugin.settings.embeddingModel;
     this.addRequiredTextField(containerEl, {
       label: 'Embedding-Modell',
       desc: 'Ollama-Modell-Tag für RAG-Embeddings.',
@@ -74,6 +79,13 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       getSavedValue: () => this.plugin.settings.embeddingModel,
       setSavedValue: (value) => {
         this.plugin.settings.embeddingModel = value;
+      },
+      onBlurChanged: async () => {
+        const current = this.plugin.settings.embeddingModel;
+        if (current === lastEmbeddingModel) return;
+        lastEmbeddingModel = current;
+        await this.plugin.resetVectorIndex();
+        new Notice('Embedding-Modell geändert — Vektorindex wird neu aufgebaut.');
       },
     });
 
@@ -97,6 +109,40 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       },
       displaySeconds: true,
     });
+
+    this.addPositiveIntField(containerEl, {
+      label: 'Chunk-Grösse',
+      desc: 'Maximale Zeichenanzahl pro Chunk für den Vektorindex.',
+      placeholder: String(DEFAULT_SETTINGS.chunkSize),
+      getSavedValue: () => this.plugin.settings.chunkSize,
+      setSavedValue: (value) => {
+        this.plugin.settings.chunkSize = value;
+      },
+    });
+
+    this.addPositiveIntField(containerEl, {
+      label: 'Chunk-Overlap',
+      desc: 'Überlappung in Zeichen zwischen aufeinanderfolgenden Chunks.',
+      placeholder: String(DEFAULT_SETTINGS.chunkOverlap),
+      getSavedValue: () => this.plugin.settings.chunkOverlap,
+      setSavedValue: (value) => {
+        this.plugin.settings.chunkOverlap = value;
+      },
+    });
+
+    new Setting(containerEl)
+      .setName('Vektorindex zurücksetzen')
+      .setDesc('Index leeren und vault-weit neu aufbauen (läuft im Hintergrund).')
+      .addButton((button) => {
+        button
+          .setButtonText('Zurücksetzen')
+          .setWarning()
+          .onClick(() => {
+            void this.plugin
+              .resetVectorIndex()
+              .then(() => new Notice('Vektorindex zurückgesetzt.'));
+          });
+      });
   }
 
   private addPositiveIntField(containerEl: HTMLElement, options: PositiveIntFieldOptions): void {
@@ -197,6 +243,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       if (text.getValue() !== normalized) {
         text.setValue(normalized);
       }
+      await options.onBlurChanged?.();
       return;
     }
 

@@ -1,3 +1,4 @@
+import { DEFAULT_CHUNK_OVERLAP, DEFAULT_CHUNK_SIZE } from './rag/chunking.js';
 import { DEFAULT_OLLAMA_TIMEOUT_MS } from './ollama/types.js';
 
 /**
@@ -15,6 +16,10 @@ export interface PluginSettings {
   contextLimit: number;
   /** Ollama chat timeout in milliseconds. */
   ollamaTimeoutMs: number;
+  /** Chunk size in characters for RAG paragraph chunking. */
+  chunkSize: number;
+  /** Chunk overlap in characters for RAG paragraph chunking. */
+  chunkOverlap: number;
 }
 
 /** Default context limit (characters) for Phase 5 full-folder corpus. */
@@ -27,6 +32,8 @@ export const DEFAULT_SETTINGS: PluginSettings = {
   embeddingModel: 'nomic-embed-text',
   contextLimit: DEFAULT_CONTEXT_LIMIT,
   ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
+  chunkSize: DEFAULT_CHUNK_SIZE,
+  chunkOverlap: DEFAULT_CHUNK_OVERLAP,
 };
 
 /**
@@ -48,7 +55,7 @@ export function mergeSettings(
 }
 
 type StringSettingKey = 'ollamaBaseUrl' | 'generationModel' | 'embeddingModel';
-type NumberSettingKey = 'contextLimit' | 'ollamaTimeoutMs';
+type NumberSettingKey = 'contextLimit' | 'ollamaTimeoutMs' | 'chunkSize' | 'chunkOverlap';
 
 const PLUGIN_SETTINGS_STRING_KEYS: StringSettingKey[] = [
   'ollamaBaseUrl',
@@ -56,11 +63,21 @@ const PLUGIN_SETTINGS_STRING_KEYS: StringSettingKey[] = [
   'embeddingModel',
 ];
 
-const PLUGIN_SETTINGS_NUMBER_KEYS: NumberSettingKey[] = ['contextLimit', 'ollamaTimeoutMs'];
+const PLUGIN_SETTINGS_NUMBER_KEYS: NumberSettingKey[] = [
+  'contextLimit',
+  'ollamaTimeoutMs',
+  'chunkSize',
+  'chunkOverlap',
+];
 
-const NUMBER_SETTING_DEFAULTS: Pick<PluginSettings, 'contextLimit' | 'ollamaTimeoutMs'> = {
+const NUMBER_SETTING_DEFAULTS: Pick<
+  PluginSettings,
+  'contextLimit' | 'ollamaTimeoutMs' | 'chunkSize' | 'chunkOverlap'
+> = {
   contextLimit: DEFAULT_CONTEXT_LIMIT,
   ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
+  chunkSize: DEFAULT_CHUNK_SIZE,
+  chunkOverlap: DEFAULT_CHUNK_OVERLAP,
 };
 
 /**
