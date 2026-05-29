@@ -57,16 +57,19 @@ export default class ObsidianSummarizerPlugin extends Plugin {
           .filter(shouldIndexVaultPath);
       },
       onModify: (handler) => {
-        this.registerEvent(vault.on('modify', (file: TAbstractFile) => handler(file.path)));
-        return () => {};
+        const ref = vault.on('modify', (file: TAbstractFile) => handler(file.path));
+        this.registerEvent(ref);
+        return () => vault.offref(ref);
       },
       onDelete: (handler) => {
-        this.registerEvent(vault.on('delete', (file: TAbstractFile) => handler(file.path)));
-        return () => {};
+        const ref = vault.on('delete', (file: TAbstractFile) => handler(file.path));
+        this.registerEvent(ref);
+        return () => vault.offref(ref);
       },
       onCreate: (handler) => {
-        this.registerEvent(vault.on('create', (file: TAbstractFile) => handler(file.path)));
-        return () => {};
+        const ref = vault.on('create', (file: TAbstractFile) => handler(file.path));
+        this.registerEvent(ref);
+        return () => vault.offref(ref);
       },
     };
   }
