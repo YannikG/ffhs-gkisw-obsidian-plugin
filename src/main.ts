@@ -45,7 +45,10 @@ export default class ObsidianSummarizerPlugin extends Plugin {
     const vault = this.app.vault;
     return {
       getAllVaultPaths: () =>
-        vault.getFiles().map((f) => f.path).filter(shouldIndexVaultPath),
+        vault
+          .getFiles()
+          .map((f) => f.path)
+          .filter(shouldIndexVaultPath),
       getFilesUnderFolder: async (folderPath: string) => {
         return vault
           .getFiles()
