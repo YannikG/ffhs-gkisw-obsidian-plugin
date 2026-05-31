@@ -1,5 +1,6 @@
 import path from 'path';
 
+import type { Orchestrator } from './orchestrator.js';
 import { createVectorsDB } from './vectors.js';
 import { createSqliteVectorsDB } from './vectors-sqlite.js';
 import { createWasmVectorsDB } from './vectors-wasm.js';
@@ -83,6 +84,16 @@ export function openIndexForPlugin(pluginLike: unknown): VectorsStore {
 
 export function getIndex(): VectorsStore {
   return currentStore;
+}
+
+let currentOrchestrator: Orchestrator | null = null;
+
+export function setOrchestrator(o: Orchestrator | null): void {
+  currentOrchestrator = o;
+}
+
+export function getOrchestrator(): Orchestrator | null {
+  return currentOrchestrator;
 }
 
 export function closeIndex(): void {
