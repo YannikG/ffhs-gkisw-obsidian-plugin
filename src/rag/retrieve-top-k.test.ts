@@ -99,10 +99,7 @@ describe('retrieveTopKForFolder', () => {
 
     expect(result).toEqual({
       ok: true,
-      chunks: [
-        expectedChunk('folder/a.md', 0, 'Alpha'),
-        expectedChunk('folder/b.md', 0, 'Beta'),
-      ],
+      chunks: [expectedChunk('folder/a.md', 0, 'Alpha'), expectedChunk('folder/b.md', 0, 'Beta')],
     });
   });
 });
