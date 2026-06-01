@@ -10,6 +10,14 @@ export { openIndex, openIndexForPlugin, closeIndex, getIndex, type VectorsStore 
 export { Orchestrator } from './orchestrator.js';
 
 export {
+  retrieveTopKForFolder,
+  type RetrieveTopKChunk,
+  type RetrieveTopKResult,
+  type RetrieveTopKStore,
+  type RetrieveTopKParams,
+} from './retrieve-top-k.js';
+
+export {
   startBackgroundIndex,
   disposeBackgroundIndex,
   indexFolderScopeWithNotice,
