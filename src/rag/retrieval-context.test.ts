@@ -18,8 +18,8 @@ describe('buildRetrievalContext', () => {
   });
 
   it('appends (chunk N) in heading when chunkIndex > 0', () => {
-    expect(
-      buildRetrievalContext([{ vaultPath: 'a.md', chunkIndex: 2, text: 'Part three' }]),
-    ).toBe('### `a.md` (chunk 2)\nPart three');
+    expect(buildRetrievalContext([{ vaultPath: 'a.md', chunkIndex: 2, text: 'Part three' }])).toBe(
+      '### `a.md` (chunk 2)\nPart three',
+    );
   });
 });
