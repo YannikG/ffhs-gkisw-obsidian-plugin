@@ -17,6 +17,8 @@ export {
   type RetrieveTopKParams,
 } from './retrieve-top-k.js';
 
+export { buildRetrievalContext } from './retrieval-context.js';
+
 export {
   startBackgroundIndex,
   disposeBackgroundIndex,
