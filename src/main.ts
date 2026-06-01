@@ -1,5 +1,5 @@
 import { Plugin, type TAbstractFile } from 'obsidian';
-import { runCreateSummaryForFolder } from './summary/create-summary-for-folder.js';
+import { runCreateSummaryRagForFolder } from './summary/create-summary-for-folder.js';
 import {
   registerCreateSummaryFileMenu,
   showCreateSummaryNotice,
@@ -25,7 +25,12 @@ export default class ObsidianSummarizerPlugin extends Plugin {
     this.addSettingTab(new ObsidianSummarizerSettingTab(this.app, this));
     this.disposeCreateSummaryMenu = registerCreateSummaryFileMenu(this, {
       runCreateSummary: (folder) =>
-        runCreateSummaryForFolder(this.app.vault, folder, this.settings, showCreateSummaryNotice),
+        runCreateSummaryRagForFolder(
+          this.app.vault,
+          folder,
+          this.settings,
+          showCreateSummaryNotice,
+        ),
     });
 
     // Open vectors index for the plugin lifecycle. The store chooses the best
