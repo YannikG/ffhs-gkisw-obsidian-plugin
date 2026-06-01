@@ -20,12 +20,16 @@ export interface PluginSettings {
   chunkSize: number;
   /** Chunk overlap in characters for RAG paragraph chunking. */
   chunkOverlap: number;
+  /** Number of top-K chunks to retrieve for RAG context. */
+  retrievalTopK: number;
 }
 
 /** Default context limit (characters) for Phase 5 full-folder corpus. */
 export const DEFAULT_CONTEXT_LIMIT = 32_000;
 
 /** Defaults from SPEC.md §6 and P5-I06. */
+export const DEFAULT_RETRIEVAL_TOP_K = 8;
+
 export const DEFAULT_SETTINGS: PluginSettings = {
   ollamaBaseUrl: 'http://127.0.0.1:11434',
   generationModel: 'gemma4:e2b',
@@ -34,6 +38,7 @@ export const DEFAULT_SETTINGS: PluginSettings = {
   ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
   chunkSize: DEFAULT_CHUNK_SIZE,
   chunkOverlap: DEFAULT_CHUNK_OVERLAP,
+  retrievalTopK: DEFAULT_RETRIEVAL_TOP_K,
 };
 
 /**
@@ -55,7 +60,12 @@ export function mergeSettings(
 }
 
 type StringSettingKey = 'ollamaBaseUrl' | 'generationModel' | 'embeddingModel';
-type NumberSettingKey = 'contextLimit' | 'ollamaTimeoutMs' | 'chunkSize' | 'chunkOverlap';
+type NumberSettingKey =
+  | 'contextLimit'
+  | 'ollamaTimeoutMs'
+  | 'chunkSize'
+  | 'chunkOverlap'
+  | 'retrievalTopK';
 
 const PLUGIN_SETTINGS_STRING_KEYS: StringSettingKey[] = [
   'ollamaBaseUrl',
@@ -68,16 +78,18 @@ const PLUGIN_SETTINGS_NUMBER_KEYS: NumberSettingKey[] = [
   'ollamaTimeoutMs',
   'chunkSize',
   'chunkOverlap',
+  'retrievalTopK',
 ];
 
 const NUMBER_SETTING_DEFAULTS: Pick<
   PluginSettings,
-  'contextLimit' | 'ollamaTimeoutMs' | 'chunkSize' | 'chunkOverlap'
+  'contextLimit' | 'ollamaTimeoutMs' | 'chunkSize' | 'chunkOverlap' | 'retrievalTopK'
 > = {
   contextLimit: DEFAULT_CONTEXT_LIMIT,
   ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
   chunkSize: DEFAULT_CHUNK_SIZE,
   chunkOverlap: DEFAULT_CHUNK_OVERLAP,
+  retrievalTopK: DEFAULT_RETRIEVAL_TOP_K,
 };
 
 /**
