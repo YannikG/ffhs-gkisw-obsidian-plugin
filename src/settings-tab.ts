@@ -67,7 +67,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     this.addRequiredTextField(containerEl, {
       label: 'Generierungsmodell',
       desc: 'Ollama-Modell-Tag für Zusammenfassungen. Empfohlen: gemma4:e2b oder gemma4:e4b.',
-      placeholder: 'gemma4:e2b',
+      placeholder: DEFAULT_SETTINGS.generationModel,
       getSavedValue: () => this.plugin.settings.generationModel,
       setSavedValue: (value) => {
         this.plugin.settings.generationModel = value;
