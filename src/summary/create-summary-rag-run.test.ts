@@ -118,7 +118,7 @@ describe('runCreateSummaryRag', () => {
     expect(ports.endRun).toHaveBeenCalled();
   });
 
-  it('shows context-limit notice when sum of chunk texts exceeds limit', async () => {
+  it('shows context-limit notice when decorated retrieval context exceeds limit', async () => {
     const ports = createPorts({
       retrieveTopK: vi.fn(async () =>
         okChunks([{ vaultPath: 'a.md', chunkIndex: 0, text: 'x'.repeat(101) }]),

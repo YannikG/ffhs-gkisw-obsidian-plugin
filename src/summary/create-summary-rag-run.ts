@@ -1,7 +1,7 @@
 import type { OllamaChatMessage, OllamaResult } from '../ollama/types.js';
 import { buildRetrievalContext } from '../rag/retrieval-context.js';
 import { buildRetrievalQueryText } from '../rag/retrieval-query-text.js';
-import type { RetrieveTopKChunk, RetrieveTopKResult } from '../rag/retrieve-top-k.js';
+import type { RetrieveTopKResult } from '../rag/retrieve-top-k.js';
 import { buildSummaryMessages } from './build-summary-messages.js';
 import {
   CREATE_SUMMARY_CONTEXT_LIMIT_NOTICE,
@@ -30,10 +30,6 @@ export interface CreateSummaryRagRunPorts {
 export interface CreateSummaryRagRunInput {
   folderLabel: string;
   contextLimit: number;
-}
-
-function sumChunkTextLengths(chunks: RetrieveTopKChunk[]): number {
-  return chunks.reduce((sum, c) => sum + (c.text?.length ?? 0), 0);
 }
 
 export async function runCreateSummaryRag(
@@ -66,7 +62,8 @@ export async function runCreateSummaryRag(
       return;
     }
 
-    if (sumChunkTextLengths(retrievalResult.chunks) > input.contextLimit) {
+    const sourceContext = buildRetrievalContext(retrievalResult.chunks);
+    if (sourceContext.length > input.contextLimit) {
       ports.showNotice(CREATE_SUMMARY_CONTEXT_LIMIT_NOTICE);
       return;
     }
@@ -79,7 +76,6 @@ export async function runCreateSummaryRag(
       return;
     }
 
-    const sourceContext = buildRetrievalContext(retrievalResult.chunks);
     const messages = buildSummaryMessages({ folderLabel: input.folderLabel, sourceContext });
 
     const chatResult = await ports.chat(messages);
