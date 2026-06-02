@@ -63,7 +63,7 @@ export async function runCreateSummaryRagForFolder(
           store: store as import('../rag/retrieve-top-k.js').RetrieveTopKStore,
         });
       },
-      checkReachable: () => client.checkOllamaReachable(),
+      checkReachable: () => client.checkBothModelsReachable(),
       chat: (messages) => client.chat(messages),
       writeSummary: (content) => writeSummaryMarkdownToFolder(vault, folder, content),
       showNotice,

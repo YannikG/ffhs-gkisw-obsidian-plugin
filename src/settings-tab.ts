@@ -1,5 +1,7 @@
 import { App, Notice, Plugin, PluginSettingTab, Setting, type TextComponent } from 'obsidian';
+import { createOllamaClient } from './ollama/client.js';
 import { promptRestoreSetting } from './settings-restore-modal.js';
+import { mapOllamaErrorToNotice } from './summary/create-summary-notices.js';
 import {
   DEFAULT_SETTINGS,
   normalizeOllamaBaseUrl,
@@ -49,6 +51,8 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
+    containerEl.createEl('h3', { text: 'Ollama' });
+
     this.addRequiredTextField(containerEl, {
       label: 'Ollama Base URL',
       desc: 'REST-Basis-URL der lokalen Ollama-Instanz.',
@@ -62,7 +66,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
 
     this.addRequiredTextField(containerEl, {
       label: 'Generierungsmodell',
-      desc: 'Ollama-Modell-Tag für Zusammenfassungen (z. B. gemma4:e2b).',
+      desc: 'Ollama-Modell-Tag für Zusammenfassungen. Empfohlen: gemma4:e2b oder gemma4:e4b.',
       placeholder: DEFAULT_SETTINGS.generationModel,
       getSavedValue: () => this.plugin.settings.generationModel,
       setSavedValue: (value) => {
@@ -90,18 +94,8 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     });
 
     this.addPositiveIntField(containerEl, {
-      label: 'Kontextlimit',
-      desc: 'Maximale Zeichenanzahl des Ordner-Quellkorpus vor dem Chat.',
-      placeholder: String(DEFAULT_SETTINGS.contextLimit),
-      getSavedValue: () => this.plugin.settings.contextLimit,
-      setSavedValue: (value) => {
-        this.plugin.settings.contextLimit = value;
-      },
-    });
-
-    this.addPositiveIntField(containerEl, {
       label: 'Ollama-Timeout (Sekunden)',
-      desc: 'Maximale Wartezeit für einen Chat-Aufruf.',
+      desc: 'Maximale Wartezeit für einen Chat-Aufruf. Default: 90 s.',
       placeholder: String(DEFAULT_SETTINGS.ollamaTimeoutMs / 1000),
       getSavedValue: () => this.plugin.settings.ollamaTimeoutMs,
       setSavedValue: (value) => {
@@ -110,9 +104,35 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       displaySeconds: true,
     });
 
+    new Setting(containerEl)
+      .setName('Verbindung testen')
+      .setDesc('Prüft, ob Generierungs- und Embedding-Modell bei Ollama geladen sind.')
+      .addButton((button) => {
+        button.setButtonText('Verbindung testen').onClick(() => {
+          const { settings } = this.plugin;
+          const client = createOllamaClient({
+            baseUrl: settings.ollamaBaseUrl,
+            generationModel: settings.generationModel,
+            embeddingModel: settings.embeddingModel,
+            timeoutMs: settings.ollamaTimeoutMs,
+          });
+          void client.checkBothModelsReachable().then((result) => {
+            if (result.ok) {
+              new Notice(
+                `Verbindung erfolgreich: ${settings.generationModel} und ${settings.embeddingModel} sind geladen.`,
+              );
+            } else {
+              new Notice(mapOllamaErrorToNotice(result.error));
+            }
+          });
+        });
+      });
+
+    containerEl.createEl('h3', { text: 'Vektorindex' });
+
     this.addPositiveIntField(containerEl, {
       label: 'Chunk-Grösse',
-      desc: 'Maximale Zeichenanzahl pro Chunk für den Vektorindex.',
+      desc: 'Maximale Zeichenanzahl pro Chunk für den Vektorindex. Default: 1000.',
       placeholder: String(DEFAULT_SETTINGS.chunkSize),
       getSavedValue: () => this.plugin.settings.chunkSize,
       setSavedValue: (value) => {
@@ -122,7 +142,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
 
     this.addPositiveIntField(containerEl, {
       label: 'Chunk-Overlap',
-      desc: 'Überlappung in Zeichen zwischen aufeinanderfolgenden Chunks.',
+      desc: 'Überlappung in Zeichen zwischen aufeinanderfolgenden Chunks. Default: 200.',
       placeholder: String(DEFAULT_SETTINGS.chunkOverlap),
       getSavedValue: () => this.plugin.settings.chunkOverlap,
       setSavedValue: (value) => {
@@ -132,7 +152,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
 
     this.addPositiveIntField(containerEl, {
       label: 'Retrieval Top-K',
-      desc: 'Anzahl der semantisch ähnlichsten Chunks für den RAG-Kontext.',
+      desc: 'Anzahl der semantisch ähnlichsten Chunks für den RAG-Kontext. Default: 8.',
       placeholder: String(DEFAULT_SETTINGS.retrievalTopK),
       getSavedValue: () => this.plugin.settings.retrievalTopK,
       setSavedValue: (value) => {
@@ -153,6 +173,18 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
               .then(() => new Notice('Vektorindex zurückgesetzt.'));
           });
       });
+
+    containerEl.createEl('h3', { text: 'Zusammenfassung' });
+
+    this.addPositiveIntField(containerEl, {
+      label: 'Kontextlimit',
+      desc: "Obergrenze für den Retrieval-Kontext (Chunk-Texte). Default: 32'000 Zeichen.",
+      placeholder: String(DEFAULT_SETTINGS.contextLimit),
+      getSavedValue: () => this.plugin.settings.contextLimit,
+      setSavedValue: (value) => {
+        this.plugin.settings.contextLimit = value;
+      },
+    });
   }
 
   private addPositiveIntField(containerEl: HTMLElement, options: PositiveIntFieldOptions): void {
