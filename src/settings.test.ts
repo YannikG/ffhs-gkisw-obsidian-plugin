@@ -25,6 +25,7 @@ describe('DEFAULT_SETTINGS', () => {
       chunkSize: 1000,
       chunkOverlap: 200,
       retrievalTopK: 8,
+      summaryOverwriteBase: false,
     } satisfies PluginSettings);
   });
 });
@@ -40,6 +41,7 @@ describe('mergeSettings', () => {
       chunkSize: 500,
       chunkOverlap: 50,
       retrievalTopK: 8,
+      summaryOverwriteBase: false,
     };
     expect(mergeSettings(base, {})).toEqual(base);
   });
@@ -224,5 +226,34 @@ describe('validateOllamaBaseUrl', () => {
 describe('normalizeOllamaBaseUrl', () => {
   it('trims surrounding whitespace', () => {
     expect(normalizeOllamaBaseUrl('  http://127.0.0.1:11434  ')).toBe('http://127.0.0.1:11434');
+  });
+});
+
+describe('summaryOverwriteBase', () => {
+  it('DEFAULT_SETTINGS has summaryOverwriteBase false', () => {
+    expect(DEFAULT_SETTINGS.summaryOverwriteBase).toBe(false);
+  });
+
+  it('mergeSettings overrides summaryOverwriteBase', () => {
+    expect(mergeSettings({ ...DEFAULT_SETTINGS }, { summaryOverwriteBase: true })).toEqual({
+      ...DEFAULT_SETTINGS,
+      summaryOverwriteBase: true,
+    });
+  });
+
+  it('resolvePluginSettings reads summaryOverwriteBase true from stored', () => {
+    expect(resolvePluginSettings({ summaryOverwriteBase: true })).toEqual({
+      ...DEFAULT_SETTINGS,
+      summaryOverwriteBase: true,
+    });
+  });
+
+  it('resolvePluginSettings defaults summaryOverwriteBase to false when missing', () => {
+    expect(resolvePluginSettings({})).toEqual(DEFAULT_SETTINGS);
+  });
+
+  it('resolvePluginSettings ignores non-boolean summaryOverwriteBase', () => {
+    expect(resolvePluginSettings({ summaryOverwriteBase: 'true' })).toEqual(DEFAULT_SETTINGS);
+    expect(resolvePluginSettings({ summaryOverwriteBase: 1 })).toEqual(DEFAULT_SETTINGS);
   });
 });

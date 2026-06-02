@@ -3,11 +3,13 @@ import { buildSummaryOutputFilename, nextSummaryOutputVersion } from './filename
 export type SummaryWriteResult = {
   vaultPath: string;
   filename: string;
+  wasOverwritten: boolean;
 };
 
 export type SummaryVaultWritePort = {
   listMarkdownBasenamesInTree(): readonly string[];
   createFile(vaultPath: string, content: string): Promise<void>;
+  modifyFile(vaultPath: string, content: string): Promise<void>;
 };
 
 /**
@@ -32,10 +34,21 @@ export async function writeSummaryMarkdown(
   folderPath: string,
   folderBasename: string,
   content: string,
+  overwriteBase = false,
 ): Promise<SummaryWriteResult> {
   const existingFilenames = port.listMarkdownBasenamesInTree();
+
+  if (overwriteBase) {
+    const baseName = buildSummaryOutputFilename(folderBasename, 1);
+    if (existingFilenames.includes(baseName)) {
+      const vaultPath = buildSummaryOutputVaultPath(folderPath, baseName);
+      await port.modifyFile(vaultPath, content);
+      return { vaultPath, filename: baseName, wasOverwritten: true };
+    }
+  }
+
   const filename = resolveSummaryOutputFilename(folderBasename, existingFilenames);
   const vaultPath = buildSummaryOutputVaultPath(folderPath, filename);
   await port.createFile(vaultPath, content);
-  return { vaultPath, filename };
+  return { vaultPath, filename, wasOverwritten: false };
 }

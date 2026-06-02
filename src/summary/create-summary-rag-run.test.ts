@@ -38,6 +38,7 @@ function createPorts(overrides: Partial<CreateSummaryRagRunPorts> = {}): CreateS
   const writeResult: SummaryWriteResult = {
     vaultPath: 'course/GKISW_summary.md',
     filename: 'GKISW_summary.md',
+    wasOverwritten: false,
   };
   let runActive = false;
 
@@ -183,5 +184,18 @@ describe('runCreateSummaryRag', () => {
     expect(ports.writeSummary).toHaveBeenCalledWith('# Summary\n');
     expect(ports.showNotice).toHaveBeenCalledWith('Summary erstellt: GKISW_summary.md');
     expect(ports.endRun).toHaveBeenCalled();
+  });
+
+  it('shows overwrite notice when wasOverwritten is true', async () => {
+    const overwriteResult: SummaryWriteResult = {
+      vaultPath: 'course/GKISW_summary.md',
+      filename: 'GKISW_summary.md',
+      wasOverwritten: true,
+    };
+    const ports = createPorts({ writeSummary: vi.fn(async () => overwriteResult) });
+
+    await runCreateSummaryRag(ports, INPUT);
+
+    expect(ports.showNotice).toHaveBeenCalledWith('Summary überschrieben: GKISW_summary.md');
   });
 });

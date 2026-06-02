@@ -47,6 +47,7 @@ describe('writeSummaryMarkdownToFolder', () => {
     expect(result).toEqual({
       vaultPath: 'course/GKISW/GKISW_summary.md',
       filename: 'GKISW_summary.md',
+      wasOverwritten: false,
     });
     expect(stubVault.getContent('course/GKISW/GKISW_summary.md')).toBe('# Summary body');
   });
@@ -63,6 +64,7 @@ describe('writeSummaryMarkdownToFolder', () => {
     expect(result).toEqual({
       vaultPath: 'courses/Test Vault/Test_Vault_summary.md',
       filename: 'Test_Vault_summary.md',
+      wasOverwritten: false,
     });
     expect(stubVault.getContent('courses/Test Vault/Test_Vault_summary.md')).toBe('summary');
   });
@@ -80,6 +82,25 @@ describe('writeSummaryMarkdownToFolder', () => {
     const result = await writeSummaryMarkdownToFolder(vault, root, 'version 2');
 
     expect(result.filename).toBe('GKISW_summary_2.md');
+    expect(result.wasOverwritten).toBe(false);
     expect(stubVault.getContent('course/GKISW/GKISW_summary_2.md')).toBe('version 2');
+  });
+
+  it('modifies base file via vault.modify when overwriteBase=true and base exists', async () => {
+    const vault = new StubVault() as unknown as Vault;
+    const stubVault = vault as unknown as StubVault;
+    stubVault.setContent('course/GKISW/GKISW_summary.md', 'old content');
+    const root = folder('course/GKISW', 'GKISW', [
+      mdFile('course/GKISW/GKISW_summary.md', 'GKISW_summary.md'),
+    ]);
+
+    const result = await writeSummaryMarkdownToFolder(vault, root, 'new content', true);
+
+    expect(result).toEqual({
+      vaultPath: 'course/GKISW/GKISW_summary.md',
+      filename: 'GKISW_summary.md',
+      wasOverwritten: true,
+    });
+    expect(stubVault.getContent('course/GKISW/GKISW_summary.md')).toBe('new content');
   });
 });

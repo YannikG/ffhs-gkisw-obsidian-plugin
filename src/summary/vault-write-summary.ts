@@ -1,4 +1,4 @@
-import { TFolder, type Vault } from 'obsidian';
+import { TFile, TFolder, type Vault } from 'obsidian';
 import { writeSummaryMarkdown, type SummaryWriteResult } from './summary-output.js';
 import { collectMarkdownFilesUnderFolder } from './vault-folder-tree.js';
 
@@ -11,6 +11,7 @@ export async function writeSummaryMarkdownToFolder(
   vault: Vault,
   folder: TFolder,
   content: string,
+  overwriteBase = false,
 ): Promise<SummaryWriteResult> {
   return writeSummaryMarkdown(
     {
@@ -18,9 +19,16 @@ export async function writeSummaryMarkdownToFolder(
       createFile: async (vaultPath, body) => {
         await vault.create(vaultPath, body);
       },
+      modifyFile: async (vaultPath, body) => {
+        const file = vault.getAbstractFileByPath(vaultPath);
+        if (file instanceof TFile) {
+          await vault.modify(file, body);
+        }
+      },
     },
     folder.path,
     folder.name,
     content,
+    overwriteBase,
   );
 }
