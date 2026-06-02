@@ -9,8 +9,16 @@ export {
   showCreateSummaryNotice,
   type CreateSummaryMenuHost,
 } from './create-summary-file-menu.js';
-export { runCreateSummaryForFolder } from './create-summary-for-folder.js';
+export {
+  runCreateSummaryForFolder,
+  runCreateSummaryRagForFolder,
+} from './create-summary-for-folder.js';
 export { runCreateSummary, type CreateSummaryRunPorts } from './create-summary-run.js';
+export {
+  runCreateSummaryRag,
+  type CreateSummaryRagRunPorts,
+  type CreateSummaryRagRunInput,
+} from './create-summary-rag-run.js';
 export { isSourceContextOverLimit } from './context-limit.js';
 export {
   SUMMARY_OUTPUT_INFIX,

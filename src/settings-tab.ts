@@ -130,6 +130,16 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       },
     });
 
+    this.addPositiveIntField(containerEl, {
+      label: 'Retrieval Top-K',
+      desc: 'Anzahl der semantisch ähnlichsten Chunks für den RAG-Kontext.',
+      placeholder: String(DEFAULT_SETTINGS.retrievalTopK),
+      getSavedValue: () => this.plugin.settings.retrievalTopK,
+      setSavedValue: (value) => {
+        this.plugin.settings.retrievalTopK = value;
+      },
+    });
+
     new Setting(containerEl)
       .setName('Vektorindex zurücksetzen')
       .setDesc('Index leeren und vault-weit neu aufbauen (läuft im Hintergrund).')

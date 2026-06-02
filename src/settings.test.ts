@@ -24,6 +24,7 @@ describe('DEFAULT_SETTINGS', () => {
       ollamaTimeoutMs: DEFAULT_OLLAMA_TIMEOUT_MS,
       chunkSize: 1000,
       chunkOverlap: 200,
+      retrievalTopK: 8,
     } satisfies PluginSettings);
   });
 });
@@ -38,6 +39,7 @@ describe('mergeSettings', () => {
       ollamaTimeoutMs: 60_000,
       chunkSize: 500,
       chunkOverlap: 50,
+      retrievalTopK: 8,
     };
     expect(mergeSettings(base, {})).toEqual(base);
   });
@@ -57,6 +59,13 @@ describe('mergeSettings', () => {
         generationModel: undefined,
       }),
     ).toEqual(base);
+  });
+
+  it('overrides retrievalTopK', () => {
+    expect(mergeSettings({ ...DEFAULT_SETTINGS }, { retrievalTopK: 16 })).toEqual({
+      ...DEFAULT_SETTINGS,
+      retrievalTopK: 16,
+    });
   });
 
   it('overrides chunkSize and chunkOverlap independently', () => {

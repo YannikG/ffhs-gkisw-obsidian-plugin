@@ -43,6 +43,8 @@ Schweizer Hochdeutsch: **ss** nie ß, Umlaute ä/ö/ü.
 | Lint      | `npm run lint`                                        |
 | Format    | `npm run format`                                      |
 
+**Vor jedem Commit:** `npm run format && npm run lint && npm run typecheck && npm test` — alle vier müssen grün sein.
+
 ## Modulstruktur `src/`
 
 | Pfad              | Rolle                                                    |
