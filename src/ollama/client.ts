@@ -37,6 +37,14 @@ export function createOllamaClient(
   return {
     checkOllamaReachable: () =>
       checkReachable(fetchFn, baseUrl, config.generationModel, defaultTimeoutMs),
+    checkBothModelsReachable: () =>
+      checkBothReachable(
+        fetchFn,
+        baseUrl,
+        config.generationModel,
+        embeddingModel,
+        defaultTimeoutMs,
+      ),
     chat: (messages, options) =>
       runChat(
         fetchFn,
@@ -80,6 +88,36 @@ async function checkReachable(
         message: `Modell "${generationModel}" ist bei Ollama nicht geladen.`,
       },
     };
+  }
+
+  return { ok: true, value: undefined };
+}
+
+async function checkBothReachable(
+  fetchFn: typeof fetch,
+  baseUrl: string,
+  generationModel: string,
+  embeddingModel: string,
+  timeoutMs: number,
+): Promise<OllamaResult<void>> {
+  const result = await requestJson<TagsResponse>(fetchFn, `${baseUrl}/api/tags`, {
+    method: 'GET',
+    timeoutMs,
+  });
+  if (!result.ok) {
+    return result;
+  }
+
+  for (const tag of [generationModel, embeddingModel]) {
+    if (!modelListed(result.value, tag)) {
+      return {
+        ok: false,
+        error: {
+          kind: 'model',
+          message: `Modell "${tag}" ist bei Ollama nicht geladen.`,
+        },
+      };
+    }
   }
 
   return { ok: true, value: undefined };

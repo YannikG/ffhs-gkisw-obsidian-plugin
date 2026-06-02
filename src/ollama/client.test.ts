@@ -18,9 +18,82 @@ function mockFetch(handler: (url: string, init?: RequestInit) => Response | Prom
   }) as typeof fetch;
 }
 
+const EMBED_MODEL_DEFAULT = DEFAULT_OLLAMA_EMBEDDING_MODEL;
+
 describe('createOllamaClient', () => {
   afterEach(() => {
     vi.restoreAllMocks();
+  });
+
+  describe('checkBothModelsReachable', () => {
+    it('returns ok when both generation and embedding models are listed', async () => {
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody([MODEL, EMBED_MODEL_DEFAULT])), { status: 200 }),
+      );
+
+      const client = createOllamaClient(
+        { baseUrl: BASE_URL, generationModel: MODEL },
+        { fetch: fetchFn },
+      );
+
+      const result = await client.checkBothModelsReachable();
+      expect(result).toEqual({ ok: true, value: undefined });
+    });
+
+    it('returns model error when generation model is missing', async () => {
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody([EMBED_MODEL_DEFAULT])), { status: 200 }),
+      );
+
+      const client = createOllamaClient(
+        { baseUrl: BASE_URL, generationModel: MODEL },
+        { fetch: fetchFn },
+      );
+
+      const result = await client.checkBothModelsReachable();
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          kind: 'model',
+          message: `Modell "${MODEL}" ist bei Ollama nicht geladen.`,
+        },
+      });
+    });
+
+    it('returns model error when embedding model is missing', async () => {
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody([MODEL])), { status: 200 }),
+      );
+
+      const client = createOllamaClient(
+        { baseUrl: BASE_URL, generationModel: MODEL },
+        { fetch: fetchFn },
+      );
+
+      const result = await client.checkBothModelsReachable();
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          kind: 'model',
+          message: `Modell "${EMBED_MODEL_DEFAULT}" ist bei Ollama nicht geladen.`,
+        },
+      });
+    });
+
+    it('returns connection error when fetch throws', async () => {
+      const fetchFn = vi.fn().mockRejectedValue(new TypeError('fetch failed'));
+
+      const client = createOllamaClient(
+        { baseUrl: BASE_URL, generationModel: MODEL },
+        { fetch: fetchFn },
+      );
+
+      const result = await client.checkBothModelsReachable();
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error.kind).toBe('connection');
+      }
+    });
   });
 
   describe('checkOllamaReachable', () => {

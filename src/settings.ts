@@ -12,7 +12,7 @@ export interface PluginSettings {
   generationModel: string;
   /** Embedding model tag for RAG chunks. */
   embeddingModel: string;
-  /** Max characters for Ordner-Quellkorpus before chat (CONTEXT Kontextlimit). */
+  /** Max characters for Retrieval-Kontext (chunk texts) passed to chat. */
   contextLimit: number;
   /** Ollama chat timeout in milliseconds. */
   ollamaTimeoutMs: number;
