@@ -23,7 +23,9 @@ export async function writeSummaryMarkdownToFolder(
         const file = vault.getAbstractFileByPath(vaultPath);
         if (file instanceof TFile) {
           await vault.modify(file, body);
+          return true;
         }
+        return false;
       },
     },
     folder.path,

@@ -9,7 +9,7 @@ export type SummaryWriteResult = {
 export type SummaryVaultWritePort = {
   listMarkdownBasenamesInTree(): readonly string[];
   createFile(vaultPath: string, content: string): Promise<void>;
-  modifyFile(vaultPath: string, content: string): Promise<void>;
+  modifyFile(vaultPath: string, content: string): Promise<boolean>;
 };
 
 /**
@@ -36,17 +36,16 @@ export async function writeSummaryMarkdown(
   content: string,
   overwriteBase = false,
 ): Promise<SummaryWriteResult> {
-  const existingFilenames = port.listMarkdownBasenamesInTree();
-
   if (overwriteBase) {
     const baseName = buildSummaryOutputFilename(folderBasename, 1);
-    if (existingFilenames.includes(baseName)) {
-      const vaultPath = buildSummaryOutputVaultPath(folderPath, baseName);
-      await port.modifyFile(vaultPath, content);
+    const vaultPath = buildSummaryOutputVaultPath(folderPath, baseName);
+    const modified = await port.modifyFile(vaultPath, content);
+    if (modified) {
       return { vaultPath, filename: baseName, wasOverwritten: true };
     }
   }
 
+  const existingFilenames = port.listMarkdownBasenamesInTree();
   const filename = resolveSummaryOutputFilename(folderBasename, existingFilenames);
   const vaultPath = buildSummaryOutputVaultPath(folderPath, filename);
   await port.createFile(vaultPath, content);

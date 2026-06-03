@@ -51,7 +51,12 @@ function makePort(opts: {
       opts.created?.push(vaultPath);
     },
     modifyFile: async (vaultPath) => {
-      opts.modified?.push(vaultPath);
+      const basename = vaultPath.split('/').pop() ?? '';
+      if (opts.basenames.includes(basename)) {
+        opts.modified?.push(vaultPath);
+        return true;
+      }
+      return false;
     },
   };
 }

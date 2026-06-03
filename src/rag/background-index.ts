@@ -25,7 +25,7 @@ async function indexFile(vaultPath: string, ports: RagVaultPorts): Promise<void>
   const chunks = chunkMarkdown(content, { size: ports.chunkSize, overlap: ports.chunkOverlap });
   if (chunks.length === 0) return;
   const embedResult = await ports.embed(chunks.map((c) => c.text));
-  if (!embedResult.ok) return;
+  if (!embedResult.ok || embedResult.value.length !== chunks.length) return;
   const store = getIndex();
   if (!store) return;
   store.upsertChunks(
