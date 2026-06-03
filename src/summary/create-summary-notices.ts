@@ -12,6 +12,10 @@ export function createSummarySuccessNotice(filename: string): string {
   return `Summary erstellt: ${filename}`;
 }
 
+export function overwriteSummarySuccessNotice(filename: string): string {
+  return `Summary überschrieben: ${filename}`;
+}
+
 export function createSummaryOllamaErrorNotice(message: string): string {
   return message;
 }

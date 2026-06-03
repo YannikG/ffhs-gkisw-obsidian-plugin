@@ -27,6 +27,7 @@ function createPorts(overrides: Partial<CreateSummaryRunPorts> = {}): CreateSumm
   const writeResult: SummaryWriteResult = {
     vaultPath: 'course/GKISW_summary.md',
     filename: 'GKISW_summary.md',
+    wasOverwritten: false,
   };
   let runActive = false;
 

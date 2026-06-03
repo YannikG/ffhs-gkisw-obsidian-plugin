@@ -153,6 +153,21 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
               .then(() => new Notice('Vektorindex zurückgesetzt.'));
           });
       });
+
+    containerEl.createEl('h3', { text: 'Zusammenfassung' });
+
+    new Setting(containerEl)
+      .setName('Summary-Basisdatei überschreiben')
+      .setDesc(
+        'Wenn aktiv, wird bei einem erneuten Durchlauf die bestehende Summary-Basisdatei ' +
+          '({Ordnername}_summary.md) überschrieben statt eine neue Version anzulegen.',
+      )
+      .addToggle((toggle) => {
+        toggle.setValue(this.plugin.settings.summaryOverwriteBase).onChange(async (value) => {
+          this.plugin.settings.summaryOverwriteBase = value;
+          await this.plugin.saveSettings();
+        });
+      });
   }
 
   private addPositiveIntField(containerEl: HTMLElement, options: PositiveIntFieldOptions): void {

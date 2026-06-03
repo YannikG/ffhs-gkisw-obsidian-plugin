@@ -66,7 +66,8 @@ export async function runCreateSummaryRagForFolder(
       },
       checkReachable: () => client.checkOllamaReachable(),
       chat: (messages) => client.chat(messages),
-      writeSummary: (content) => writeSummaryMarkdownToFolder(vault, folder, content),
+      writeSummary: (content) =>
+        writeSummaryMarkdownToFolder(vault, folder, content, settings.summaryOverwriteBase),
       showNotice,
       tryBeginRun: guard.tryBeginRun,
       endRun: guard.endRun,

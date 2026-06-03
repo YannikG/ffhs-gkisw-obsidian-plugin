@@ -10,6 +10,7 @@ import {
   CREATE_SUMMARY_NO_SOURCES_NOTICE,
   CREATE_SUMMARY_RUN_ALREADY_NOTICE,
   createSummarySuccessNotice,
+  overwriteSummarySuccessNotice,
 } from './create-summary-notices.js';
 import { mapOllamaErrorToNotice } from './create-summary-run.js';
 import type { FolderMarkdownEntry } from './folder-source-corpus.js';
@@ -85,7 +86,10 @@ export async function runCreateSummaryRag(
     }
 
     const writeResult = await ports.writeSummary(chatResult.value);
-    ports.showNotice(createSummarySuccessNotice(writeResult.filename));
+    const notice = writeResult.wasOverwritten
+      ? overwriteSummarySuccessNotice(writeResult.filename)
+      : createSummarySuccessNotice(writeResult.filename);
+    ports.showNotice(notice);
   } finally {
     ports.endRun();
   }

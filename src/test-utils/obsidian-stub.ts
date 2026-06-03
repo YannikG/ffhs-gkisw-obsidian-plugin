@@ -127,6 +127,19 @@ export class Vault {
     file.extension = 'md';
     return file;
   }
+
+  async modify(file: TFile, content: string): Promise<void> {
+    this.contents.set(file.path, content);
+  }
+
+  getAbstractFileByPath(path: string): TFile | null {
+    if (!this.contents.has(path)) return null;
+    const file = new TFile();
+    file.path = path;
+    file.name = path.split('/').pop() ?? path;
+    file.extension = 'md';
+    return file;
+  }
 }
 
 export type MenuItemSnapshot = { title: string; click: () => void };

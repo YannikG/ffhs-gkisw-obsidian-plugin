@@ -22,6 +22,8 @@ export interface PluginSettings {
   chunkOverlap: number;
   /** Number of top-K chunks to retrieve for RAG context. */
   retrievalTopK: number;
+  /** When true, overwrites the base summary file instead of creating a new version (SPEC US-03). */
+  summaryOverwriteBase: boolean;
 }
 
 /** Default context limit (characters) for Phase 5 full-folder corpus. */
@@ -39,6 +41,7 @@ export const DEFAULT_SETTINGS: PluginSettings = {
   chunkSize: DEFAULT_CHUNK_SIZE,
   chunkOverlap: DEFAULT_CHUNK_OVERLAP,
   retrievalTopK: DEFAULT_RETRIEVAL_TOP_K,
+  summaryOverwriteBase: false,
 };
 
 /**
@@ -138,6 +141,9 @@ function partialFromStored(stored: Record<string, unknown>): Partial<PluginSetti
     if (value !== undefined) {
       partial[key] = coercePositiveIntSetting(value, NUMBER_SETTING_DEFAULTS[key]);
     }
+  }
+  if (typeof stored['summaryOverwriteBase'] === 'boolean') {
+    partial.summaryOverwriteBase = stored['summaryOverwriteBase'];
   }
   return partial;
 }

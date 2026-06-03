@@ -1,4 +1,5 @@
-import { Plugin, type TAbstractFile } from 'obsidian';
+import { Plugin, TFile, type TAbstractFile } from 'obsidian';
+import { createOllamaClient } from './ollama/client.js';
 import { runCreateSummaryRagForFolder } from './summary/create-summary-for-folder.js';
 import {
   registerCreateSummaryFileMenu,
@@ -77,6 +78,21 @@ export default class ObsidianSummarizerPlugin extends Plugin {
         this.registerEvent(ref);
         return () => vault.offref(ref);
       },
+      readFile: async (vaultPath) => {
+        const file = vault.getAbstractFileByPath(vaultPath);
+        if (!(file instanceof TFile)) return '';
+        return vault.cachedRead(file);
+      },
+      embed: (inputs) =>
+        createOllamaClient({
+          baseUrl: this.settings.ollamaBaseUrl,
+          embeddingModel: this.settings.embeddingModel,
+          generationModel: this.settings.generationModel,
+          timeoutMs: this.settings.ollamaTimeoutMs,
+        }).embed(inputs),
+      chunkSize: this.settings.chunkSize,
+      chunkOverlap: this.settings.chunkOverlap,
+      embeddingModel: this.settings.embeddingModel,
     };
   }
 
