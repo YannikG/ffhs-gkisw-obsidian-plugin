@@ -14,10 +14,10 @@ Phase 9 stabilisiert den MVP-Code und das Verhalten in Obsidian. Keine neue Funk
 
 ## Definition of Done (Phase 9)
 
-- [ ] Review-and-fix-Lauf auf `src/`; Findings dokumentiert (P9-I01).
-- [ ] Manuelle MVP-Checkliste abgearbeitet und in PR dokumentiert (P9-I02).
-- [ ] Offene Findings behoben oder als Follow-up-Issues erfasst (P9-I03).
-- [ ] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` grün.
+- [x] Review-and-fix-Lauf auf `src/`; Findings dokumentiert (P9-I01).
+- [x] Manuelle MVP-Checkliste abgearbeitet und in PR dokumentiert (P9-I02).
+- [x] Offene Findings behoben oder als Follow-up-Issues erfasst (P9-I03).
+- [x] `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` grün.
 
 ## Abhängigkeitsgraph
 
