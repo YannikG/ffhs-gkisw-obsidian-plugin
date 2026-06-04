@@ -121,4 +121,14 @@ export default class ObsidianSummarizerPlugin extends Plugin {
   async resetVectorIndex(): Promise<void> {
     resetIndex();
   }
+
+  async checkOllama(): Promise<string | null> {
+    const result = await createOllamaClient({
+      baseUrl: this.settings.ollamaBaseUrl,
+      generationModel: this.settings.generationModel,
+      embeddingModel: this.settings.embeddingModel,
+      timeoutMs: this.settings.ollamaTimeoutMs,
+    }).checkOllamaReachable();
+    return result.ok ? null : result.error.message;
+  }
 }

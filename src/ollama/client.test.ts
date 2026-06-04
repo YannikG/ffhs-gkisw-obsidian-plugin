@@ -4,6 +4,7 @@ import { DEFAULT_OLLAMA_EMBEDDING_MODEL, DEFAULT_OLLAMA_TIMEOUT_MS } from './typ
 
 const BASE_URL = 'http://127.0.0.1:11434';
 const MODEL = 'gemma4:e2b';
+const EMBED_MODEL_DEFAULT = DEFAULT_OLLAMA_EMBEDDING_MODEL;
 
 function tagsBody(models: string[]) {
   return {
@@ -24,10 +25,12 @@ describe('createOllamaClient', () => {
   });
 
   describe('checkOllamaReachable', () => {
-    it('returns ok when tags list includes generation model', async () => {
+    it('returns ok when tags list includes both generation and embedding model', async () => {
       const fetchFn = mockFetch((url) => {
         expect(url).toBe(`${BASE_URL}/api/tags`);
-        return new Response(JSON.stringify(tagsBody([MODEL])), { status: 200 });
+        return new Response(JSON.stringify(tagsBody([MODEL, EMBED_MODEL_DEFAULT])), {
+          status: 200,
+        });
       });
 
       const client = createOllamaClient(
@@ -42,7 +45,9 @@ describe('createOllamaClient', () => {
     it('normalizes trailing slash on base URL', async () => {
       const fetchFn = mockFetch((url) => {
         expect(url).toBe(`${BASE_URL}/api/tags`);
-        return new Response(JSON.stringify(tagsBody([MODEL])), { status: 200 });
+        return new Response(JSON.stringify(tagsBody([MODEL, EMBED_MODEL_DEFAULT])), {
+          status: 200,
+        });
       });
 
       const client = createOllamaClient(
@@ -133,11 +138,48 @@ describe('createOllamaClient', () => {
 
     it('matches model tags with variant suffix', async () => {
       const fetchFn = mockFetch(
-        () => new Response(JSON.stringify(tagsBody([`${MODEL}:latest`])), { status: 200 }),
+        () =>
+          new Response(JSON.stringify(tagsBody([`${MODEL}:latest`, EMBED_MODEL_DEFAULT])), {
+            status: 200,
+          }),
       );
 
       const client = createOllamaClient(
         { baseUrl: BASE_URL, generationModel: MODEL },
+        { fetch: fetchFn },
+      );
+
+      expect(await client.checkOllamaReachable()).toEqual({ ok: true, value: undefined });
+    });
+
+    it('returns model error when embedding model is not in tags', async () => {
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody([MODEL])), { status: 200 }),
+      );
+
+      const client = createOllamaClient(
+        { baseUrl: BASE_URL, generationModel: MODEL },
+        { fetch: fetchFn },
+      );
+
+      const result = await client.checkOllamaReachable();
+      expect(result).toEqual({
+        ok: false,
+        error: {
+          kind: 'model',
+          message: `Modell "${EMBED_MODEL_DEFAULT}" ist bei Ollama nicht geladen.`,
+        },
+      });
+    });
+
+    it('uses custom embedding model for dual-check', async () => {
+      const customEmbed = 'mxbai-embed-large';
+      const fetchFn = mockFetch(
+        () => new Response(JSON.stringify(tagsBody([MODEL, customEmbed])), { status: 200 }),
+      );
+
+      const client = createOllamaClient(
+        { baseUrl: BASE_URL, generationModel: MODEL, embeddingModel: customEmbed },
         { fetch: fetchFn },
       );
 
