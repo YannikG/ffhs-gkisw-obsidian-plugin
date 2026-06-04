@@ -2,7 +2,7 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Geplant
+**Status:** Abgeschlossen
 
 MVP-Freigabe nach dokumentierten Nachweisen aus Phase 11 und abgeschlossener Checkliste.
 
@@ -15,8 +15,8 @@ Phase 12 schliesst die Roadmap (Schritt 12). Keine neue Entwicklung; formaler Ab
 ## Definition of Done (Phase 12)
 
 - [x] Freigabe-Checkliste gegen Phase-9–11-Nachweise abgehakt; Team-Go dokumentiert (P12-I01).
-- [ ] `manifest.json`-Version und Release-Notizen im Repo (P12-I02).
-- [ ] Roadmap Schritt 12 im Team als erledigt geführt.
+- [x] `manifest.json`-Version und Release-Notizen im Repo (P12-I02).
+- [x] Roadmap Schritt 12 im Team als erledigt geführt.
 
 ## Abhängigkeitsgraph
 

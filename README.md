@@ -1,5 +1,7 @@
 # ffhs-gkisw-obsidian-plugin
 
+**Version 1.0.0 — MVP Release** · [Release Notes](docs/release/notes.md) · [Architektur](docs/architecture.md) · [SPEC](SPEC.md)
+
 ## Über das Projekt
 
 Im Projekt entsteht ein Werkzeug, das Benutzer:innen beim Erstellen von Zusammenfassungen in Obsidian unterstützt: ein Plugin, das Markdown-Dateien aus einem Ordner eines Vaults einliest und daraus eine strukturierte Zusammenfassung erzeugt.
@@ -154,6 +156,10 @@ Nach Merge oder im PR-Kommentar abhaken — nur diese README (+ verlinktes [src/
 - [ ] `npm run deploy -- "…"` oder manuelles Kopieren → Plugin lädt in Obsidian
 - [ ] Einstellungen: Defaults, Änderung überlebt Reload; «Verbindung testen» zeigt Erfolgs-Notice
 - [ ] Ordner → **Create Summary** → Erfolgs-Notice mit `{Ordnername}_summary.md`
+
+## Release
+
+**v1.0.0** (2026-06-04) — MVP freigegeben. Vollständige Release-Notizen: [docs/release/notes.md](docs/release/notes.md).
 
 ## Roadmap
 
