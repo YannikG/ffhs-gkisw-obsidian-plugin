@@ -13,6 +13,8 @@ export interface ObsidianSummarizerSettingsHost {
   settings: PluginSettings;
   saveSettings(): Promise<void>;
   resetVectorIndex(): Promise<void>;
+  /** Returns null on success, or an error message string on failure. */
+  checkOllama(): Promise<string | null>;
 }
 
 type RequiredTextFieldOptions = {
@@ -49,9 +51,11 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     const { containerEl } = this;
     containerEl.empty();
 
+    containerEl.createEl('h3', { text: 'Ollama' });
+
     this.addRequiredTextField(containerEl, {
       label: 'Ollama Base URL',
-      desc: 'REST-Basis-URL der lokalen Ollama-Instanz.',
+      desc: `REST-Basis-URL der lokalen Ollama-Instanz. Standard: ${DEFAULT_SETTINGS.ollamaBaseUrl}`,
       placeholder: DEFAULT_SETTINGS.ollamaBaseUrl,
       getSavedValue: () => this.plugin.settings.ollamaBaseUrl,
       setSavedValue: (value) => {
@@ -62,7 +66,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
 
     this.addRequiredTextField(containerEl, {
       label: 'Generierungsmodell',
-      desc: 'Ollama-Modell-Tag für Zusammenfassungen (z. B. gemma4:e2b).',
+      desc: `Ollama-Modell-Tag für Zusammenfassungen. Empfohlen: ${DEFAULT_SETTINGS.generationModel} (leicht) oder gemma4:e4b (Qualität).`,
       placeholder: DEFAULT_SETTINGS.generationModel,
       getSavedValue: () => this.plugin.settings.generationModel,
       setSavedValue: (value) => {
@@ -74,7 +78,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     let lastEmbeddingModel = this.plugin.settings.embeddingModel;
     this.addRequiredTextField(containerEl, {
       label: 'Embedding-Modell',
-      desc: 'Ollama-Modell-Tag für RAG-Embeddings.',
+      desc: `Ollama-Modell-Tag für RAG-Embeddings. Standard: ${DEFAULT_SETTINGS.embeddingModel}`,
       placeholder: DEFAULT_SETTINGS.embeddingModel,
       getSavedValue: () => this.plugin.settings.embeddingModel,
       setSavedValue: (value) => {
@@ -90,18 +94,8 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
     });
 
     this.addPositiveIntField(containerEl, {
-      label: 'Kontextlimit',
-      desc: 'Maximale Zeichenanzahl des Ordner-Quellkorpus vor dem Chat.',
-      placeholder: String(DEFAULT_SETTINGS.contextLimit),
-      getSavedValue: () => this.plugin.settings.contextLimit,
-      setSavedValue: (value) => {
-        this.plugin.settings.contextLimit = value;
-      },
-    });
-
-    this.addPositiveIntField(containerEl, {
       label: 'Ollama-Timeout (Sekunden)',
-      desc: 'Maximale Wartezeit für einen Chat-Aufruf.',
+      desc: `Maximale Wartezeit für einen Chat-Aufruf. Standard: ${DEFAULT_SETTINGS.ollamaTimeoutMs / 1000} s`,
       placeholder: String(DEFAULT_SETTINGS.ollamaTimeoutMs / 1000),
       getSavedValue: () => this.plugin.settings.ollamaTimeoutMs,
       setSavedValue: (value) => {
@@ -110,9 +104,37 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
       displaySeconds: true,
     });
 
+    new Setting(containerEl)
+      .setName('Verbindung testen')
+      .setDesc('Prüft, ob Ollama erreichbar ist und beide Modelle geladen sind.')
+      .addButton((button) => {
+        button.setButtonText('Verbindung testen').onClick(() => {
+          const { generationModel, embeddingModel } = this.plugin.settings;
+          void this.plugin.checkOllama().then((errorMessage) => {
+            if (errorMessage === null) {
+              new Notice(`Ollama erreichbar. Modelle: ${generationModel}, ${embeddingModel}`);
+            } else {
+              new Notice(`Verbindungsfehler: ${errorMessage}`);
+            }
+          });
+        });
+      });
+
+    containerEl.createEl('h3', { text: 'Vektorindex' });
+
+    this.addPositiveIntField(containerEl, {
+      label: 'Kontextlimit',
+      desc: `Maximale Zeichenanzahl des Retrieval-Kontexts (Chunk-Texte), der dem Modell mitgegeben wird. Standard: ${DEFAULT_SETTINGS.contextLimit.toLocaleString('de-CH')} Zeichen`,
+      placeholder: String(DEFAULT_SETTINGS.contextLimit),
+      getSavedValue: () => this.plugin.settings.contextLimit,
+      setSavedValue: (value) => {
+        this.plugin.settings.contextLimit = value;
+      },
+    });
+
     this.addPositiveIntField(containerEl, {
       label: 'Chunk-Grösse',
-      desc: 'Maximale Zeichenanzahl pro Chunk für den Vektorindex.',
+      desc: `Maximale Zeichenanzahl pro Chunk für den Vektorindex. Standard: ${DEFAULT_SETTINGS.chunkSize}`,
       placeholder: String(DEFAULT_SETTINGS.chunkSize),
       getSavedValue: () => this.plugin.settings.chunkSize,
       setSavedValue: (value) => {
@@ -122,7 +144,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
 
     this.addPositiveIntField(containerEl, {
       label: 'Chunk-Overlap',
-      desc: 'Überlappung in Zeichen zwischen aufeinanderfolgenden Chunks.',
+      desc: `Überlappung in Zeichen zwischen aufeinanderfolgenden Chunks. Standard: ${DEFAULT_SETTINGS.chunkOverlap}`,
       placeholder: String(DEFAULT_SETTINGS.chunkOverlap),
       getSavedValue: () => this.plugin.settings.chunkOverlap,
       setSavedValue: (value) => {
@@ -132,7 +154,7 @@ export class ObsidianSummarizerSettingTab extends PluginSettingTab {
 
     this.addPositiveIntField(containerEl, {
       label: 'Retrieval Top-K',
-      desc: 'Anzahl der semantisch ähnlichsten Chunks für den RAG-Kontext.',
+      desc: `Anzahl der semantisch ähnlichsten Chunks für den RAG-Kontext. Standard: ${DEFAULT_SETTINGS.retrievalTopK}`,
       placeholder: String(DEFAULT_SETTINGS.retrievalTopK),
       getSavedValue: () => this.plugin.settings.retrievalTopK,
       setSavedValue: (value) => {

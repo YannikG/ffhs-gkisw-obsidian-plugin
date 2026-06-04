@@ -36,7 +36,7 @@ export function createOllamaClient(
 
   return {
     checkOllamaReachable: () =>
-      checkReachable(fetchFn, baseUrl, config.generationModel, defaultTimeoutMs),
+      checkReachable(fetchFn, baseUrl, config.generationModel, embeddingModel, defaultTimeoutMs),
     chat: (messages, options) =>
       runChat(
         fetchFn,
@@ -62,6 +62,7 @@ async function checkReachable(
   fetchFn: typeof fetch,
   baseUrl: string,
   generationModel: string,
+  embeddingModel: string,
   timeoutMs: number,
 ): Promise<OllamaResult<void>> {
   const result = await requestJson<TagsResponse>(fetchFn, `${baseUrl}/api/tags`, {
@@ -78,6 +79,16 @@ async function checkReachable(
       error: {
         kind: 'model',
         message: `Modell "${generationModel}" ist bei Ollama nicht geladen.`,
+      },
+    };
+  }
+
+  if (!modelListed(result.value, embeddingModel)) {
+    return {
+      ok: false,
+      error: {
+        kind: 'model',
+        message: `Modell "${embeddingModel}" ist bei Ollama nicht geladen.`,
       },
     };
   }
