@@ -14,12 +14,12 @@ flowchart LR
 
   RagRun -->|1 listSources| Scan[vault-folder-sources\nrecursive .md scan\nexcludes summary files]
   RagRun -->|2 buildRetrievalQueryText| Query[retrieval-query-text\nquery string from filenames + headings]
-  RagRun -->|3 indexFolderScope| Index[background-index\nchunk → embed → vector store]
-  RagRun -->|4 retrieveTopK| Retrieve[retrieve-top-k\nembed query → sqlite-vec → top-K chunks]
-  RagRun -->|5 buildRetrievalContext| Ctx[retrieval-context\njoin chunks ≤ contextLimit]
-  RagRun -->|6 checkOllamaReachable| Check[ollama/client\n/api/tags dual-check\ngen + embed model]
-  RagRun -->|7 chat| Chat[ollama/client\n/api/chat → summary text]
-  RagRun -->|8 writeSummary| Write[vault-write-summary\n{folder}_summary.md\nor overwrite / version]
+  RagRun -->|3 indexFolderScope| Index[background-index\nchunk - embed - vector store]
+  RagRun -->|4 retrieveTopK| Retrieve[retrieve-top-k\nembed query - sqlite-vec - top-K chunks]
+  RagRun -->|5 buildRetrievalContext| Ctx[retrieval-context\njoin chunks up to contextLimit]
+  RagRun -->|6 checkOllamaReachable| Check[ollama/client\napi/tags dual-check\ngen + embed model]
+  RagRun -->|7 chat| Chat[ollama/client\napi/chat - summary text]
+  RagRun -->|8 writeSummary| Write[vault-write-summary\nfoldername_summary.md\nor overwrite / version]
 ```
 
 ---
