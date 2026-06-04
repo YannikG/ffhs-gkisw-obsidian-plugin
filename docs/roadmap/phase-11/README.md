@@ -2,7 +2,7 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Geplant
+**Status:** Abgeschlossen
 
 Evaluation gemäss [SPEC.md](../../../SPEC.md) §8: Generierungszeit, Inhaltsabdeckung, Markdown-Format.
 
@@ -14,10 +14,10 @@ Phase 11 liefert **nachweisbare** Evaluationsergebnisse für die Seminararbeit u
 
 ## Definition of Done (Phase 11)
 
-- [ ] Evaluationskorpus: drei lange MD mit eingebauten Fehlern (P11-I01).
-- [ ] Generierungszeit dokumentiert; Ziel &lt; 80 s auf Referenzrechner oder begründete Abweichung (P11-I02).
-- [ ] Semi-auto Markdown-Check + manuelle Inhalts-Checkliste (P11-I03).
-- [ ] Ergebnisse unter `docs/evaluation/results/`.
+- [x] Evaluationskorpus: drei lange MD mit eingebauten Fehlern (P11-I01).
+- [x] Generierungszeit dokumentiert; Ziel &lt; 80 s auf Referenzrechner oder begründete Abweichung (P11-I02).
+- [x] Semi-auto Markdown-Check + manuelle Inhalts-Checkliste (P11-I03).
+- [x] Ergebnisse unter `docs/evaluation/results/`.
 
 ## Abhängigkeitsgraph
 
