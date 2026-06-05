@@ -22,12 +22,20 @@ if (!filePath) {
   process.exit(1);
 }
 
-const content = readFileSync(resolve(filePath), 'utf8');
+let content;
+try {
+  content = readFileSync(resolve(filePath), 'utf8');
+} catch (err) {
+  console.error(`Error reading file: ${err.message}`);
+  process.exit(1);
+}
 const lines = content.split('\n');
 
 const issues = [];
 
-// --- Check 1: unclosed code fences ---
+// --- Check 1 + 3: unclosed code fences and torn inline math (single pass) ---
+// Inline math check skips lines inside code fences to avoid false positives
+// on shell variables and code snippets that contain $.
 let inCodeFence = false;
 let codeFenceChar = '';
 let codeFenceOpenLine = -1;
@@ -54,6 +62,20 @@ for (let i = 0; i < lines.length; i++) {
       inCodeFence = false;
     }
   }
+
+  // Skip inline math check on fence delimiter lines and lines inside code fences.
+  if (inCodeFence || tripleBacktick || tildeFence) {
+    continue;
+  }
+
+  // Heuristic: odd number of $ (after removing $$ pairs) = potential torn inline math.
+  const normalized = line.replace(/\$\$/g, '');
+  const dollarCount = (normalized.match(/\$/g) ?? []).length;
+  if (dollarCount % 2 !== 0) {
+    issues.push(
+      `Line ${i + 1}: odd number of $ signs — possible torn inline math. Content: "${line.trim().slice(0, 80)}"`,
+    );
+  }
 }
 if (inCodeFence) {
   issues.push(`Unclosed code fence (${codeFenceChar}) opened at line ${codeFenceOpenLine}.`);
@@ -65,21 +87,6 @@ if (displayMathMatches.length % 2 !== 0) {
   issues.push(
     `Odd number of $$ markers (${displayMathMatches.length}) — display math block likely unclosed.`,
   );
-}
-
-// --- Check 3: spot-check for lone $ (potential torn inline math) ---
-// A line with an odd number of $ signs (excluding $$ pairs) may have torn math.
-// This is a heuristic — false positives possible with currency symbols.
-for (let i = 0; i < lines.length; i++) {
-  const line = lines[i];
-  // Skip lines inside code fences (rough heuristic: already tracked above)
-  const normalized = line.replace(/\$\$/g, '');
-  const dollarCount = (normalized.match(/\$/g) ?? []).length;
-  if (dollarCount % 2 !== 0) {
-    issues.push(
-      `Line ${i + 1}: odd number of $ signs — possible torn inline math. Content: "${line.trim().slice(0, 80)}"`,
-    );
-  }
 }
 
 // --- Report ---
