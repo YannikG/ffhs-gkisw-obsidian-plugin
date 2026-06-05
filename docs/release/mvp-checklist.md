@@ -17,8 +17,8 @@ Nachweise aus Phase 9–11 gegen [SPEC.md](../../SPEC.md) und Roadmap abgegliche
 | 4 | Architektur-Doku vorhanden | ✅ | `docs/architecture.md` (PR #87) |
 | 5 | Team-Review Doku durchgeführt | ✅ | P10-I02 PR #88; [protokoll](../roadmap/phase-10/team-review-protokoll.md) |
 | 6 | Generierungszeit < 80 s | ✅ | 15 s auf Windows 11 / Ollama 0.24.0 / gemma4:e2b; [results](../evaluation/results/generation-time.md) |
-| 7 | Markdown-Format valide | ✅ | `npm run check-markdown`; [results](../evaluation/results/content-coverage.md) |
-| 8 | Inhaltsabdeckung | ⚠️ bewusst offen | 67 % (Ziel 80 %) — siehe Begründung unten |
+| 7 | Markdown-Format valide | ✅ | `npm run check-markdown` |
+| 8 | Inhaltsabdeckung | ⚠️ bewusst offen | [results](../evaluation/results/content-coverage.md) (67 % / Ziel 80 %) — siehe Begründung unten |
 | 9 | Eingebaute Fehler in Summary sichtbar | ⚠️ bewusst offen | 2/9 reproduziert — siehe Begründung unten |
 | 10 | CI grün auf `master` | ✅ | [Run #26869436227](https://github.com/YannikG/ffhs-gkisw-obsidian-plugin/actions/runs/26869436227) (2026-06-03) |
 | 11 | `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` grün | ✅ | 193 Tests bestanden (lokal, Stand 2026-06-04) |
@@ -42,7 +42,7 @@ Ursache: Das Modell (`gemma4:e2b`) verfügt über eigenes Weltwissen und korrigi
 | Person | Entscheid | Datum |
 |--------|-----------|-------|
 | Gian Luca Tehrani | Go ✅ | 2026-06-04 |
-| Yannik Gartmann | — ausstehend — | |
-| Kaan Kaplan | — ausstehend — | |
+| Yannik Gartmann | Go ✅ | 2026-06-04 |
+| Kaan Kaplan | Go ✅ | 2026-06-04 |
 
 MVP-Freigabe erteilt nach Mehrheit oder Einstimmigkeit des Teams.
