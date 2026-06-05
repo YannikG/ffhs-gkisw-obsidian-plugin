@@ -16,6 +16,6 @@ Lauf erfolgreich abgeschlossen in **15 Sekunden** — deutlich unter dem Zielwer
 
 ## Hinweise
 
-- Korpus: drei Dateien aus `docs/evaluation/corpus/` (Maschinelles Lernen, Relationale Datenbanken, Netzwerkprotokolle).
+- Korpus: drei Dateien aus [docs/evaluation/corpus/](../corpus/) (Maschinelles Lernen, Relationale Datenbanken, Netzwerkprotokolle).
 - Referenzrechner laut SPEC ist MacBook M4 Pro; Messung hier auf Windows 11. Ergebnis trotzdem repräsentativ, da 15 s weit unter dem Limit.
 - Embedding-Modell: `nomic-embed-text` (Standard).
