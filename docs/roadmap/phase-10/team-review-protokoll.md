@@ -32,4 +32,10 @@ Konsistenzprüfung zwischen `docs/architecture.md` und `src/README.md`:
 
 ## Team-Feedback
 
-Feedback wird nach Eingang in dieses Dokument oder direkt als Commit eingearbeitet. Offene Punkte → Follow-up in Phase 11 oder als separates Issue.
+| Quelle | Ergebnis |
+|--------|----------|
+| PR #87 — YannikG | Approved, keine Änderungswünsche |
+| PR #87 — kaplank1337 | Kein Kommentar |
+| PR #88 — gemini-code-assist[bot] | Platzhalter widersprach Status «Abgeschlossen» → Abschnitt präzisiert (dieser Commit) |
+
+**Fazit:** Team-Review abgeschlossen. Kein weiteres offenes Feedback. Phase-10-DoD erfüllt.
