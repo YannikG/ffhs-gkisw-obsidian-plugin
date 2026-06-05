@@ -26,7 +26,7 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [docs/architec
 | `rag/chunking.ts` | Absatz-Chunking für Embeddings: `chunkMarkdown`, Defaults 1000/200 (P6-I01). |
 | `rag/store.ts` | Singleton-Verwaltung für VectorsStore und Orchestrator (`openIndex`, `getIndex`, `setOrchestrator`, `getOrchestrator`). |
 | `rag/orchestrator.ts` | Idle-Queue und Vault-Event-Verarbeitung: `Orchestrator`, `indexFolderScope` (P6-I04). |
-| `rag/retrieval-query-text.ts` | Leitet Retrieval-Query-Text aus Dateinamen und ersten Überschriften ab (P7-I01). |
+| rag/retrieval-query-text.ts | Kombiniert den gesamten Inhalt der Dateien bis zu einem Limit von 8'000 Zeichen für den Retrieval-Query-Text (P7-I01). |
 | `rag/retrieval-context.ts` | Fügt Top-K-Chunks zu einem Kontext-String zusammen (P7-I03). |
 | `rag/retrieve-top-k.ts` | Bettet Query ein, sucht in sqlite-vec, gibt Top-K Chunks zurück (P7-I02). |
 | `rag/background-index.ts` | Öffentliche Fassade: `startBackgroundIndex`, `disposeBackgroundIndex`, `indexFolderScopeWithNotice`, `resetIndex` (P6-I07). |

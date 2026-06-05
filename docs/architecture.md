@@ -13,7 +13,7 @@ flowchart LR
   Adapter --> RagRun[create-summary-rag-run\nOrchestration]
 
   RagRun -->|1 listSources| Scan[vault-folder-sources\nrecursive .md scan\nexcludes summary files]
-  RagRun -->|2 buildRetrievalQueryText| Query[retrieval-query-text\nquery string from filenames + headings]
+  RagRun -->|2 buildRetrievalQueryText| Query[retrieval-query-text\nquery string from full content of files]
   RagRun -->|3 indexFolderScope| Index[background-index\nchunk → embed → vector store]
   RagRun -->|4 retrieveTopK| Retrieve[retrieve-top-k\nembed query → sqlite-vec → top-K chunks]
   RagRun -->|5 buildRetrievalContext| Ctx[retrieval-context\njoin chunks ≤ contextLimit]
@@ -38,13 +38,12 @@ flowchart LR
 | `summary/create-summary-for-folder.ts` | Obsidian adapter — wires vault, settings, Ollama client into `runCreateSummaryRag` |
 | `summary/create-summary-run.ts` | Non-RAG orchestrator (full-corpus path, kept for reference) |
 | `summary/build-summary-messages.ts` | Builds system + user messages for `/api/chat` |
-| `summary/retrieval-query-text.ts` *(in `rag/`)* | Derives query string from folder entries |
-| `summary/vault-folder-sources.ts` | Lists + reads markdown sources, excludes summary output files |
-| `summary/filename.ts` | Filename sanitisation, source-filter patterns (SPEC §4.4) |
-| `summary/vault-write-summary.ts` | Writes summary to vault — versioned or overwrite |
-| `summary/summary-output.ts` | Resolves output path (base file vs. next version) |
-| `rag/chunking.ts` | Paragraph chunker — `chunkMarkdown`, defaults 1 000 / 200 chars |
-| `rag/retrieval-query-text.ts` | Query text from filenames + first heading |
+| summary/vault-folder-sources.ts | Lists + reads markdown sources, excludes summary output files |
+| summary/filename.ts | Filename sanitisation, source-filter patterns (SPEC §4.4) |
+| summary/vault-write-summary.ts | Writes summary to vault — versioned or overwrite |
+| summary/summary-output.ts | Resolves output path (base file vs. next version) |
+| rag/chunking.ts | Paragraph chunker — chunkMarkdown, defaults 1 000 / 200 chars |
+| rag/retrieval-query-text.ts | Concatenates full content of files up to 8 000 characters |
 | `rag/retrieval-context.ts` | Joins top-K chunks into context string |
 | `rag/retrieve-top-k.ts` | Embeds query, searches vector store, returns top-K chunks |
 | `rag/vectors.ts` / `vectors-sqlite.ts` / `vectors-wasm.ts` | Vector store backends — SQLite + sqlite-wasm-vec with JSON fallback |
@@ -78,7 +77,7 @@ Entrypoint: `runCreateSummaryRag` in `create-summary-rag-run.ts`.
 | Step | Code | What happens |
 |------|------|--------------|
 | 1 | `listSources()` | Recursively lists `.md` files under the folder; excludes summary output files (SPEC §4.4) |
-| 2 | `buildRetrievalQueryText(entries)` | Extracts filenames + first headings to build a retrieval query; returns `ok: false` if folder is empty → notice shown, run aborted |
+| 2 | buildRetrievalQueryText(entries) | Concatenates full content of files up to 8 000 characters to build a retrieval query; returns ok: false if folder is empty → notice shown, run aborted |
 | 3 | `indexFolderScope()` | Chunks sources, embeds via `nomic-embed-text`, writes vectors to SQLite store |
 | 4 | `retrieveTopK(queryText)` | Embeds query, runs ANN search in sqlite-vec, returns top-K chunks (K = `retrievalTopK` setting) |
 | 5 | `buildRetrievalContext(chunks)` | Joins chunk texts into one context string; checked against `contextLimit` |
