@@ -19,8 +19,7 @@ Layout for the Obsidian Summarizer plugin. Architecture overview: [docs/architec
 | `summary/filename.ts` | Summary-Dateinamen, Sanitisierung, Quellenfilter (US-03, SPEC §4.4). |
 | `summary/summary-output.ts`, `summary/vault-write-summary.ts` | Summary ins Vault schreiben, Versionierung ohne Überschreiben (P5-I05). |
 | `summary/create-summary-rag-run.ts` | RAG-Orchestrator: Listing → Query → Index → Retrieve → Kontext → Chat → Schreiben; port-injiziert für Tests (P7-I04). |
-| `summary/create-summary-run.ts` | Nicht-RAG-Orchestrator (Vollkorpus-Pfad, P5-I06). |
-| `summary/create-summary-for-folder.ts` | Obsidian-Adapter: verdrahtet Vault, Settings, Ollama-Client, RAG-Index mit `runCreateSummaryRag` (P5-I06, P7-I04). |
+| `summary/create-summary-for-folder.ts` | Obsidian-Adapter: verdrahtet Vault, Settings, Ollama-Client, RAG-Index mit `runCreateSummaryRag` (P7-I04, P7-I05). |
 | `summary/create-summary-notices.ts`, `summary/context-limit.ts` | Notice-Texte und Kontextlimit-Prüfung (P5-I06). |
 | `summary/create-summary-file-menu.ts` | Ordner-Kontextmenü **Create Summary** (P4-I05, P5-I06). |
 | `rag/chunking.ts` | Absatz-Chunking für Embeddings: `chunkMarkdown`, Defaults 1000/200 (P6-I01). |
@@ -53,7 +52,7 @@ Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implem
 | P5-I03 | `summary/build-summary-messages.ts` |
 | P5-I04 | `summary/folder-source-corpus.ts`, `summary/vault-folder-sources.ts` |
 | P5-I05 | `summary/filename.ts`, `summary/summary-output.ts`, `summary/vault-write-summary.ts` |
-| P5-I06 | `summary/create-summary-run.ts`, `summary/create-summary-for-folder.ts`, `summary/create-summary-notices.ts`, `summary/context-limit.ts`, Menü, Settings-Erweiterung |
+| P5-I06 | `summary/create-summary-for-folder.ts`, `summary/create-summary-notices.ts`, `summary/context-limit.ts`, Menü, Settings-Erweiterung |
 | P5-I07 | `src/README.md` (dieses Dokument) |
 
 ## Phase ownership (Phase 6)
@@ -76,13 +75,14 @@ Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implem
 | P7-I02 | `rag/retrieve-top-k.ts` |
 | P7-I03 | `rag/retrieval-context.ts` |
 | P7-I04 | `summary/create-summary-rag-run.ts`, `summary/create-summary-for-folder.ts` (RAG-Pfad) |
+| P7-I05 | Vollkorpus-Pfad entfernt; `summary/create-summary-run.ts` gelöscht |
 
 ## Phase ownership (Phase 8)
 
 | Issue | Primary paths |
 |-------|----------------|
 | P8-I01 | `ollama/client.ts` (dual-check), `settings-tab.ts` (drei Abschnitte, «Verbindung testen»-Button), `main.ts` (`checkOllama`) |
-| P8-I02 | `settings.ts` (`summaryOverwriteBase`), `summary/create-summary-run.ts`, `summary/vault-write-summary.ts` (Überschreiben-Logik) |
+| P8-I02 | `settings.ts` (`summaryOverwriteBase`), `summary/vault-write-summary.ts` (Überschreiben-Logik) |
 
 ## Entwicklung und manueller Test
 
@@ -104,7 +104,7 @@ Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implem
 
 - **No import cycles** between feature modules. Dependency direction: `main.ts` → feature modules; feature modules must not import `main.ts`.
 - **Pure modules** (`settings`, `summary/*` ohne Obsidian-Import, `ollama/*`, `rag/chunking.ts`) must **not** import `obsidian`. Obsidian APIs stay in `main.ts` and thin adapters (`create-summary-for-folder.ts`, `vault-write-summary.ts`, `create-summary-file-menu.ts`).
-- **Wired from `main.ts`:** settings tab; folder **Create Summary** → `runCreateSummaryRagForFolder` → `create-summary-rag-run` → RAG index + `ollama/` + vault write.
+- **Wired from `main.ts`:** settings tab; folder **Create Summary** → `runCreateSummaryRagForFolder` → `create-summary-rag-run` → RAG index + `ollama/` + vault write (P7-I04/P7-I05).
 - **Wired in Phase 6:** `rag/background-index.ts` → `startBackgroundIndex` / `disposeBackgroundIndex` in `main.ts`.
 - **Wired in Phase 7:** `retrieveTopK`, `buildRetrievalQueryText`, `buildRetrievalContext` fully connected via `runCreateSummaryRag`.
 - Prefer barrel imports from `summary/index.ts` for public summary exports.
@@ -113,6 +113,6 @@ Weitere Hilfsdateien unter `summary/` (z. B. `vault-folder-tree.ts`) sind Implem
 
 Colocated `src/**/*.test.ts`. Commands and Obsidian mocking: [README.md § Tests](../README.md#tests).
 
-Orchestrator-Verhalten: `summary/create-summary-run.test.ts` (injizierte Ports, kein echtes Ollama).
+Orchestrator-Verhalten: `summary/create-summary-rag-run.test.ts` (injizierte Ports, kein echtes Ollama).
 
 `vitest.config.ts` aliases `obsidian` → `src/test-utils/obsidian-stub.ts`.
