@@ -37,7 +37,6 @@ export type OllamaResult<T> = { ok: true; value: T } | { ok: false; error: Ollam
 
 export interface OllamaClient {
   checkOllamaReachable(): Promise<OllamaResult<void>>;
-  checkBothModelsReachable(): Promise<OllamaResult<void>>;
   chat(messages: OllamaChatMessage[], options?: OllamaChatOptions): Promise<OllamaResult<string>>;
   embed(inputs: string[], options?: OllamaEmbedOptions): Promise<OllamaResult<number[][]>>;
 }
