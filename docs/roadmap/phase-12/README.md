@@ -14,7 +14,7 @@ Phase 12 schliesst die Roadmap (Schritt 12). Keine neue Entwicklung; formaler Ab
 
 ## Definition of Done (Phase 12)
 
-- [ ] Freigabe-Checkliste gegen Phase-9–11-Nachweise abgehakt; Team-Go dokumentiert (P12-I01).
+- [x] Freigabe-Checkliste gegen Phase-9–11-Nachweise abgehakt; Team-Go dokumentiert (P12-I01).
 - [ ] `manifest.json`-Version und Release-Notizen im Repo (P12-I02).
 - [ ] Roadmap Schritt 12 im Team als erledigt geführt.
 
