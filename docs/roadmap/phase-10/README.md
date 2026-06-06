@@ -2,7 +2,7 @@
 
 [Zurück zur Roadmap-Übersicht](../overview.md)
 
-**Status:** Geplant
+**Status:** Abgeschlossen
 
 Systemarchitektur und Implementation dokumentieren; [SPEC.md](../../../SPEC.md) bleibt Produktspezifikation.
 
@@ -14,9 +14,9 @@ Phase 10 erfasst den **Ist-Stand** nach Review für zukünftige Agenten und Team
 
 ## Definition of Done (Phase 10)
 
-- [ ] `docs/architecture.md` mit Datenfluss, Modulen, Index-Policy, Summary-Lauf (P10-I01).
-- [ ] `src/README.md` und Root-README konsistent mit Ist-Stand (P10-I01).
-- [ ] Team-Review durchgeführt; Nacharbeit eingearbeitet (P10-I02).
+- [x] `docs/architecture.md` mit Datenfluss, Modulen, Index-Policy, Summary-Lauf (P10-I01).
+- [x] `src/README.md` und Root-README konsistent mit Ist-Stand (P10-I01).
+- [x] Team-Review durchgeführt; Nacharbeit eingearbeitet (P10-I02).
 
 ## Abhängigkeitsgraph
 

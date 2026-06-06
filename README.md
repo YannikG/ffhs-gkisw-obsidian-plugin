@@ -1,10 +1,12 @@
 # ffhs-gkisw-obsidian-plugin
 
+**Version 1.0.0 — MVP Release** · [Release Notes](docs/release/notes.md) · [Architektur](docs/architecture.md) · [SPEC](SPEC.md)
+
 ## Über das Projekt
 
 Im Projekt entsteht ein Werkzeug, das Benutzer:innen beim Erstellen von Zusammenfassungen in Obsidian unterstützt: ein Plugin, das Markdown-Dateien aus einem Ordner eines Vaults einliest und daraus eine strukturierte Zusammenfassung erzeugt.
 
-Bedienung über die Obsidian-Oberfläche, beispielsweise über ein Kontextmenü mit der Aktion **Create Summary** (Stub in Phase 4). Nach dem Start liest das Plugin die relevanten Markdown-Dateien, bereitet die Inhalte auf, holt passende Ausschnitte über einen Retrieval-Mechanismus und übergibt sie zusammen mit einem Prompt an ein lokales Sprachmodell (über Ollama). Das Ergebnis landet als Markdown-Datei im Zielordner, mit ordnerspezifischem Namen (z. B. `MeinOrdner_summary.md`; optional `MeinOrdner_summary_2.md` für weitere Versionen), siehe [SPEC.md](SPEC.md) US-03.
+Bedienung über die Obsidian-Oberfläche über ein Kontextmenü mit der Aktion **Create Summary**. Nach dem Start liest das Plugin die relevanten Markdown-Dateien, bereitet die Inhalte auf, holt passende Ausschnitte über einen Retrieval-Mechanismus (RAG) und übergibt sie zusammen mit einem Prompt an ein lokales Sprachmodell (über Ollama). Das Ergebnis landet als Markdown-Datei im Zielordner, mit ordnerspezifischem Namen (z. B. `MeinOrdner_summary.md`; optional `MeinOrdner_summary_2.md` für weitere Versionen), siehe [SPEC.md](SPEC.md) US-03.
 
 Architektur in Kurzform:
 
@@ -46,7 +48,7 @@ npm run build
 | `npm run format` | Prettier schreibt Korrekturen |
 | `npm run deploy -- "<vault-pfad>"` | Bauen und in einen Test-Vault kopieren (siehe unten) |
 
-Spezifikation und Verhalten: [SPEC.md](SPEC.md). Modulübersicht unter `src/`: [src/README.md](src/README.md).
+Spezifikation und Verhalten: [SPEC.md](SPEC.md). Systemarchitektur: [docs/architecture.md](docs/architecture.md). Modulübersicht unter `src/`: [src/README.md](src/README.md).
 
 ### Ollama
 
@@ -136,11 +138,12 @@ In Obsidian: **Einstellungen → Community plugins** → **Obsidian Summarizer**
 
 **Manuell:** nach `npm run build` die drei Dateien oben in den Plugin-Ordner kopieren.
 
-#### Kurztest in Obsidian (Boilerplate)
+#### Kurztest in Obsidian
 
 1. Plugin aktivieren, keine Ladefehlermeldung.
-2. **Einstellungen** des Plugins (drei Felder): Defaults laut [SPEC.md](SPEC.md) §6 — Ollama-URL `http://127.0.0.1:11434`, Generierungsmodell `gemma4:e2b`, Embedding-Modell `nomic-embed-text`. Wert ändern, Plugin neu laden (oder Obsidian neu starten): Wert bleibt erhalten.
-3. Im Datei-Explorer **Rechtsklick auf einen Ordner** (nicht auf eine Datei) → **Create Summary** → Notice mit Text `Stub: Create Summary`.
+2. **Einstellungen** des Plugins — drei Abschnitte (Ollama / Vektorindex / Zusammenfassung). Defaults laut [SPEC.md](SPEC.md) §6: Ollama-URL `http://127.0.0.1:11434`, Generierungsmodell `gemma4:e2b`, Embedding-Modell `nomic-embed-text`. Wert ändern, Plugin neu laden: Wert bleibt erhalten.
+3. Einstellungen → Button **Verbindung testen**: Erfolgs-Notice nennt beide Modelle.
+4. Im Datei-Explorer **Rechtsklick auf einen Ordner** (nicht auf eine Datei) → **Create Summary** → Notices für Indexierung und Generierung → Erfolgs-Notice mit `{Ordnername}_summary.md`.
 
 Ollama-Setup siehe Abschnitt **Ollama** oben. RAG und echte **Create Summary**-Generierung folgen in späteren Phasen; siehe [Roadmap](docs/roadmap/overview.md).
 
@@ -151,8 +154,12 @@ Nach Merge oder im PR-Kommentar abhaken — nur diese README (+ verlinktes [src/
 - [ ] Frischer Clone: `npm ci` → `npm run build` (Exit 0)
 - [ ] `npm test`, `npm run lint`, `npm run format:check` (jeweils Exit 0)
 - [ ] `npm run deploy -- "…"` oder manuelles Kopieren → Plugin lädt in Obsidian
-- [ ] Einstellungen: Defaults, Änderung überlebt Reload
-- [ ] Ordner → **Create Summary** → Notice `Stub: Create Summary`
+- [ ] Einstellungen: Defaults, Änderung überlebt Reload; «Verbindung testen» zeigt Erfolgs-Notice
+- [ ] Ordner → **Create Summary** → Erfolgs-Notice mit `{Ordnername}_summary.md`
+
+## Release
+
+**v1.0.0** (2026-06-04) — MVP freigegeben. Vollständige Release-Notizen: [docs/release/notes.md](docs/release/notes.md).
 
 ## Roadmap
 
