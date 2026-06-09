@@ -71,7 +71,7 @@ for (let i = 0; i < lines.length; i++) {
 
   // Remove inline code segments (backticks) to avoid false positives from `$` in code.
   // This removes simple inline code spans like `...` (multiple occurrences handled).
-  let cleaned = line.replace(/`[^`]*`/g, '');
+  let cleaned = line.replace(/(`+)(.*?)\1/g, '');
 
   // Remove escaped dollars (\$) which are not math markers.
   cleaned = cleaned.replace(/(^|[^\\\\/])(\\\\\\)*\\\\\\$/g, '$1$2');
