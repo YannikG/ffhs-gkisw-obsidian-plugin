@@ -74,7 +74,7 @@ for (let i = 0; i < lines.length; i++) {
   let cleaned = line.replace(/`[^`]*`/g, '');
 
   // Remove escaped dollars (\$) which are not math markers.
-  cleaned = cleaned.replace(/\\\$/g, '');
+  cleaned = cleaned.replace(/(^|[^\\\\/])(\\\\\\)*\\\\\\$/g, '$1$2');
 
   // Count display-math markers ($$) on this cleaned line and accumulate.
   const dmMatches = cleaned.match(/\$\$/g) ?? [];
