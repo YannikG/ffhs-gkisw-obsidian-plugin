@@ -27,11 +27,6 @@ Wenn du ein GitHub-Issue aus einer bestehenden Vorlage im Repo anlegen willst, n
 
 Beim Umsetzen sind die Arbeitspaket-Dateien unter `docs/roadmap/**/issues/**` jederzeit vorgängig verfügbar: Vom GitHub-Issue den Permalink öffnen und die Spezifikation dort lesen, bevor und während du den Code anpasst. Die kanonischen Markdown-Dateien selbst werden nicht im selben Pull Request wie die eigentliche Implementierung geändert, ausser das Team plant ausdrücklich eine Änderung genau an dieser Spezifikation.
 
-## Projektboard und Meilenstein
-
-- In der Spalte «Ready» (oder gleichwertig) soll ein Issue erst dann landen, wenn alle in GitHub als Vorgänger verknüpften Issues erledigt sind.
-- Meilensteine richten wir nach Team-Vereinbarung.
-
 ## Projekt-Skills (KI-Hilfen im Repo)
 
 Im Ordner [`.agents/skills/`](../../.agents/skills/) liegen Markdown-Anleitungen für Cursor bzw. andere Agenten: sie beschreiben, wie das Modell bei bestimmten Aufgaben vorgehen soll. Die folgende Tabelle ist nur ein Überblick; Details und Trigger stehen jeweils in der verlinkten `SKILL.md`.
