@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "node scripts/write-manifest.mjs && npm run typecheck && node esbuild.config.mjs",
+    "set-version": "node scripts/set-release-version.mjs",
     "deploy": "node scripts/deploy-to-vault.mjs",
     "check-markdown": "node scripts/check-markdown.mjs",
     "dev": "concurrently -c blue,magenta -n tsc,esbuild \"tsc --noEmit --watch\" \"node esbuild.config.mjs --watch\""

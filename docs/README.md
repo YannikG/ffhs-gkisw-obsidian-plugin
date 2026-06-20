@@ -16,6 +16,7 @@ Einstieg für Entwicklung und Review. Root-README: [../README.md](../README.md).
 | [docs/ethik.md](ethik.md) | Ethik, Governance, Sicherheit |
 | [docs/ki-zusammenarbeit.md](ki-zusammenarbeit.md) | Rolle der KI in der Entwicklung |
 | [docs/release/notes.md](release/notes.md) | Release v1.0.0, Evaluation |
+| [docs/release/prozess.md](release/prozess.md) | Release-Prozess: Versionsquelle, Workflow, Installation |
 | [docs/adr/](adr/) | Architecture Decision Records |
 
 ---

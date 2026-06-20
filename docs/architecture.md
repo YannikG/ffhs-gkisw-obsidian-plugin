@@ -8,26 +8,34 @@ Konzepte, Datenflüsse und Verantwortlichkeiten. Produktspezifikation: [SPEC.md]
 
 Obsidian-Plugin, das aus Markdown-Notizen in einem **gewählten Ordner** eine **lokale Zusammenfassung** erzeugt. Kein Cloud-LLM: Ollama auf `127.0.0.1`, Vektorindex im Plugin-Datenverzeichnis.
 
-**Kernprinzip:** Vault-Inhalte werden gechunked, embedded und semantisch durchsucht (RAG). Nur relevante Textabschnitte landen im Prompt — nicht der ganze Ordner.
+**Kernprinzip:** Vault-Inhalte werden in Chunks zerlegt, als Vektoren gespeichert und semantisch durchsucht (RAG). Nur relevante Textabschnitte landen im Prompt, nicht der ganze Ordner.
 
 ---
 
-## Datenfluss — Create Summary
+## Zwei Abläufe, ein Index
+
+Indexierung und Create Summary laufen getrennt und teilen sich denselben Vektorindex. Die Indexierung hält im Hintergrund den ganzen Vault aktuell. Create Summary nutzt auf Klick nur den gewählten Ordner.
+
+### Indexierung (Hintergrund, ganzer Vault)
 
 ```mermaid
 flowchart LR
-  User -->|Ordner| UI[Obsidian UI\nCreate Summary]
-  UI --> Orch[Summary-Orchestrierung]
-  Orch --> Scan[Quellen sammeln\nnur .md, ohne Summary-Ausgaben]
-  Orch --> Query[Retrieval-Query\nDateinamen + Überschriften]
-  Orch --> Index[RAG-Index\nChunk - Embed - SQLite]
-  Orch --> Retrieve[Top-K Retrieval]
-  Orch --> Ctx[Kontext bündeln\nbis Kontextlimit]
-  Orch --> LLM[Ollama Chat\ngemma4:e2b]
-  Orch --> Out[Summary-Notiz\nim selben Ordner]
-  Index --> Emb[Ollama Embed\nnomic-embed-text]
-  Retrieve --> Emb
-  LLM --> Check[Erreichbarkeits-Check\nbeide Modelle]
+  Change[Vault-Datei neu oder geändert] --> Chunk[In Chunks zerlegen]
+  Chunk --> Embed[Ollama Embeddings, nomic-embed-text]
+  Embed --> Index[(Vektorindex, ganzer Vault)]
+```
+
+### Create Summary (auf Klick, nur der Ordner)
+
+```mermaid
+flowchart TD
+  Folder[Ordner gewählt] --> Sources[Quellnotizen lesen, ohne Summary-Ausgaben]
+  Sources --> Query[Query-Text aus Notizinhalten]
+  Query --> Retrieve[Retrieval im Ordner]
+  Index[(Vektorindex)] --> Retrieve
+  Retrieve --> Context[Kontext bündeln, bis Kontextlimit]
+  Context --> Chat[Ollama Chat, gemma4:e2b]
+  Chat --> Output[Summary-Notiz im selben Ordner]
 ```
 
 ---
@@ -38,11 +46,11 @@ flowchart LR
 |---------|---------|--------|
 | **UI & Einstellungen** | Menü, Settings, Notices | Obsidian-Integration; drei Einstellungsbereiche Ollama / Vektorindex / Zusammenfassung |
 | **Summary-Orchestrierung** | Ein Lauf von Klick bis `{Ordner}_summary.md` | Koordiniert Quellen, RAG, LLM, Schreiben; bricht bei Fehler mit Notice ab |
-| **RAG** | Vektorindex + Retrieval | Hintergrund-Index bei Vault-Änderungen; on-demand vor jedem Lauf |
-| **Ollama-Anbindung** | Zwei Rollen: **Generierung** und **Embeddings** | Beide Modelle müssen vor Lauf erreichbar sein |
+| **RAG** | Vektorindex und Retrieval | Hintergrund-Index bei Vault-Änderungen; on-demand vor jedem Lauf |
+| **Ollama-Anbindung** | Zwei Rollen: Generierung und Embeddings | Beide Modelle müssen vor dem Lauf erreichbar sein |
 | **Quellenpolicy** | Was indexiert und gelesen wird | Keine `.obsidian/`, keine Plugin-Summary-Dateien als Quelle |
 
-Quellcode liegt unter `src/` — Dateizuordnung bewusst nicht Teil dieser Architektur-Doku; siehe [docs/modules/](modules/README.md) nur für fachliche Vertiefung.
+Fachliche Vertiefung pro Modul: [docs/modules/](modules/README.md).
 
 ---
 
@@ -58,7 +66,11 @@ Drei Auslöser, absteigende Priorität:
 
 Gelöschte Dateien verschwinden aus Index und Idle-Queue. Ausgeschlossene Pfade: [docs/modules/sources.md](modules/sources.md).
 
-Speicherort Vektorindex: `vectors.db` im Plugin-Datenverzeichnis — **nicht** im Vault.
+**Reichweite:** Der Index erfasst den ganzen Vault. Das Retrieval beschränkt sich auf den gewählten Ordner (Pfad-Präfix). So bleibt eine Summary auf die Inhalte des Ordners bezogen, obwohl der Index breiter ist.
+
+**Speicherort:** `vectors.db` im Plugin-Datenverzeichnis, nicht im Vault.
+
+**Backend:** Verwendet wird das erste verfügbare Backend in der Reihenfolge WASM-SQLite, better-sqlite3, JSON-Datei (Rückfallebene). Damit läuft der Index auch dort, wo native Module fehlen.
 
 ---
 
@@ -66,16 +78,16 @@ Speicherort Vektorindex: `vectors.db` im Plugin-Datenverzeichnis — **nicht** i
 
 | Schritt | Was passiert |
 |---------|----------------|
-| 1 | Markdown-Quellen im Ordner (rekursiv) ermitteln; leerer Ordner → Abbruch mit Notice |
-| 2 | Retrieval-Query aus Metadaten der Quellen (Dateinamen, erste Überschriften) |
+| 1 | Markdown-Quellen im Ordner (rekursiv) ermitteln; bei leerem Ordner Abbruch mit Notice |
+| 2 | Query-Text aus den Inhalten der Quellnotizen bilden (gekürzt auf eine Obergrenze) |
 | 3 | Betroffenen Ordnerbaum in den Vektorindex einpflegen |
-| 4 | Semantisch passende Top-K-Textchunks laden |
-| 5 | Chunks zu einem Kontextstring zusammenfügen; Überschreitung Kontextlimit → Abbruch |
+| 4 | Semantisch passende Top-K-Chunks laden, beschränkt auf den Ordner |
+| 5 | Chunks zu einem Kontextstring zusammenfügen; bei Überschreitung des Kontextlimits Abbruch |
 | 6 | Ollama-Erreichbarkeit und beide Modelle prüfen |
-| 7 | Strukturierte Summary per Chat erzeugen (System-Prompt + Kontext) |
-| 8 | Markdown-Ausgabe schreiben — Basisdatei oder nummerierte Version, optional Überschreiben |
+| 7 | Strukturierte Summary per Chat erzeugen (System-Prompt und Kontext) |
+| 8 | Markdown-Ausgabe schreiben: Basisdatei oder nummerierte Version, optional Überschreiben |
 
-Jeder Fehlschlag → sichtbare Notice (SPEC §5). Limitationen Inhalt/Bias: [docs/ethik.md](ethik.md).
+Jeder Fehlschlag führt zu einer sichtbaren Notice (SPEC §5). Grenzen bei Inhalt und Bias: [docs/ethik.md](ethik.md).
 
 ---
 
@@ -95,8 +107,8 @@ Vollständige Felder: [SPEC.md §6](../SPEC.md#6-einstellungen-minimum).
 
 | Ebene | Rolle |
 |-------|--------|
-| **Runtime** | Ollama: Embeddings (`nomic-embed-text`) und Summary-Text (`gemma4:e2b`) — kein Cloud-LLM |
-| **Plugin** | Orchestrierung, Index, Prompt, Datei schreiben; LLM liefert nur Summary-Inhalt |
-| **Entwicklung** | KI-Agenten (Cursor u. a.) unter Spec, Skills, Review — siehe [docs/ki-zusammenarbeit.md](ki-zusammenarbeit.md) |
+| **Runtime** | Ollama: Embeddings (`nomic-embed-text`) und Summary-Text (`gemma4:e2b`); kein Cloud-LLM |
+| **Plugin** | Orchestrierung, Index, Prompt, Datei schreiben; das LLM liefert nur den Summary-Inhalt |
+| **Entwicklung** | KI-Agenten (Cursor u. a.) unter Spezifikation, Skills und Review: [docs/ki-zusammenarbeit.md](ki-zusammenarbeit.md) |
 
 Design-Entscheide: [docs/adr/](adr/).

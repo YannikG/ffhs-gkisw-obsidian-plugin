@@ -22,6 +22,7 @@ Massgebende Reihenfolge der Projektarbeit. Jede Phase hat ein **Phase-README** (
 | 10 | Dokumentation | Systemarchitektur und Implementation dokumentieren. | [Phase 10](phase-10/README.md) |
 | 11 | Testen | Evaluation gemäss SPEC §8. | [Phase 11](phase-11/README.md) |
 | 12 | Freigabe | MVP-Freigabe nach erfolgreichen Tests. | [Phase 12](phase-12/README.md) |
+| — | Nacharbeiten | Doku-Korrektur, kleinere Fixes, Release-Automatisierung nach Phase 12. | [Phase Nacharbeiten](phase-nacharbeiten/README.md) |
 
 ---
 
