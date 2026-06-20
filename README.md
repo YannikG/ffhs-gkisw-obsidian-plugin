@@ -88,7 +88,7 @@ In Unit-Tests läuft kein echtes Obsidian: `vitest.config.ts` mappt `obsidian` a
 
 ### Qualität vor Pull Request
 
-Reihenfolge wie in [GitHub Actions](.github/workflows/ci.yml):
+Details: [docs/qualitaet.md](docs/qualitaet.md). Reihenfolge wie in [GitHub Actions](.github/workflows/ci.yml):
 
 1. `npm run format:check` (oder `npm run format` zum Beheben)
 2. `npm run lint`

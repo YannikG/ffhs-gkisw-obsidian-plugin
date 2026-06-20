@@ -9,7 +9,7 @@ Einstieg für Entwicklung und Review. Root-README: [../README.md](../README.md).
 | Dokument | Inhalt |
 |----------|--------|
 | [SPEC.md](../SPEC.md) | Produktspezifikation MVP |
-| [PRD.md](../PRD.md) | Verweis auf SPEC |
+| [PRD.md](../PRD.md) | Verweis auf Gruppenarbeit-PDF und SPEC |
 | [docs/architecture.md](architecture.md) | Systemarchitektur, Datenflüsse |
 | [ARCHITECTURE.md](../ARCHITECTURE.md) | Verweis auf Architektur-Doku |
 | [docs/benutzer.md](benutzer.md) | Installation, Nutzung, Einstellungen |
@@ -39,6 +39,7 @@ Einstieg für Entwicklung und Review. Root-README: [../README.md](../README.md).
 | Dokument | Inhalt |
 |----------|--------|
 | [README.md § Entwicklung](../README.md#entwicklung) | Clone, Build, Tests, CI, Deploy |
+| [docs/qualitaet.md](qualitaet.md) | CI, Tests, Linting, Formatierung |
 | [docs/roadmap/README.md](roadmap/README.md) | 12 Phasen |
 | [docs/zusammenarbeit/README.md](zusammenarbeit/README.md) | Issues, Board |
 | [docs/agents-docs/README.md](agents-docs/README.md) | Agenten-Workflow |
