@@ -13,6 +13,9 @@ const outPath = join(repoRoot, 'manifest.json');
 const REQUIRED = ['id', 'name', 'version', 'minAppVersion', 'description', 'author'];
 
 const meta = JSON.parse(readFileSync(metaPath, 'utf8'));
+if (!meta || typeof meta !== 'object' || Array.isArray(meta)) {
+  throw new Error('manifest.meta.json: expected a JSON object');
+}
 for (const field of REQUIRED) {
   if (typeof meta[field] !== 'string' || meta[field].length === 0) {
     throw new Error(`manifest.meta.json: missing or invalid "${field}"`);

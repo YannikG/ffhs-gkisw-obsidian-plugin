@@ -35,6 +35,9 @@ if (!SEMVER.test(version)) {
 }
 
 const meta = JSON.parse(readFileSync(metaPath, 'utf8'));
+if (!meta || typeof meta !== 'object' || Array.isArray(meta)) {
+  throw new Error('manifest.meta.json: expected a JSON object');
+}
 meta.version = version;
 writeFileSync(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
 

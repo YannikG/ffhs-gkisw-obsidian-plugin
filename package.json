@@ -14,9 +14,9 @@
     "test:watch": "vitest",
     "build": "node scripts/write-manifest.mjs && npm run typecheck && node esbuild.config.mjs",
     "set-version": "node scripts/set-release-version.mjs",
-    "deploy": "node scripts/deploy-to-vault.mjs",
+    "deploy": "node scripts/write-manifest.mjs && node scripts/deploy-to-vault.mjs",
     "check-markdown": "node scripts/check-markdown.mjs",
-    "dev": "concurrently -c blue,magenta -n tsc,esbuild \"tsc --noEmit --watch\" \"node esbuild.config.mjs --watch\""
+    "dev": "node scripts/write-manifest.mjs && concurrently -c blue,magenta -n tsc,esbuild \"tsc --noEmit --watch\" \"node esbuild.config.mjs --watch\""
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
