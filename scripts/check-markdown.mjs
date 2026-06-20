@@ -33,12 +33,13 @@ const lines = content.split('\n');
 
 const issues = [];
 
-// --- Check 1 + 3: unclosed code fences and torn inline math (single pass) ---
-// Inline math check skips lines inside code fences to avoid false positives
-// on shell variables and code snippets that contain $.
+// --- Check 1 + 3: unclosed code fences, torn inline math and display math (single pass) ---
+// Inline math check and display-math counting skip lines inside code fences and
+// ignore inline code segments (backticks) as well as escaped dollars (\$).
 let inCodeFence = false;
 let codeFenceChar = '';
 let codeFenceOpenLine = -1;
+let displayMathCount = 0; // count of $$ occurrences outside code fences/inline-code
 
 for (let i = 0; i < lines.length; i++) {
   const line = lines[i];
@@ -63,14 +64,27 @@ for (let i = 0; i < lines.length; i++) {
     }
   }
 
-  // Skip inline math check on fence delimiter lines and lines inside code fences.
+  // Skip any checks for lines that are fence delimiters or inside code fences.
   if (inCodeFence || tripleBacktick || tildeFence) {
     continue;
   }
 
-  // Heuristic: odd number of $ (after removing $$ pairs) = potential torn inline math.
-  const normalized = line.replace(/\$\$/g, '');
-  const dollarCount = (normalized.match(/\$/g) ?? []).length;
+  // Remove inline code segments (backticks) to avoid false positives from `$` in code.
+  // This removes simple inline code spans like `...` (multiple occurrences handled).
+  let cleaned = line.replace(/(`+)(.*?)\1/g, '');
+
+  // Remove escaped dollars (\$) which are not math markers.
+  cleaned = cleaned.replace(/(^|[^\\\\/])(\\\\\\)*\\\\\\$/g, '$1$2');
+
+  // Count display-math markers ($$) on this cleaned line and accumulate.
+  const dmMatches = cleaned.match(/\$\$/g) ?? [];
+  displayMathCount += dmMatches.length;
+
+  // For inline math heuristic, remove $$ pairs so they aren't counted as single $.
+  const withoutDouble = cleaned.replace(/\$\$/g, '');
+
+  // Now count single $ characters. Odd number likely indicates torn inline math.
+  const dollarCount = (withoutDouble.match(/\$/g) ?? []).length;
   if (dollarCount % 2 !== 0) {
     issues.push(
       `Line ${i + 1}: odd number of $ signs — possible torn inline math. Content: "${line.trim().slice(0, 80)}"`,
@@ -82,10 +96,11 @@ if (inCodeFence) {
 }
 
 // --- Check 2: torn display math ($$ not closed) ---
-const displayMathMatches = content.match(/\$\$/g) ?? [];
-if (displayMathMatches.length % 2 !== 0) {
+// Use the per-line accumulated count to avoid counting $$ inside code fences or
+// inside inline code segments.
+if (displayMathCount % 2 !== 0) {
   issues.push(
-    `Odd number of $$ markers (${displayMathMatches.length}) — display math block likely unclosed.`,
+    `Odd number of $$ markers (${displayMathCount}) — display math block likely unclosed.`,
   );
 }
 
