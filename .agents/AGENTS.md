@@ -8,7 +8,7 @@ Vor Codeänderung, projektbezogener Shell oder inhaltlicher Bewertung: **`docs/`
 
 **Mindestumfang**
 
-1. `docs/roadmap/overview.md` vollständig.
+1. `docs/roadmap/README.md` vollständig.
 2. Weitere passende `docs/`-Dateien (betroffenes Phase-`README`, bei KI-Arbeit `docs/roadmap/methodik-gkisw-prompt-patterns.md`).
 3. Phasenplan / Issue-Ketten / Agenten-Workflow: `docs/agents-docs/README.md`. Domänenglossar (nur Agenten): `docs/agents-docs/domaenensprache.md` → Root-`CONTEXT.md` (nicht in Phase-READMEs oder `issues/*.md` verlinken). Team-Prozess (Issues, Permalinks, Board): `docs/zusammenarbeit/README.md`.
 
@@ -18,6 +18,6 @@ Vor Codeänderung, projektbezogener Shell oder inhaltlicher Bewertung: **`docs/`
 
 **`SPEC.md`** (Root): bei Plugin-Spezifikation oder Verhalten, sobald `docs/`-Kontext klar.
 
-**Nur `docs/` oder Metadaten:** gezielt lesen; `overview.md` kurz prüfen, wenn der Schrittstand in der Roadmap relevant ist.
+**Nur `docs/` oder Metadaten:** gezielt lesen; `docs/roadmap/README.md` kurz prüfen, wenn der Schrittstand in der Roadmap relevant ist.
 
 **`docs/roadmap/**/issues/*.md`:** Nur Fakten (Ziel, `./`-Links auf Vorgänger-`.md`, Akzeptanzkriterien, Scope, dev-Schritte). **Nicht** in File: `gh`-/GitHub-/Permalink-Meta (→ `github-cli.md`). **Issue-Body:** Permalink + kurz auf die Repo-`.md` (SSOT: `docs/zusammenarbeit/README.md`). **Neues GitHub-Issue aus Vorlage:** `.agents/skills/github-issue-anlegen/SKILL.md` und Pfad zur `issues/*.md`. **Vorlagen nicht editieren** ohne explizite Planänderung durch Nutzer. **Plan schärfen vor Issue/Impl:** `.agents/skills/grill-with-docs/SKILL.md` (Grill: `docs/agents-docs/domaenensprache.md`, `CONTEXT.md`, `docs/adr/`; liest `docs/` + `SPEC.md`; schreibt Verhalten in `issues/*.md`, nicht `CONTEXT.md` in Roadmap verlinken). **Implementierung nach Issue:** `.agents/skills/implement-plan-workflow/SKILL.md` (immer mit **GitHub-Issue**-URL oder -Nummer). **Test-first / TDD:** `.agents/skills/tdd/SKILL.md` (red-green-refactor, vertical slices; companion to implement-plan-workflow).

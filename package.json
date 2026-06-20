@@ -12,7 +12,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "npm run typecheck && node esbuild.config.mjs",
+    "build": "node scripts/write-manifest.mjs && npm run typecheck && node esbuild.config.mjs",
     "deploy": "node scripts/deploy-to-vault.mjs",
     "check-markdown": "node scripts/check-markdown.mjs",
     "dev": "concurrently -c blue,magenta -n tsc,esbuild \"tsc --noEmit --watch\" \"node esbuild.config.mjs --watch\""

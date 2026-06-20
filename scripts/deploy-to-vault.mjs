@@ -39,7 +39,7 @@ function readManifestId() {
   if (typeof manifest.id !== 'string' || manifest.id.length === 0) {
     throw new Error(`Invalid manifest id in ${manifestPath}`);
   }
-  for (const field of ['name', 'version', 'minAppVersion']) {
+  for (const field of ['name', 'version', 'minAppVersion', 'description', 'author']) {
     if (typeof manifest[field] !== 'string' || manifest[field].length === 0) {
       throw new Error(`Invalid manifest field "${field}" in ${manifestPath}`);
     }

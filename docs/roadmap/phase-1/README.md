@@ -1,6 +1,6 @@
 # Phase 1: Projektsetup
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Erledigt
 
@@ -13,7 +13,7 @@ Git-Repository, Team-Berechtigungen am Hosting, Branch-Schutz nach Bedarf, Namen
 
 ## Verweise
 
-- [Roadmap-Übersicht](../overview.md)
+- [Roadmap-Übersicht](../README.md)
 - [SPEC.md](../../../SPEC.md)
 - [Phase 2 — Agent Setup](../phase-2/README.md)
 - [Zusammenarbeit](../../zusammenarbeit/README.md)

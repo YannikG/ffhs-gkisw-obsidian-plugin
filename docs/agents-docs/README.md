@@ -1,6 +1,6 @@
 # agents-docs
 
-Index für Agenten-Workflows unter `docs/`. Produkt: `docs/roadmap/`, `SPEC.md`.
+Index für Agenten-Workflows unter `docs/`. Gesamtübersicht: [docs/README.md](../README.md). Produkt: [docs/roadmap/README.md](../roadmap/README.md), [SPEC.md](../../SPEC.md).
 
 **[AGENTS.md](../../.agents/AGENTS.md)** — Einstieg, Lesepflicht. Rest: Tabelle.
 

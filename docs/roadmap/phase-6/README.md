@@ -1,6 +1,6 @@
 # Phase 6: Einbau RAG
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Geplant
 

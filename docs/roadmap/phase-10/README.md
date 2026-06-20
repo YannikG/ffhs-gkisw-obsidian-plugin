@@ -1,6 +1,6 @@
 # Phase 10: Dokumentation
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Abgeschlossen
 

@@ -1,6 +1,6 @@
 # ffhs-gkisw-obsidian-plugin
 
-**Version 1.0.0 — MVP Release** · [Release Notes](docs/release/notes.md) · [Architektur](docs/architecture.md) · [SPEC](SPEC.md)
+**Version 1.0.0 — MVP Release** · [Dokumentation](docs/README.md) · [Benutzer](docs/benutzer.md) · [Architektur](docs/architecture.md) · [Ethik](docs/ethik.md) · [Release Notes](docs/release/notes.md) · [SPEC](SPEC.md)
 
 ## Über das Projekt
 
@@ -21,7 +21,7 @@ Architektur in Kurzform:
 
 Das Plugin erstellt und speichert die Datei; das Modell liefert nur den Inhalt der Zusammenfassung. So bleibt der Kontext des Modells fokussiert, und das Plugin kann die üblichen Obsidian-Events nutzen, um auf Änderungen im Vault zu reagieren.
 
-Das Projekt entsteht im Rahmen des Bachelorstudiums Informatik an der FFHS, im Kurs «Generative KI für Softwareentwickler» (GKISW), als Projektarbeit. Autoren: Gian Luca Tehrani, Kaan Kaplan, Yannik Gartmann. Architektur, Anforderungen und Schnittstellen sind in der [SPEC.md](SPEC.md) dokumentiert.
+Das Projekt entsteht im Rahmen des Bachelorstudiums Informatik an der FFHS, im Kurs «Generative KI für Softwareentwickler» (GKISW), als Projektarbeit. Autoren: Gian Luca Tehrani, Kaan Kaplan, Yannik Gartmann. Spezifikation: [SPEC.md](SPEC.md). Architektur: [docs/architecture.md](docs/architecture.md).
 
 ## Entwicklung
 
@@ -48,11 +48,11 @@ npm run build
 | `npm run format` | Prettier schreibt Korrekturen |
 | `npm run deploy -- "<vault-pfad>"` | Bauen und in einen Test-Vault kopieren (siehe unten) |
 
-Spezifikation und Verhalten: [SPEC.md](SPEC.md). Systemarchitektur: [docs/architecture.md](docs/architecture.md). Modulübersicht unter `src/`: [src/README.md](src/README.md).
+Spezifikation und Verhalten: [SPEC.md](SPEC.md). Systemarchitektur: [docs/architecture.md](docs/architecture.md). Module: [docs/modules/README.md](docs/modules/README.md).
 
 ### Ollama
 
-Für Phase 5 und später: lokale [Ollama](https://ollama.com/download)-Instanz mit den Modell-Tags aus [SPEC.md](SPEC.md) §4.1. Vault-Inhalte gehen nur an `127.0.0.1` (oder die konfigurierte Base URL), siehe SPEC PRD-NF02.
+Lokale [Ollama](https://ollama.com/download)-Instanz mit den Modell-Tags aus [SPEC.md](SPEC.md) §4.1. Vault-Inhalte gehen nur an `127.0.0.1` (oder die konfigurierte Base URL), siehe SPEC PRD-NF02. Endnutzer-Schritte: [docs/benutzer.md](docs/benutzer.md).
 
 1. **Installation:** Ollama von [ollama.com/download](https://ollama.com/download) installieren und starten (Desktop-App oder `ollama serve`). Default-API: `http://127.0.0.1:11434`.
 2. **Modelle laden:**
@@ -145,11 +145,11 @@ In Obsidian: **Einstellungen → Community plugins** → **Obsidian Summarizer**
 3. Einstellungen → Button **Verbindung testen**: Erfolgs-Notice nennt beide Modelle.
 4. Im Datei-Explorer **Rechtsklick auf einen Ordner** (nicht auf eine Datei) → **Create Summary** → Notices für Indexierung und Generierung → Erfolgs-Notice mit `{Ordnername}_summary.md`.
 
-Ollama-Setup siehe Abschnitt **Ollama** oben. RAG und echte **Create Summary**-Generierung folgen in späteren Phasen; siehe [Roadmap](docs/roadmap/overview.md).
+Ollama-Setup siehe Abschnitt **Ollama** oben. Ethik, Governance und bekannte Limitationen: [docs/ethik.md](docs/ethik.md).
 
 ### Onboarding-Checkliste (Reviewer, P4-I07)
 
-Nach Merge oder im PR-Kommentar abhaken — nur diese README (+ verlinktes [src/README.md](src/README.md)), kein mündliches Zusatzwissen:
+Nach Merge oder im PR-Kommentar abhaken — nur diese README (+ [docs/modules/README.md](docs/modules/README.md)), kein mündliches Zusatzwissen:
 
 - [ ] Frischer Clone: `npm ci` → `npm run build` (Exit 0)
 - [ ] `npm test`, `npm run lint`, `npm run format:check` (jeweils Exit 0)
@@ -163,8 +163,8 @@ Nach Merge oder im PR-Kommentar abhaken — nur diese README (+ verlinktes [src/
 
 ## Roadmap
 
-[Phasenplan und Status](docs/roadmap/overview.md) (inkl. Links zu den Phasen-READMEs).
+[docs/roadmap/README.md](docs/roadmap/README.md) — zwölf Phasen mit Links zu `phase-N/README.md` und Issue-Spezifikationen.
 
 ## Zusammenarbeit
 
-[Arbeit im Team und mit GitHub](docs/zusammenarbeit/README.md) (Issues, Planung im Repo, Rollen).
+[docs/zusammenarbeit/README.md](docs/zusammenarbeit/README.md) — Issues, Board, Spezifikation im Repo.

@@ -8,7 +8,7 @@ Vor Codeänderungen, projektbezogenen Shell-Befehlen oder inhaltlichen Bewertung
 
 **Pflichtlektüre (Reihenfolge):**
 
-1. `docs/roadmap/overview.md` — vollständig
+1. `docs/roadmap/README.md` — vollständig
 2. Passende Phase-README (`docs/roadmap/phase-N/README.md`)
 3. Bei KI-Arbeit: `docs/roadmap/methodik-gkisw-prompt-patterns.md`
 4. Phasenplan / Issue-Ketten: `docs/agents-docs/README.md`

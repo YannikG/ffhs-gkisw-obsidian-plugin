@@ -9,7 +9,7 @@ Wenn Antwort im Repo → **zuerst Code/Docs lesen**, dann nur noch offene Punkte
 ## Vor der ersten Frage lesen (nicht überspringen)
 
 1. `.agents/AGENTS.md` — Agent-Regeln
-2. `docs/roadmap/overview.md` — vollständig
+2. `docs/roadmap/README.md` — vollständig
 3. `SPEC.md` — Produkt/Architektur-SSOT
 4. `CONTEXT.md` — falls vorhanden
 5. `docs/adr/` — bestehende ADR-Titel scannen

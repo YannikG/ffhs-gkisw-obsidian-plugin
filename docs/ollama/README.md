@@ -1,6 +1,6 @@
-# Ollama-Modelle (Entwicklung)
+# Ollama — Setup, Modelle und HTTP-Client
 
-Kanonische Modell-Tags für dieses Projekt: [SPEC.md](../../SPEC.md) §4.1 und §6.
+Installation, Modell-Tags und Verifikation für lokales Ollama. **Endnutzer-Anleitung:** [docs/benutzer.md](../benutzer.md). Spezifikation: [SPEC.md](../../SPEC.md) §4.1, §5 und §6.
 
 ## Voraussetzungen
 
@@ -54,3 +54,18 @@ Hinweis: Exporte enthalten oft lokale Blob-Pfade (`FROM /Users/.../.ollama/...`)
 ## Plugin-Defaults
 
 Nach dem Laden der Modelle passen die Plugin-Einstellungs-Defaults zu [SPEC.md](../../SPEC.md) §6: Base URL `http://127.0.0.1:11434`, Generierung `gemma4:e2b`, Embeddings `nomic-embed-text`.
+
+---
+
+## Rolle im Plugin (zwei Modelle)
+
+| Rolle | Modell (Default) | Aufgabe |
+|-------|------------------|---------|
+| **Generierung** | `gemma4:e2b` | Summary-Text via Chat-API |
+| **Embeddings** | `nomic-embed-text` | Vektoren für RAG-Index und Retrieval-Query |
+
+Vor jedem Summary-Lauf prüft das Plugin, ob **beide** Modelle unter der konfigurierten URL erreichbar sind («Verbindung testen» in den Einstellungen).
+
+Kommunikation ausschliesslich mit der lokalen Ollama-Instanz — Vault-Inhalte verlassen die Maschine nicht über diese Schnittstelle.
+
+Siehe auch: [docs/modules/rag.md](../modules/rag.md), [docs/modules/summary.md](../modules/summary.md).

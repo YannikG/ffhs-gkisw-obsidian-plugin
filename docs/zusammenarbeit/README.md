@@ -8,7 +8,7 @@ Für den Code bleiben die Menschen im Team verantwortlich. Wer etwas beiträgt, 
 
 ## Roadmap und Issues
 
-Wir orientieren uns an den Phasen unter [`docs/roadmap/`](../roadmap/overview.md) und fassen konkrete Arbeit in GitHub-Issues, die zu den beschriebenen Arbeitspaketen passen. Der eigentliche Umsetzungsplan steht in den Markdown-Dateien unter `docs/roadmap/phase-N/issues/` sowie in den jeweiligen Phase-READMEs; auf GitHub geht es vor allem um Ablauf, Verknüpfung und Board.
+Wir orientieren uns an den Phasen unter [`docs/roadmap/`](../roadmap/README.md) und fassen konkrete Arbeit in GitHub-Issues, die zu den beschriebenen Arbeitspaketen passen. Der eigentliche Umsetzungsplan steht in den Markdown-Dateien unter `docs/roadmap/phase-N/issues/` sowie in den jeweiligen Phase-READMEs; auf GitHub geht es vor allem um Ablauf, Verknüpfung und Board.
 
 ## Wo liegt die Spezifikation (SSOT)
 
@@ -41,4 +41,4 @@ Im Ordner [`.agents/skills/`](../../.agents/skills/) liegen Markdown-Anleitungen
 
 ---
 
-- [Roadmap-Übersicht](../roadmap/overview.md)
+- [Roadmap-Übersicht](../roadmap/README.md)
