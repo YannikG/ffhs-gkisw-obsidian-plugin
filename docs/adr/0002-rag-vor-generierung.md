@@ -2,7 +2,7 @@
 
 **Status:** accepted
 
-Bei grossen Ordnern passt der gesamte Markdown-Inhalt nicht in den Kontext des Generierungsmodells. Alternative: ganzen Ordner in den Prompt packen (einfach, skaliert schlecht) vs. **Retrieval-Augmented Generation** (Chunk, Embed, semantische Suche, Top-K in den Prompt).
+Bei grossen Ordnern passt der gesamte Markdown-Inhalt nicht in den Kontext des Generierungsmodells. Alternative: ganzen Ordner in den Prompt packen (einfach, skaliert schlecht) gegenüber **Retrieval-Augmented Generation** (Chunking, Embeddings, semantische Suche, Top-K in den Prompt).
 
 **Entscheid:** RAG-Pipeline mit lokalem Vektorindex (`vectors.db` im Plugin-Datenverzeichnis, nicht im Vault), Embeddings via `nomic-embed-text`, Generierung via `gemma4:e2b`.
 

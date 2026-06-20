@@ -31,10 +31,10 @@ Alles lokal — keine Vault-Daten an externe Dienste (SPEC PRD-NF02).
 
 ## Architektur-Prinzipien
 
-- **Obsidian nur an der Kante:** UI, Vault-Zugriff, Persistenz der Settings — Fachlogik ohne Obsidian-Import wo möglich (testbar, port-injiziert).
-- **Ein Summary-Lauf zur Zeit:** Kein paralleles Überschreiben; klare Notices pro Phase.
-- **RAG vor Chat:** Kontext kommt aus Retrieval, nicht aus ungefiltertem Ordner-Volltext.
-- **Fehler sichtbar:** Kein stilles Scheitern; leerer Ordner, Ollama offline, Kontext zu gross → Notice und Abbruch.
+- **Obsidian-Bindung nur in der äusseren Schicht:** UI, Vault-Zugriff und Settings-Persistenz nutzen Obsidian. Die Fachlogik bleibt davon frei, dadurch testbar und über Ports angebunden.
+- **Nur ein Summary-Lauf gleichzeitig:** kein paralleles Überschreiben, klare Notices pro Phase.
+- **Retrieval vor Generierung:** der Kontext stammt aus der semantischen Suche, nicht aus dem ungefilterten Ordner-Volltext.
+- **Fehler bleiben sichtbar:** kein stilles Scheitern. Leerer Ordner, Ollama nicht erreichbar oder Kontext zu gross führen zu einer Notice und brechen den Lauf ab.
 
 ---
 

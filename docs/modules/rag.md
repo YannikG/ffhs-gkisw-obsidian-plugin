@@ -13,7 +13,7 @@ Architektur: [docs/architecture.md](../architecture.md). Spezifikation: [SPEC.md
 | **Chunk** | Abschnitt aus einer Markdown-Datei (Grösse/Overlap einstellbar) |
 | **Embedding** | Vektorrepräsentation eines Chunks via Ollama `nomic-embed-text` |
 | **Vektorindex** | SQLite-Datenbank (`vectors.db`) im Plugin-Datenverzeichnis |
-| **Retrieval** | Query embedden → ähnlichste Top-K-Chunks → Kontext für das LLM |
+| **Retrieval** | Suchanfrage als Vektor berechnen → ähnlichste Top-K-Chunks → Kontext für das LLM |
 
 ---
 
@@ -31,8 +31,8 @@ Details: [docs/architecture.md § Index-Policy](../architecture.md#index-policy-
 
 ## Retrieval-Ablauf (bei Create Summary)
 
-1. Aus Quellmetadaten eine **Suchanfrage** bilden (Themen aus Dateinamen und Überschriften).
-2. Anfrage embedden (dasselbe Embedding-Modell wie beim Index).
+1. Aus den **Inhalten der Quellnotizen** eine **Suchanfrage** bilden (gekürzt auf eine Obergrenze).
+2. Für die Suchanfrage einen Vektor berechnen (dasselbe Embedding-Modell wie beim Index).
 3. **Top-K** ähnlichste Chunks aus dem Index laden (K einstellbar).
 4. Chunks zu einem **Kontextstring** zusammenfügen — begrenzt durch **Kontextlimit**.
 

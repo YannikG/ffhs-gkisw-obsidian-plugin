@@ -11,8 +11,8 @@ Der Git-Tag des Releases ist die massgebende Versionsquelle. Das Skript [`script
 ```mermaid
 flowchart LR
   Tag[GitHub-Release mit Tag vX.Y.Z] --> WF[Workflow Release]
-  WF --> SetV[set-release-version.mjs\nVersion in manifest.meta.json]
-  SetV --> Build[npm run build\nmanifest.json + main.js]
+  WF --> SetV["set-release-version.mjs<br/>Version in manifest.meta.json"]
+  SetV --> Build["npm run build<br/>manifest.json + main.js"]
   Build --> Zip[Plugin-Zip packen]
   Zip --> Assets[Assets an Release anhängen]
 ```
