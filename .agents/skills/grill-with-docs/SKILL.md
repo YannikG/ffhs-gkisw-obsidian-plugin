@@ -22,7 +22,7 @@ If answer is in repo → **read code/docs first**, then ask only what stays open
 Read (in order, do not skip):
 
 1. [`.agents/AGENTS.md`](../../AGENTS.md) — agent rules.
-2. [`docs/roadmap/overview.md`](../../../docs/roadmap/overview.md) — full file.
+2. [`docs/roadmap/README.md`](../../../docs/roadmap/README.md) — full file.
 3. [`SPEC.md`](../../../SPEC.md) — product/architecture SSOT for MVP.
 4. [`CONTEXT.md`](../../../CONTEXT.md) if it exists.
 5. [`docs/adr/`](../../../docs/adr/) — scan existing ADR titles.

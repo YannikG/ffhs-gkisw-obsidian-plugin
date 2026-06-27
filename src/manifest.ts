@@ -1,13 +1,16 @@
-export const PLUGIN_ID = 'ffhs-gkisw-obsidian-plugin' as const;
+import meta from '../manifest.meta.json';
 
-/** Display name in Obsidian plugin list and settings tab. */
-export const PLUGIN_DISPLAY_NAME = 'Obsidian Summarizer' as const;
+export const PLUGIN_ID = meta.id as typeof meta.id;
+export const PLUGIN_DISPLAY_NAME = meta.name;
 
 export type PluginManifest = {
   id: string;
   name: string;
   version: string;
   minAppVersion: string;
+  description: string;
+  author: string;
+  isDesktopOnly: boolean;
 };
 
 const REQUIRED_STRING_FIELDS = [
@@ -15,11 +18,13 @@ const REQUIRED_STRING_FIELDS = [
   'name',
   'version',
   'minAppVersion',
+  'description',
+  'author',
 ] as const satisfies readonly (keyof PluginManifest)[];
 
 function requireNonEmptyString(
   record: Record<string, unknown>,
-  field: keyof PluginManifest,
+  field: (typeof REQUIRED_STRING_FIELDS)[number],
 ): string {
   const raw = record[field];
   if (typeof raw !== 'string' || raw.length === 0) {
@@ -34,13 +39,27 @@ export function validateManifest(value: unknown): PluginManifest {
   }
 
   const record = value as Record<string, unknown>;
-  const manifest = Object.fromEntries(
+  const strings = Object.fromEntries(
     REQUIRED_STRING_FIELDS.map((field) => [field, requireNonEmptyString(record, field)]),
-  ) as PluginManifest;
+  ) as Pick<PluginManifest, 'id' | 'name' | 'version' | 'minAppVersion' | 'description' | 'author'>;
+
+  if (typeof record.isDesktopOnly !== 'boolean') {
+    throw new Error('Manifest missing or invalid field: isDesktopOnly');
+  }
+
+  const manifest: PluginManifest = {
+    ...strings,
+    isDesktopOnly: record.isDesktopOnly,
+  };
 
   if (manifest.id !== PLUGIN_ID) {
     throw new Error(`Manifest id must be "${PLUGIN_ID}", got "${manifest.id}"`);
   }
 
   return manifest;
+}
+
+/** Canonical manifest object (from manifest.meta.json). */
+export function getObsidianManifest(): PluginManifest {
+  return validateManifest(meta);
 }

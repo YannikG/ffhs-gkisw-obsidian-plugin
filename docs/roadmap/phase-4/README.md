@@ -1,12 +1,12 @@
 # Phase 4: Vorbereitung — Boilerplate, CI und Qualität
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Geplant
 
 ## Einordnung
 
-In der [Roadmap-Übersicht](../overview.md) heisst die Kachel Phase **4** weiterhin «Erweiterte Funktionen (RAG & Vektor-DB)» als **Produktvision**. **Dieses README und die Issues P4-I01 bis P4-I09** beschreiben ausschliesslich die **technische Basis**: Tooling, lauffähige Plugin-Shell, Tests, Lint, Format, GitHub Actions, initiales Root-`README.md`. Es gibt darin **keine** RAG-, **keine** Embedding-Pipeline und **keine** Vektor-DB-Umsetzung und auch **keine** Detailplanung dazu. Architekturhinweise für spätere Schritte bleiben in [SPEC.md](../../../SPEC.md) (Abschnitte 4, 4.2, 9), bis das Team sie einer Umsetzungsphase zuordnet.
+In der [Roadmap-Übersicht](../README.md) heisst die Kachel Phase **4** weiterhin «Erweiterte Funktionen (RAG & Vektor-DB)» als **Produktvision**. **Dieses README und die Issues P4-I01 bis P4-I09** beschreiben ausschliesslich die **technische Basis**: Tooling, lauffähige Plugin-Shell, Tests, Lint, Format, GitHub Actions, initiales Root-`README.md`. Es gibt darin **keine** RAG-, **keine** Embedding-Pipeline und **keine** Vektor-DB-Umsetzung und auch **keine** Detailplanung dazu. Architekturhinweise für spätere Schritte bleiben in [SPEC.md](../../../SPEC.md) (Abschnitte 4, 4.2, 9), bis das Team sie einer Umsetzungsphase zuordnet.
 
 Die folgenden Arbeitspakete umfassen **Tooling, Plugin-Shell, Tests, Lint, Format, GitHub Actions** und das **initiale Root-`README.md`**, damit das Repository baubar, testbar und konsistent bleibt.
 
@@ -70,7 +70,7 @@ GitHub-Issues und Repo-Markdown: [Zusammenarbeit](../../zusammenarbeit/README.md
 ## Verweise
 
 - [SPEC.md](../../../SPEC.md)
-- [Roadmap-Übersicht](../overview.md)
+- [Roadmap-Übersicht](../README.md)
 - [Phase 3 README](../phase-3/README.md)
 - [Zusammenarbeit](../../zusammenarbeit/README.md)
 - [docs/agents-docs/](../../agents-docs/README.md)

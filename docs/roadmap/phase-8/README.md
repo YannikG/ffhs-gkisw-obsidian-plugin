@@ -1,6 +1,6 @@
 # Phase 8: Finalisierung
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Geplant
 

@@ -34,7 +34,7 @@ One test → minimal code → repeat.
 
 Before code:
 
-- Read [AGENTS.md](../../AGENTS.md): `docs/roadmap/overview.md`, phase README, GitHub issue + `docs/roadmap/**/issues/*.md` if linked. **Acceptance criteria = behaviors.**
+- Read [AGENTS.md](../../AGENTS.md): `docs/roadmap/README.md`, phase README, GitHub issue + `docs/roadmap/**/issues/*.md` if linked. **Acceptance criteria = behaviors.**
 - With user: pick **tracer bullet** first.
 - Test **exports** in `src/`, not private `Plugin` methods.
 - List behaviors (not impl steps). Ask if scope unclear.

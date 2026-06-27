@@ -1,6 +1,6 @@
 # Phase 7: Verknüpfung RAG mit LLM
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Geplant
 

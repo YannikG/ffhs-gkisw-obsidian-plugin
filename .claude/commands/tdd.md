@@ -20,7 +20,7 @@ Ein Test → minimaler Code → wiederholen.
 
 **1. Plan**
 
-- `docs/roadmap/overview.md` + Phase-README + GitHub-Issue + verlinkte `issues/*.md` lesen
+- `docs/roadmap/README.md` + Phase-README + GitHub-Issue + verlinkte `issues/*.md` lesen
 - Mit User: ersten **Tracer Bullet** wählen
 - Tests auf Exports in `src/`, nicht auf `Plugin`-Methoden
 - Verhalten auflisten (nicht Impl-Schritte)

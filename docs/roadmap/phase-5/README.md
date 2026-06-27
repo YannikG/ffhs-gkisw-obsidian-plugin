@@ -1,6 +1,6 @@
 # Phase 5: Kommunikation mit dem LLM
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Geplant
 
@@ -66,7 +66,7 @@ Label auf GitHub: **Phase 5** (zusätzlich **documentation** bei #19 und #25). [
 
 ## Verweise
 
-- [Roadmap-Übersicht](../overview.md)
+- [Roadmap-Übersicht](../README.md)
 - [SPEC.md](../../../SPEC.md)
 - [Phase 4](../phase-4/README.md)
 - [Phase 6 — Einbau RAG](../phase-6/README.md)

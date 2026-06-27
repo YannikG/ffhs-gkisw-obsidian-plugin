@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g. 1.0.0); only required for manual runs'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Resolve version
+        id: version
+        run: |
+          VERSION="${{ github.event.release.tag_name || inputs.version }}"
+          VERSION="${VERSION#v}"
+          if [ -z "$VERSION" ]; then
+            echo "No version available (release tag or workflow input required)." >&2
+            exit 1
+          fi
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+
+      - name: Set manifest version
+        run: node scripts/set-release-version.mjs "${{ steps.version.outputs.value }}"
+
+      - run: npm run build
+
+      - name: Package plugin zip
+        id: package
+        run: |
+          PLUGIN_ID=ffhs-gkisw-obsidian-plugin
+          VERSION="${{ steps.version.outputs.value }}"
+          ZIP="${PLUGIN_ID}-${VERSION}.zip"
+          mkdir -p "dist/${PLUGIN_ID}"
+          cp manifest.json main.js "dist/${PLUGIN_ID}/"
+          [ -f main.js.map ] && cp main.js.map "dist/${PLUGIN_ID}/" || true
+          (cd dist && zip -r "../${ZIP}" "${PLUGIN_ID}")
+          echo "zip=${ZIP}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.zip }}
+          path: ${{ steps.package.outputs.zip }}
+
+      - name: Attach assets to release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" \
+            "${{ steps.package.outputs.zip }}" manifest.json main.js --clobber

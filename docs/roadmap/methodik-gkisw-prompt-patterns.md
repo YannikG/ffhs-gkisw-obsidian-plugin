@@ -1,6 +1,6 @@
 # GKISW: Vier Prompt-Patterns für die Implementierung
 
-Aus der Folie «Vorbereitung — Effektive Prompts für die Implementierung» (FFHS GKISW, PVA 4). Die Patterns decken nach Folie rund **80 %** typischer Sprint-Arbeit ab und ergänzen die Phasen-READMEs; sie sind **kein** Ersatz für die formale Roadmap in `overview.md`.
+Aus der Folie «Vorbereitung — Effektive Prompts für die Implementierung» (FFHS GKISW, PVA 4). Die Patterns decken nach Folie rund **80 %** typischer Sprint-Arbeit ab und ergänzen die Phasen-READMEs; sie sind **kein** Ersatz für die formale Roadmap in [README.md](README.md).
 
 ## 1. Architektur-Prompt (zu Beginn)
 

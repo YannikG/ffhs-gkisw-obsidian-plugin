@@ -1,6 +1,6 @@
 # Phase 2: Agent Setup
 
-[Zurück zur Roadmap-Übersicht](../overview.md)
+[Zurück zur Roadmap-Übersicht](../README.md)
 
 **Status:** Erledigt
 
@@ -13,7 +13,7 @@ Skills, Cursor-Regeln, `.agents/`-Struktur und übrige Anweisungen, damit Agente
 
 ## Verweise
 
-- [Roadmap-Übersicht](../overview.md)
+- [Roadmap-Übersicht](../README.md)
 - [SPEC.md](../../../SPEC.md)
 - [Phase 1 — Projektsetup](../phase-1/README.md)
 - [Phase 3 — Planung](../phase-3/README.md)
